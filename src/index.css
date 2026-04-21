@@ -1,0 +1,3 @@
+/* Import design system + styles */
+@import './styles/design-system.css';
+@import './styles/style.css';

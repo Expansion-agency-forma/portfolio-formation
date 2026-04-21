@@ -1,0 +1,192 @@
+/* ==========================================================================
+   Design System — Expansion Agency Portfolio
+   Light theme inspired by miniamea.fr, gold accent (#c9a84c)
+   ========================================================================== */
+
+:root {
+    /* --- Colors (dark mode, miniamea-inspired) --------------------------- */
+    --color-bg: #170000;
+    --color-bg-soft: #1f0808;
+    --color-bg-muted: #261010;
+    --color-bg-card: #1f0808;
+
+    --color-text: #ffffff;
+    --color-text-muted: #bbbbc0;
+    --color-text-faint: #6a6066;
+
+    --color-border: rgba(255, 255, 255, 0.08);
+    --color-border-strong: rgba(255, 255, 255, 0.16);
+
+    --color-gold: #c9a84c;
+    --color-gold-hover: #d4b85c;
+    --color-gold-soft: rgba(201, 168, 76, 0.12);
+    --color-gold-border: rgba(201, 168, 76, 0.32);
+
+    /* --- Typography ------------------------------------------------------ */
+    --font-sans: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-serif: 'Instrument Serif', Georgia, serif;
+
+    /* Display scale */
+    --fs-display-xl: clamp(2.75rem, 7vw, 5.75rem);
+    --fs-display-lg: clamp(2.25rem, 5vw, 4rem);
+    --fs-display-md: clamp(1.75rem, 3.5vw, 2.75rem);
+
+    /* Text scale */
+    --fs-xl: 1.25rem;
+    --fs-lg: 1.0625rem;
+    --fs-base: 1rem;
+    --fs-sm: 0.875rem;
+    --fs-xs: 0.75rem;
+
+    --lh-tight: 1.02;
+    --lh-snug: 1.2;
+    --lh-normal: 1.55;
+
+    --tracking-tight: -0.03em;
+    --tracking-normal: 0;
+    --tracking-wide: 0.06em;
+    --tracking-widest: 0.14em;
+
+    /* --- Spacing --------------------------------------------------------- */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+    --space-8: 4rem;
+    --space-9: 6rem;
+    --space-10: 8rem;
+
+    /* --- Radii ----------------------------------------------------------- */
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+    --radius-full: 9999px;
+
+    /* --- Shadows --------------------------------------------------------- */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.5);
+    --shadow-gold: 0 10px 30px rgba(201, 168, 76, 0.25);
+
+    /* --- Layout ---------------------------------------------------------- */
+    --container-max: 1200px;
+    --container-pad: clamp(1.25rem, 4vw, 3rem);
+
+    /* --- Motion ---------------------------------------------------------- */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-fast: 180ms;
+    --dur-med: 320ms;
+    --dur-slow: 600ms;
+}
+
+/* ==========================================================================
+   Reset + base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: var(--font-sans);
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+img,
+video,
+svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+/* ==========================================================================
+   Typography utilities
+   ========================================================================== */
+
+.italic-serif {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+}
+
+/* ==========================================================================
+   Scroll reveal animations
+   Progressive enhancement: only hide when JS signals .reveal-ready on <html>.
+   If JS fails, elements remain fully visible.
+   ========================================================================== */
+
+[data-reveal] {
+    transition:
+        opacity 750ms var(--ease-out),
+        transform 750ms var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal-ready [data-reveal]:not(.is-visible) {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+    will-change: opacity, transform;
+}
+
+.reveal-ready [data-reveal="fade"]:not(.is-visible) {
+    transform: none;
+}
+
+.reveal-ready [data-reveal="scale"]:not(.is-visible) {
+    transform: scale(0.94) translate3d(0, 16px, 0);
+}
+
+.reveal-ready [data-reveal="slide-left"]:not(.is-visible) {
+    transform: translate3d(-36px, 0, 0);
+}
+
+.reveal-ready [data-reveal="slide-right"]:not(.is-visible) {
+    transform: translate3d(36px, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal-ready [data-reveal]:not(.is-visible) {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
