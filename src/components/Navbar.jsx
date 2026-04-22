@@ -1,9 +1,16 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
 function Navbar({ items = [], crossLink, cta }) {
   const [open, setOpen] = useState(false)
+  const location = useLocation()
   const close = () => setOpen(false)
+
+  const handleBrandClick = (e) => {
+    e.preventDefault()
+    close()
+    window.location.reload()
+  }
 
   useEffect(() => {
     if (!open) return
@@ -23,10 +30,15 @@ function Navbar({ items = [], crossLink, cta }) {
     <>
       <header className="navbar">
         <div className="navbar__pill">
-          <Link to="/" className="navbar__brand" onClick={close}>
+          <a
+            href={location.pathname}
+            className="navbar__brand"
+            onClick={handleBrandClick}
+            aria-label="Recharger la page Expansion"
+          >
             <span className="navbar__brand-dot" aria-hidden="true" />
             Expansion
-          </Link>
+          </a>
 
           <nav className="navbar__links" aria-label="Navigation principale">
             {items.map((item) => (

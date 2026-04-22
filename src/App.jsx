@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import FormationLanding from './pages/FormationLanding'
 import PubLanding from './pages/PubLanding'
+import MentionsLegales from './pages/MentionsLegales'
+import Cgv from './pages/Cgv'
+import Confidentialite from './pages/Confidentialite'
 import { useRevealOnScroll, useCounterAnimation } from './hooks/useScrollEffects'
 
 function ScrollToTop() {
@@ -22,6 +25,9 @@ function App() {
       <Routes>
         <Route path="/" element={<FormationLanding />} />
         <Route path="/publicite" element={<PubLanding />} />
+        <Route path="/mentions-legales" element={<MentionsLegales />} />
+        <Route path="/cgv" element={<Cgv />} />
+        <Route path="/confidentialite" element={<Confidentialite />} />
       </Routes>
     </BrowserRouter>
   )
