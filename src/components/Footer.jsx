@@ -8,8 +8,8 @@ function Footer() {
         </span>
 
         <nav className="footer__links" aria-label="Liens secondaires">
-          <a href="https://www.instagram.com/expansion" target="_blank" rel="noreferrer">Instagram</a>
-          <a href="https://www.linkedin.com/company/expansion" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://www.instagram.com/nathanael_dhs" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/in/nathanael-dahomais-161577145" target="_blank" rel="noreferrer">LinkedIn</a>
           <a href="#mentions">Mentions légales</a>
           <a href="#confidentialite">Confidentialité</a>
           <a href="#cgv">CGV</a>

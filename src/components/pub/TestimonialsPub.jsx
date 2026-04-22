@@ -3,24 +3,24 @@ import { useRef, useState } from 'react'
 const TESTIMONIALS = [
   {
     key: 't1',
-    name: 'Nadia',
-    role: 'Formation prothésie ongulaire',
-    initials: 'N',
-    youtubeId: 'JGPRwjr-Efo',
+    name: 'Irma',
+    role: '15 000€ générés le premier mois',
+    initials: 'I',
+    youtubeId: 'iDcBE3bxyv4',
   },
   {
     key: 't2',
-    name: 'Sofya Beauty',
-    role: 'Extensions de cils, blanchiment dentaire & rehaussement',
-    initials: 'SB',
-    youtubeId: 'GsRuo472ozQ',
+    name: 'Lory',
+    role: '13 000€ générés le premier mois',
+    initials: 'L',
+    youtubeId: 'GmsaBBN2c9g',
   },
   {
     key: 't3',
-    name: 'Mbeauty',
-    role: 'Formation browlift & rehaussement de cils',
-    initials: 'M',
-    youtubeId: 'P6QPy9bqp74',
+    name: 'Akim',
+    role: '50 000€ de CA — son plus gros mois',
+    initials: 'A',
+    youtubeId: 'bf7OV7x3X8E',
   },
 ]
 
@@ -32,7 +32,7 @@ function PlayIcon() {
   )
 }
 
-function Testimonials() {
+function TestimonialsPub() {
   const [playingKey, setPlayingKey] = useState(null)
   const trackRef = useRef(null)
 
@@ -151,4 +151,4 @@ function Testimonials() {
   )
 }
 
-export default Testimonials
+export default TestimonialsPub

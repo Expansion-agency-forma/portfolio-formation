@@ -1,27 +1,37 @@
-function Navbar() {
+import { Link } from 'react-router-dom'
+
+function Navbar({ items = [], crossLink, cta }) {
   return (
     <header className="navbar">
       <div className="navbar__pill">
-        <a href="#top" className="navbar__brand">
+        <Link to="/" className="navbar__brand">
           <span className="navbar__brand-dot" aria-hidden="true" />
           Expansion
-        </a>
+        </Link>
 
         <nav className="navbar__links" aria-label="Navigation principale">
-          <a href="#formations">Nos réalisations</a>
-          <a href="#services">Comment ça marche</a>
-          <a href="#temoignages">Avis</a>
-          <a href="#faq">FAQ</a>
+          {items.map((item) => (
+            <a key={item.href} href={item.href}>
+              {item.label}
+            </a>
+          ))}
+          {crossLink && (
+            <Link to={crossLink.to} className="navbar__cross">
+              {crossLink.label}
+            </Link>
+          )}
         </nav>
 
-        <a
-          href="https://calendly.com/expansionagency/appel-decouverte-formation-en-ligne-clone"
-          target="_blank"
-          rel="noreferrer"
-          className="navbar__cta"
-        >
-          Réserver un appel
-        </a>
+        {cta && (
+          <a
+            href={cta.href}
+            target="_blank"
+            rel="noreferrer"
+            className="navbar__cta"
+          >
+            {cta.label}
+          </a>
+        )}
       </div>
     </header>
   )

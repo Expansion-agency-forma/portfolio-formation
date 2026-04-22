@@ -34,3 +34,6 @@ dist-ssr
 
 # Claude Code local config
 .claude/
+
+# Source assets already duplicated in public/
+LANDINGPORTFOLIO/Screen stats ads/

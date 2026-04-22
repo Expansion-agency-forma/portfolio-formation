@@ -1,12 +1,12 @@
 const KPIS = [
-  { value: '50', suffix: '+', label: 'organismes accompagnés' },
-  { value: '98', suffix: '%', label: 'taux de satisfaction' },
-  { value: '100', suffix: '%', label: 'tournage sur site' },
+  { value: '10', suffix: '–15%', label: 'taux de closing moyen' },
+  { value: '0', suffix: '€', label: 'de frais fixe' },
+  { value: '10', suffix: '–20%', label: 'du CA généré facturé' },
 ]
 
-function KpiBand() {
+function KpiBandPub() {
   return (
-    <section className="kpi-band" aria-label="Chiffres clés">
+    <section className="kpi-band" aria-label="Chiffres clés publicité">
       <div className="kpi-band__inner">
         {KPIS.map((kpi, i) => (
           <div
@@ -16,7 +16,11 @@ function KpiBand() {
             style={{ '--reveal-delay': `${i * 100}ms` }}
           >
             <span className="kpi__value">
-              <span data-counter={kpi.value}>0</span>
+              {kpi.value === '0' ? (
+                <span>{kpi.value}</span>
+              ) : (
+                <span data-counter={kpi.value}>0</span>
+              )}
               <span className="kpi__value-suffix">{kpi.suffix}</span>
             </span>
             <span className="kpi__label">{kpi.label}</span>
@@ -27,4 +31,4 @@ function KpiBand() {
   )
 }
 
-export default KpiBand
+export default KpiBandPub

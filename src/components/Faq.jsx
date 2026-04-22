@@ -21,7 +21,7 @@ const FAQS = [
   },
   {
     q: 'Quels secteurs avez-vous déjà accompagnés ?',
-    a: "Plus de 10 secteurs à ce jour : beauté (prothésie ongulaire, extension de cils, rehaussement), automobile (pare-brise, pièces auto), restauration, bien-être, artisanat, formation commerciale, et d'autres.",
+    a: "Nous accompagnons principalement les métiers de la beauté (prothésie ongulaire, extension de cils, rehaussement, browlift, blanchiment dentaire) et de l'esthétique, mais aussi la formation commerciale et le bien-être. La méthode reste la même dès qu'il y a un savoir-faire à transmettre.",
   },
 ]
 
