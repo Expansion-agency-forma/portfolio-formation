@@ -1,14 +1,11 @@
 import { useRef, useState } from 'react'
 
 const CREATIONS = [
-  { key: 'c1', title: 'Meta — Prothésie', meta: 'CPL 4,80€ · ROAS x4.2', youtubeId: 'Xb462FbfVuE' },
-  { key: 'c2', title: 'TikTok — Head spa', meta: 'CPL 3,20€ · ROAS x5.1', youtubeId: 'fSL5LHJmxrk' },
-  { key: 'c3', title: 'YouTube — Pare-brise', meta: 'CPL 6,10€ · ROAS x3.8', youtubeId: '-hQ9Zt9OKL8' },
-  { key: 'c4', title: 'Meta — Extensions cils', meta: 'CPL 3,90€ · ROAS x4.5', youtubeId: 'MA0ZBbgJJrA' },
-  { key: 'c5', title: 'TikTok — Browlift', meta: 'CPL 2,75€ · ROAS x6.2', youtubeId: 'RguqLvvj8BY' },
-  { key: 'c6', title: 'Meta — Blanchiment', meta: 'CPL 5,40€ · ROAS x3.9', youtubeId: 'f0bu068Hx-k' },
-  { key: 'c7', title: 'Snap — Rehaussement', meta: 'CPL 4,10€ · ROAS x4.7', youtubeId: 'tXZSF4mTKMQ' },
-  { key: 'c8', title: 'YouTube — Pièce auto', meta: 'CPL 5,90€ · ROAS x4.1', youtubeId: 'FWXRC72DbnU' },
+  { key: 'c1', title: 'CPL 3€', meta: 'Campagne lead gen', youtubeId: 'Zh10NzkmmO0' },
+  { key: 'c2', title: 'CPL 4€', meta: 'Campagne lead gen', youtubeId: '0tGUPl02AVc' },
+  { key: 'c3', title: 'CPL 5€', meta: 'Campagne lead gen', youtubeId: 'OoMDuO_1r5Y' },
+  { key: 'c4', title: 'CPL 6€', meta: 'Campagne lead gen', youtubeId: 'G4m41KGB86w' },
+  { key: 'c5', title: 'CPL 9€', meta: 'Campagne solaire', youtubeId: 'X00KllReGko' },
 ]
 
 function PlayIcon() {
