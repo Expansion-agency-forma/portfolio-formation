@@ -3168,12 +3168,67 @@
         right: var(--space-2);
     }
 
-    /* Testimonials */
+    /* Testimonials (text — Formation legacy) */
     .testimonial {
         padding: var(--space-5);
     }
     .testimonial__quote {
         font-size: var(--fs-base);
+    }
+
+    /* Video testimonials */
+    .vtestimonials {
+        padding-block: var(--space-8);
+    }
+    .vtestimonials__nav {
+        margin-top: var(--space-5);
+    }
+    .vtestimonial__name {
+        font-size: var(--fs-sm);
+    }
+    .vtestimonial__role {
+        font-size: 11px;
+    }
+    .vtestimonial__caption {
+        padding: var(--space-3);
+    }
+
+    /* Results scroll (ads stats) */
+    .results-scroll {
+        padding-block: var(--space-8);
+    }
+    .results-scroll__grid {
+        height: 420px;
+        gap: var(--space-3);
+    }
+    .results-col__track {
+        gap: var(--space-3);
+    }
+    .results-card::before {
+        backdrop-filter: blur(12px) saturate(1.05);
+        -webkit-backdrop-filter: blur(12px) saturate(1.05);
+    }
+
+    /* ROI calculator */
+    .roi {
+        padding-block: var(--space-8);
+    }
+    .roi__card {
+        padding: var(--space-5) var(--space-4);
+        border-radius: var(--radius-lg);
+    }
+    .roi__price-block {
+        margin-bottom: var(--space-5);
+    }
+    .roi__slider-wrapper {
+        margin-bottom: var(--space-6);
+    }
+    .roi__result {
+        padding-top: var(--space-5);
+    }
+    .roi__result-intro,
+    .roi__result-outro {
+        font-size: var(--fs-sm);
     }
 
     /* Compare */
