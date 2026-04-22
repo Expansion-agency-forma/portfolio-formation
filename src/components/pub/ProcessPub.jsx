@@ -147,14 +147,11 @@ const STEPS = [
 ]
 
 const TEASER_THUMBS_VERTICAL = [
-  { title: 'Meta — Prothésie ongulaire', category: 'Meta Ads', youtubeId: 'Xb462FbfVuE' },
-  { title: 'TikTok — Head spa', category: 'TikTok Ads', youtubeId: 'fSL5LHJmxrk' },
-  { title: 'YouTube — Pare-brise', category: 'YouTube Ads', youtubeId: '-hQ9Zt9OKL8' },
-  { title: 'Snap — Extensions cils', category: 'Snapchat', youtubeId: 'MA0ZBbgJJrA' },
-  { title: 'Meta — Browlift', category: 'Meta Ads', youtubeId: 'RguqLvvj8BY' },
-  { title: 'TikTok — Pièce auto', category: 'TikTok Ads', youtubeId: 'FWXRC72DbnU' },
-  { title: 'Meta — Blanchiment', category: 'Meta Ads', youtubeId: 'f0bu068Hx-k' },
-  { title: 'Snap — Rehaussement', category: 'Snapchat', youtubeId: 'tXZSF4mTKMQ' },
+  { title: 'Campagne lead gen', category: 'CPL 3€', youtubeId: 'Zh10NzkmmO0' },
+  { title: 'Campagne lead gen', category: 'CPL 4€', youtubeId: '0tGUPl02AVc' },
+  { title: 'Campagne lead gen', category: 'CPL 5€', youtubeId: 'OoMDuO_1r5Y' },
+  { title: 'Campagne lead gen', category: 'CPL 6€', youtubeId: 'G4m41KGB86w' },
+  { title: 'Campagne solaire', category: 'CPL 9€', youtubeId: 'X00KllReGko' },
 ]
 
 function VerticalThumb({ thumb }) {
