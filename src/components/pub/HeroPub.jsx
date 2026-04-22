@@ -18,7 +18,7 @@ function HeroPub() {
 
         <div className="hero__cta-row" data-reveal style={{ '--reveal-delay': '320ms' }}>
           <a
-            href="https://calendly.com/expansionagency/appel-decouverte-formation-en-ligne-clone"
+            href="https://calendly.com/expansionagency/30min?month=2026-04"
             target="_blank"
             rel="noreferrer"
             className="btn btn--primary"

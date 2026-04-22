@@ -24,7 +24,7 @@ function PubLanding() {
         items={NAV_ITEMS}
         crossLink={{ to: '/', label: 'Formation' }}
         cta={{
-          href: 'https://calendly.com/expansionagency/appel-decouverte-formation-en-ligne-clone',
+          href: 'https://calendly.com/expansionagency/30min?month=2026-04',
           label: 'Audit gratuit',
         }}
       />
