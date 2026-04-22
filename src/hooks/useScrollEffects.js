@@ -11,9 +11,6 @@ export function useRevealOnScroll() {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    // Tell the CSS we're taking over (only now will data-reveal elements hide)
-    document.documentElement.classList.add(REVEAL_READY_CLASS)
-
     const revealAll = () => {
       document.querySelectorAll('[data-reveal]').forEach((el) => {
         el.classList.add('is-visible')
@@ -22,40 +19,39 @@ export function useRevealOnScroll() {
 
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced || !('IntersectionObserver' in window)) {
+      document.documentElement.classList.add(REVEAL_READY_CLASS)
       revealAll()
       return
     }
 
-    let observer = null
-    let safetyTimer = null
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      {
+        threshold: 0.08,
+        rootMargin: '0px 0px -5% 0px',
+      }
+    )
 
-    const rafId = requestAnimationFrame(() => {
-      observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('is-visible')
-              observer.unobserve(entry.target)
-            }
-          })
-        },
-        {
-          threshold: 0.08,
-          rootMargin: '0px 0px -5% 0px',
-        }
-      )
+    // Observe first so the initial intersection microtask fires before paint
+    const elements = document.querySelectorAll('[data-reveal]')
+    elements.forEach((el) => observer.observe(el))
 
-      const elements = document.querySelectorAll('[data-reveal]:not(.is-visible)')
-      elements.forEach((el) => observer.observe(el))
+    // Now hide the non-visible ones (already-intersecting elements will be marked visible synchronously by the observer)
+    document.documentElement.classList.add(REVEAL_READY_CLASS)
 
-      // Safety: force reveal everything after 4s if observer somehow doesn't fire
-      safetyTimer = window.setTimeout(revealAll, 4000)
-    })
+    // Safety: force reveal everything after 1.5s if observer didn't fire for some reason
+    const safetyTimer = window.setTimeout(revealAll, 1500)
 
     return () => {
-      cancelAnimationFrame(rafId)
-      if (safetyTimer) clearTimeout(safetyTimer)
-      if (observer) observer.disconnect()
+      clearTimeout(safetyTimer)
+      observer.disconnect()
     }
   }, [])
 }
@@ -106,7 +102,7 @@ export function useCounterAnimation() {
           }
         })
       },
-      { threshold: 0.5 }
+      { threshold: 0.2 }
     )
 
     counters.forEach((el) => {
@@ -114,6 +110,16 @@ export function useCounterAnimation() {
       observer.observe(el)
     })
 
-    return () => observer.disconnect()
+    // Safety: force final values after 2.5s in case observer never fires (iOS Safari edge cases)
+    const safetyTimer = window.setTimeout(() => {
+      counters.forEach((el) => {
+        el.textContent = el.dataset.counter
+      })
+    }, 2500)
+
+    return () => {
+      clearTimeout(safetyTimer)
+      observer.disconnect()
+    }
   }, [])
 }
