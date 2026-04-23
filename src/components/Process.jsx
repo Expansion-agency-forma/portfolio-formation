@@ -141,7 +141,7 @@ const TEASER_THUMBS = [
   { title: 'Rehaussement de cils', category: 'Beauté', youtubeId: 'tXZSF4mTKMQ' },
   { title: 'Head spa', category: 'Bien-être', youtubeId: 'fSL5LHJmxrk' },
   { title: 'Remplacement pare-brise', category: 'Automobile', youtubeId: '-hQ9Zt9OKL8' },
-  { title: 'Extensions de cils', category: 'Beauté', youtubeId: 'MA0ZBbgJJrA' },
+  { title: 'Extensions de cils', category: 'Beauté', youtubeId: 'IAHEIGquzNk' },
   { title: 'Browlift', category: 'Beauté', youtubeId: 'RguqLvvj8BY' },
   { title: 'Blanchiment dentaire', category: 'Santé', youtubeId: 'f0bu068Hx-k' },
   { title: 'Magasin pièce auto', category: 'Automobile', youtubeId: 'FWXRC72DbnU' },

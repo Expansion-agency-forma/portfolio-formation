@@ -5,7 +5,7 @@ const FORMATIONS = [
   { key: 'rehaussement', title: 'Rehaussement de cils', category: 'Beauté', youtubeId: 'tXZSF4mTKMQ' },
   { key: 'headspa', title: 'Head spa', category: 'Bien-être', youtubeId: 'fSL5LHJmxrk' },
   { key: 'parebrise', title: 'Remplacement de pare-brise', category: 'Automobile', youtubeId: '-hQ9Zt9OKL8' },
-  { key: 'cils', title: 'Extensions de cils', category: 'Beauté', youtubeId: 'MA0ZBbgJJrA' },
+  { key: 'cils', title: 'Extensions de cils', category: 'Beauté', youtubeId: 'IAHEIGquzNk' },
   { key: 'browlift', title: 'Browlift', category: 'Beauté', youtubeId: 'RguqLvvj8BY' },
   { key: 'blanchiment', title: 'Blanchiment dentaire', category: 'Santé', youtubeId: 'f0bu068Hx-k' },
   { key: 'pieceauto', title: 'Magasin pièce auto', category: 'Automobile', youtubeId: 'FWXRC72DbnU' },
