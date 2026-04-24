@@ -24,6 +24,13 @@ function Footer() {
           >
             LinkedIn
           </a>
+          <a
+            href="https://www.youtube.com/@NathanaelDahomais"
+            target="_blank"
+            rel="noreferrer"
+          >
+            YouTube
+          </a>
           <Link to="/mentions-legales">Mentions légales</Link>
           <Link to="/confidentialite">Confidentialité</Link>
           <Link to="/cgv">CGV</Link>
