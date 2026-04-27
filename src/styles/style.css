@@ -3812,8 +3812,9 @@
 
 .thanks-faq__grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: var(--space-4);
+    row-gap: 0;
 }
 
 .thanks-faq__card {
@@ -3835,7 +3836,7 @@
 .thanks-faq__media {
     width: 100%;
     max-width: 100%;
-    aspect-ratio: 9 / 16;
+    aspect-ratio: 3 / 4;
     margin: 0;
 }
 
@@ -3854,6 +3855,9 @@
 @media (max-width: 900px) {
     .thanks-prepare__grid {
         grid-template-columns: 1fr;
+    }
+    .thanks-faq__grid {
+        grid-template-columns: repeat(2, 1fr);
     }
     .thanks-hero__video-play {
         width: 72px;
