@@ -5,6 +5,7 @@ import PubLanding from './pages/PubLanding'
 import MentionsLegales from './pages/MentionsLegales'
 import Cgv from './pages/Cgv'
 import Confidentialite from './pages/Confidentialite'
+import Thanks from './pages/Thanks'
 import { useRevealOnScroll, useCounterAnimation } from './hooks/useScrollEffects'
 
 function ScrollToTop() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/cgv" element={<Cgv />} />
         <Route path="/confidentialite" element={<Confidentialite />} />
+        <Route path="/merci" element={<Thanks />} />
       </Routes>
     </BrowserRouter>
   )
