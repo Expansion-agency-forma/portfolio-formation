@@ -3833,11 +3833,12 @@
     margin: 0;
 }
 
-.thanks-faq__media {
+.thanks-faq__card .thanks-faq__media {
     width: 100%;
     max-width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 9 !important;
     margin: 0;
+    flex: none;
 }
 
 .thanks-faq__soon {
