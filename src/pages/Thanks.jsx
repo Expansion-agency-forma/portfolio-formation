@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
-const THANK_YOU_YOUTUBE_ID = 'fxyd8xXbFVs'
+const THANK_YOU_YOUTUBE_ID = 'pgJvzIeSPAc'
 
 const PREPARE_ITEMS = [
   {
