@@ -50,15 +50,13 @@ const PREPARE_ITEMS = [
   },
 ]
 
-// REMPLACER par les vraies ID YouTube de chaque vidéo de réponse
 const FAQ_VIDEOS = [
-  { question: "C'est quoi votre offre exactement ?", youtubeId: '' },
-  { question: 'Combien de temps avant les premiers résultats ?', youtubeId: '' },
-  { question: 'Quel budget minimum faut-il prévoir ?', youtubeId: '' },
-  { question: 'Comment vous facturez ?', youtubeId: '' },
-  { question: 'Pourquoi pas une agence classique ?', youtubeId: '' },
-  { question: "Que se passe-t-il après l'appel ?", youtubeId: '' },
-  { question: 'Comment vous mesurez la performance ?', youtubeId: '' },
+  { question: "Je ne suis pas à l'aise devant la caméra, comment ça se passe ?", youtubeId: 'ev5QO7O1uo4' },
+  { question: "J'ai pas le temps de gérer un projet en plus", youtubeId: 'pFwH9iVPuHw' },
+  { question: "Et si c'était pas le bon moment pour moi ?", youtubeId: '2rrSTJPYcCs' },
+  { question: "Est-ce que c'est rentable ?", youtubeId: '6xhAbe2xTQA' },
+  { question: 'Combien de temps ça prend ?', youtubeId: 'YagAOKhqOsQ' },
+  { question: 'Combien ça coûte ?', youtubeId: 'XrNYmGsM_aA' },
 ]
 
 function PlayIcon() {

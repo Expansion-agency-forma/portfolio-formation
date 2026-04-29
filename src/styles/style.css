@@ -3836,7 +3836,7 @@
 .thanks-faq__media {
     width: 100%;
     max-width: 100%;
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 16 / 9;
     margin: 0;
 }
 
