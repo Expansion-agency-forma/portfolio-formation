@@ -3813,8 +3813,8 @@
 .thanks-faq__grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    column-gap: var(--space-4);
-    row-gap: 0;
+    column-gap: var(--space-5);
+    row-gap: var(--space-6);
 }
 
 .thanks-faq__card {
