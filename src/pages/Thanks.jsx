@@ -67,60 +67,57 @@ function PlayIcon() {
   )
 }
 
-function FaqVideoCard({ item, isPlaying, onPlay }) {
+function FaqPlayer({ item, isPlaying, onPlay }) {
   const initial = item.question.slice(0, 1).toUpperCase()
   return (
-    <article className="thanks-faq__card" data-reveal>
-      <h3 className="thanks-faq__question">{item.question}</h3>
-
-      <div className="thanks-faq__media vtestimonial">
-        {isPlaying && item.youtubeId ? (
-          <iframe
-            className="vtestimonial__iframe"
-            src={`https://www.youtube-nocookie.com/embed/${item.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
-            title={item.question}
-            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-            allowFullScreen
-          />
-        ) : (
-          <>
-            {item.youtubeId ? (
-              <img
-                className="vtestimonial__thumb"
-                src={`https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`}
-                alt={`Miniature ${item.question}`}
-                onError={(e) => {
-                  if (!e.currentTarget.dataset.fallback) {
-                    e.currentTarget.dataset.fallback = '1'
-                    e.currentTarget.src = `https://img.youtube.com/vi/${item.youtubeId}/hqdefault.jpg`
-                  }
-                }}
-              />
-            ) : (
-              <div className="vtestimonial__placeholder" aria-hidden="true">
-                <span className="vtestimonial__initials">{initial}</span>
-              </div>
-            )}
-            <button
-              type="button"
-              className="vtestimonial__play"
-              onClick={() => item.youtubeId && onPlay()}
-              aria-label={`Lire la réponse à : ${item.question}`}
-              disabled={!item.youtubeId}
-            >
-              <PlayIcon />
-            </button>
-            {!item.youtubeId && (
-              <span className="thanks-faq__soon">Vidéo bientôt disponible</span>
-            )}
-          </>
-        )}
-      </div>
-    </article>
+    <div className="thanks-faq__media">
+      {isPlaying && item.youtubeId ? (
+        <iframe
+          className="thanks-faq__iframe"
+          src={`https://www.youtube-nocookie.com/embed/${item.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
+          title={item.question}
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+          allowFullScreen
+        />
+      ) : (
+        <>
+          {item.youtubeId ? (
+            <img
+              className="thanks-faq__thumb"
+              src={`https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`}
+              alt={`Miniature ${item.question}`}
+              onError={(e) => {
+                if (!e.currentTarget.dataset.fallback) {
+                  e.currentTarget.dataset.fallback = '1'
+                  e.currentTarget.src = `https://img.youtube.com/vi/${item.youtubeId}/hqdefault.jpg`
+                }
+              }}
+            />
+          ) : (
+            <div className="thanks-faq__placeholder" aria-hidden="true">
+              <span className="thanks-faq__initials">{initial}</span>
+            </div>
+          )}
+          <button
+            type="button"
+            className="thanks-faq__play"
+            onClick={() => item.youtubeId && onPlay()}
+            aria-label={`Lire la réponse à : ${item.question}`}
+            disabled={!item.youtubeId}
+          >
+            <PlayIcon />
+          </button>
+          {!item.youtubeId && (
+            <span className="thanks-faq__soon">Vidéo bientôt disponible</span>
+          )}
+        </>
+      )}
+    </div>
   )
 }
 
 function Thanks() {
+  const [activeIdx, setActiveIdx] = useState(0)
   const [playingIdx, setPlayingIdx] = useState(null)
   const [heroPlaying, setHeroPlaying] = useState(false)
   const titleSetRef = useRef(false)
@@ -264,21 +261,53 @@ function Thanks() {
               <span className="section-head__title-italic">en vidéo</span>
             </h2>
             <p className="section-head__subtitle">
-              30 secondes par réponse, pas de blabla. Cliquez sur la vidéo pour
-              lancer la lecture.
+              30 secondes par réponse, pas de blabla. Sélectionnez une question
+              pour voir la réponse.
             </p>
           </div>
 
           <div className="thanks-faq__inner">
-            <div className="thanks-faq__grid">
-              {FAQ_VIDEOS.map((item, idx) => (
-                <FaqVideoCard
-                  key={item.question}
-                  item={item}
-                  isPlaying={playingIdx === idx}
-                  onPlay={() => setPlayingIdx(idx)}
+            <div className="thanks-faq__layout">
+              <ol className="thanks-faq__list" role="tablist" aria-label="Questions fréquentes">
+                {FAQ_VIDEOS.map((item, idx) => {
+                  const isActive = idx === activeIdx
+                  return (
+                    <li key={item.question} className="thanks-faq__list-item">
+                      <button
+                        type="button"
+                        role="tab"
+                        aria-selected={isActive}
+                        className={`thanks-faq__item${isActive ? ' is-active' : ''}`}
+                        onClick={() => {
+                          setActiveIdx(idx)
+                          setPlayingIdx(null)
+                        }}
+                      >
+                        <span className="thanks-faq__num" aria-hidden="true">
+                          {String(idx + 1).padStart(2, '0')}
+                        </span>
+                        <span className="thanks-faq__q">{item.question}</span>
+                        <span className="thanks-faq__chevron" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </span>
+                      </button>
+                    </li>
+                  )
+                })}
+              </ol>
+
+              <div className="thanks-faq__player" data-reveal="fade">
+                <FaqPlayer
+                  item={FAQ_VIDEOS[activeIdx]}
+                  isPlaying={playingIdx === activeIdx}
+                  onPlay={() => setPlayingIdx(activeIdx)}
                 />
-              ))}
+                <p className="thanks-faq__player-q">
+                  {FAQ_VIDEOS[activeIdx].question}
+                </p>
+              </div>
             </div>
           </div>
         </section>
