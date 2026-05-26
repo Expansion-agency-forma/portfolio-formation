@@ -9,6 +9,8 @@ const FORMATIONS = [
   { key: 'browlift', title: 'Browlift', category: 'Beauté', youtubeId: 'RguqLvvj8BY' },
   { key: 'blanchiment', title: 'Blanchiment dentaire', category: 'Santé', youtubeId: 'f0bu068Hx-k' },
   { key: 'pieceauto', title: 'Magasin pièce auto', category: 'Automobile', youtubeId: 'FWXRC72DbnU' },
+  { key: 'extensions', title: 'Extensions de cheveux', category: 'Beauté', youtubeId: '8womN1-nUWs' },
+  { key: 'lissage', title: 'Lissage', category: 'Beauté', youtubeId: 'NbRyw0bayJY' },
 ]
 
 function getSlideClass(index, activeIndex, total) {

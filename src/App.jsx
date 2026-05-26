@@ -16,12 +16,12 @@ function ScrollToTop() {
   return null
 }
 
-function App() {
+function AppShell() {
   useRevealOnScroll()
   useCounterAnimation()
 
   return (
-    <BrowserRouter>
+    <>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<FormationLanding />} />
@@ -31,6 +31,14 @@ function App() {
         <Route path="/confidentialite" element={<Confidentialite />} />
         <Route path="/merci" element={<Thanks />} />
       </Routes>
+    </>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppShell />
     </BrowserRouter>
   )
 }
