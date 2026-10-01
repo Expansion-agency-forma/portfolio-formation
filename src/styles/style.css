@@ -505,6 +505,125 @@
 }
 
 /* ==========================================================================
+   Hero video (présentation de l'offre, sous le hero)
+   ========================================================================== */
+.hero-video {
+    padding: 0 var(--container-pad) var(--space-9);
+    margin-top: calc(-1 * var(--space-6));
+}
+
+.hero-video__frame {
+    position: relative;
+    max-width: 960px;
+    margin-inline: auto;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--color-bg-muted);
+    border: 1px solid var(--color-gold-border);
+    box-shadow: var(--shadow-lg);
+}
+
+.hero-video__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: block;
+}
+
+.hero-video__poster::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(23, 0, 0, 0.35), transparent 45%);
+    pointer-events: none;
+}
+
+.hero-video__thumb {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.hero-video__poster:hover .hero-video__thumb {
+    transform: scale(1.02);
+}
+
+.hero-video__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 84px;
+    height: 84px;
+    border-radius: var(--radius-full);
+    background: var(--color-gold);
+    color: #170000;
+    display: grid;
+    place-items: center;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    box-shadow:
+        0 14px 40px rgba(0, 0, 0, 0.55),
+        0 0 0 0 rgba(201, 168, 76, 0.4);
+    transition:
+        transform var(--dur-fast) var(--ease-out),
+        background var(--dur-fast) var(--ease-out),
+        box-shadow var(--dur-med) var(--ease-out);
+}
+
+.hero-video__poster:hover .hero-video__play,
+.hero-video__poster:focus-visible .hero-video__play {
+    background: var(--color-gold-hover);
+    transform: translate(-50%, -50%) scale(1.08);
+    box-shadow:
+        0 14px 40px rgba(0, 0, 0, 0.55),
+        0 0 0 14px rgba(201, 168, 76, 0.15);
+}
+
+.hero-video__play svg {
+    width: 30px;
+    height: 30px;
+    margin-left: 2px;
+}
+
+.hero-video__iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}
+
+@media (max-width: 720px) {
+    .hero-video {
+        padding-bottom: var(--space-8);
+        margin-top: calc(-1 * var(--space-5));
+    }
+    .hero-video__frame {
+        border-radius: var(--radius-md);
+    }
+    .hero-video__play {
+        width: 64px;
+        height: 64px;
+    }
+    .hero-video__play svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* ==========================================================================
    KPI band
    ========================================================================== */
 .kpi-band {
