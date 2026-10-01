@@ -561,16 +561,15 @@
 
 .hero-video__play {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 84px;
-    height: 84px;
+    right: var(--space-5);
+    bottom: var(--space-5);
+    width: 72px;
+    height: 72px;
     border-radius: var(--radius-full);
     background: var(--color-gold);
     color: #170000;
     display: grid;
     place-items: center;
-    transform: translate(-50%, -50%);
     z-index: 2;
     box-shadow:
         0 14px 40px rgba(0, 0, 0, 0.55),
@@ -584,15 +583,15 @@
 .hero-video__poster:hover .hero-video__play,
 .hero-video__poster:focus-visible .hero-video__play {
     background: var(--color-gold-hover);
-    transform: translate(-50%, -50%) scale(1.08);
+    transform: scale(1.08);
     box-shadow:
         0 14px 40px rgba(0, 0, 0, 0.55),
         0 0 0 14px rgba(201, 168, 76, 0.15);
 }
 
 .hero-video__play svg {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     margin-left: 2px;
 }
 
@@ -614,12 +613,14 @@
         border-radius: var(--radius-md);
     }
     .hero-video__play {
-        width: 64px;
-        height: 64px;
+        right: var(--space-3);
+        bottom: var(--space-3);
+        width: 48px;
+        height: 48px;
     }
     .hero-video__play svg {
-        width: 24px;
-        height: 24px;
+        width: 18px;
+        height: 18px;
     }
 }
 
