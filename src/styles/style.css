@@ -506,6 +506,7 @@
 
 /* ==========================================================================
    Hero video (présentation de l'offre, sous le hero)
+   Lecture auto en muet + bouton « Activer le son »
    ========================================================================== */
 .hero-video {
     padding: 0 var(--container-pad) var(--space-9);
@@ -524,77 +525,6 @@
     box-shadow: var(--shadow-lg);
 }
 
-.hero-video__poster {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    border: none;
-    background: none;
-    cursor: pointer;
-    display: block;
-}
-
-.hero-video__poster::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(23, 0, 0, 0.35), transparent 45%);
-    pointer-events: none;
-}
-
-.hero-video__thumb {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    object-fit: cover;
-    display: block;
-    transition: transform var(--dur-slow) var(--ease-out);
-}
-
-.hero-video__poster:hover .hero-video__thumb {
-    transform: scale(1.02);
-}
-
-.hero-video__play {
-    position: absolute;
-    right: var(--space-5);
-    bottom: var(--space-5);
-    width: 72px;
-    height: 72px;
-    border-radius: var(--radius-full);
-    background: var(--color-gold);
-    color: #170000;
-    display: grid;
-    place-items: center;
-    z-index: 2;
-    box-shadow:
-        0 14px 40px rgba(0, 0, 0, 0.55),
-        0 0 0 0 rgba(201, 168, 76, 0.4);
-    transition:
-        transform var(--dur-fast) var(--ease-out),
-        background var(--dur-fast) var(--ease-out),
-        box-shadow var(--dur-med) var(--ease-out);
-}
-
-.hero-video__poster:hover .hero-video__play,
-.hero-video__poster:focus-visible .hero-video__play {
-    background: var(--color-gold-hover);
-    transform: scale(1.08);
-    box-shadow:
-        0 14px 40px rgba(0, 0, 0, 0.55),
-        0 0 0 14px rgba(201, 168, 76, 0.15);
-}
-
-.hero-video__play svg {
-    width: 26px;
-    height: 26px;
-    margin-left: 2px;
-}
-
 .hero-video__iframe {
     position: absolute;
     inset: 0;
@@ -602,6 +532,65 @@
     height: 100%;
     border: 0;
     display: block;
+}
+
+.hero-video__unmute {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.hero-video__unmute-pill {
+    position: absolute;
+    right: var(--space-5);
+    bottom: var(--space-5);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.7rem 1.15rem;
+    border-radius: var(--radius-full);
+    background: var(--color-gold);
+    color: #170000;
+    font-family: var(--font-sans);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    animation: hero-video-pulse 2.4s var(--ease-out) infinite;
+    transition:
+        transform var(--dur-fast) var(--ease-out),
+        background var(--dur-fast) var(--ease-out);
+}
+
+.hero-video__unmute-pill svg {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+}
+
+.hero-video__unmute:hover .hero-video__unmute-pill,
+.hero-video__unmute:focus-visible .hero-video__unmute-pill {
+    background: var(--color-gold-hover);
+    transform: scale(1.05);
+}
+
+@keyframes hero-video-pulse {
+    0% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 0 rgba(201, 168, 76, 0.45); }
+    70% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 14px rgba(201, 168, 76, 0); }
+    100% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 0 rgba(201, 168, 76, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-video__unmute-pill {
+        animation: none;
+    }
 }
 
 @media (max-width: 720px) {
@@ -612,15 +601,17 @@
     .hero-video__frame {
         border-radius: var(--radius-md);
     }
-    .hero-video__play {
+    .hero-video__unmute-pill {
         right: var(--space-3);
         bottom: var(--space-3);
-        width: 48px;
-        height: 48px;
+        padding: 0.5rem 0.8rem;
+        font-size: var(--fs-xs);
+        gap: 0.375rem;
     }
-    .hero-video__play svg {
-        width: 18px;
-        height: 18px;
+    .hero-video__unmute-pill svg {
+        width: 14px;
+        height: 14px;
+        flex-basis: 14px;
     }
 }
 
