@@ -1,5 +1,6 @@
 import Navbar from '../components/Navbar'
 import Hero from '../components/Hero'
+import HeroVideo from '../components/HeroVideo'
 import KpiBand from '../components/KpiBand'
 import Process from '../components/Process'
 import Formations from '../components/Formations'
@@ -30,6 +31,7 @@ function FormationLanding() {
         }}
       />
       <Hero />
+      <HeroVideo />
       <KpiBand />
       <Process />
       <Formations />
