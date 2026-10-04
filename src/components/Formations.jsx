@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { SECTEURS } from '../data/secteurs'
+import '../styles/secteur.css'
 
-const FORMATIONS = [
+export const FORMATIONS = [
   { key: 'prothesie', title: 'Prothésie ongulaire', category: 'Beauté', youtubeId: 'Xb462FbfVuE' },
   { key: 'rehaussement', title: 'Rehaussement de cils', category: 'Beauté', youtubeId: 'tXZSF4mTKMQ' },
   { key: 'headspa', title: 'Head spa', category: 'Bien-être', youtubeId: 'fSL5LHJmxrk' },
@@ -156,6 +159,17 @@ function Formations() {
           />
         ))}
       </div>
+
+      <nav className="secteurs-accueil" aria-label="Formations en ligne par secteur" data-reveal="fade">
+        <span className="secteurs-accueil__titre">Votre secteur</span>
+        <div className="secteurs-liens">
+          {SECTEURS.map((s) => (
+            <Link key={s.slug} to={s.path} className="secteurs-liens__lien">
+              {s.nom}
+            </Link>
+          ))}
+        </div>
+      </nav>
     </section>
   )
 }

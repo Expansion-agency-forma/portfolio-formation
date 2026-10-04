@@ -16,7 +16,7 @@ function KpiBand() {
             style={{ '--reveal-delay': `${i * 100}ms` }}
           >
             <span className="kpi__value">
-              <span data-counter={kpi.value}>0</span>
+              <span data-counter={kpi.value}>{kpi.value}</span>
               <span className="kpi__value-suffix">{kpi.suffix}</span>
             </span>
             <span className="kpi__label">{kpi.label}</span>
