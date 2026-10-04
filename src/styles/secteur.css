@@ -1,0 +1,531 @@
+/* ==========================================================================
+   Pages métiers « Créer une formation en ligne » + liens secteurs + page 404
+   ========================================================================== */
+
+.secteur-hero {
+    max-width: 960px;
+    margin-inline: auto;
+    padding: clamp(7.5rem, 16vh, 10.5rem) var(--container-pad) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+    text-align: center;
+}
+
+.secteur-fil {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--fs-sm);
+    color: var(--color-text-faint);
+}
+
+.secteur-fil a {
+    color: var(--color-text-muted);
+    transition: color var(--dur-fast) var(--ease-out);
+}
+
+.secteur-fil a:hover {
+    color: var(--color-gold);
+}
+
+.secteur-hero__titre {
+    font-size: var(--fs-display-lg);
+    font-weight: 700;
+    line-height: var(--lh-tight);
+    letter-spacing: var(--tracking-tight);
+    max-width: 18ch;
+    text-wrap: balance;
+}
+
+.secteur-hero__italique {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--color-gold);
+}
+
+.secteur-hero__intro {
+    max-width: 62ch;
+    font-size: var(--fs-lg);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+}
+
+.secteur-hero__boutons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+}
+
+.secteur-hero__boutons .btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.secteur-hero__confiance {
+    font-size: var(--fs-sm);
+    color: var(--color-text-faint);
+}
+
+/* --- Sections ------------------------------------------------------------ */
+
+.secteur-section {
+    padding-block: var(--space-9);
+}
+
+.secteur-section--alt {
+    background: var(--color-bg-soft);
+}
+
+.secteur-section .section-head__title {
+    max-width: 24ch;
+    text-wrap: balance;
+}
+
+.secteur-grille {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+}
+
+.secteur-carte {
+    padding: var(--space-6);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.secteur-carte__num {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.75rem;
+    line-height: 1;
+    color: var(--color-gold);
+}
+
+.secteur-carte h3 {
+    font-size: var(--fs-xl);
+    font-weight: 600;
+    line-height: var(--lh-snug);
+    letter-spacing: -0.01em;
+}
+
+.secteur-carte p {
+    color: var(--color-text-muted);
+    line-height: 1.6;
+}
+
+/* --- Ce qu'on filme ------------------------------------------------------ */
+
+.secteur-filmes {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: var(--space-8);
+    align-items: center;
+}
+
+.secteur-filmes__texte {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.secteur-filmes__texte p {
+    color: var(--color-text-muted);
+    font-size: var(--fs-lg);
+    line-height: 1.6;
+}
+
+.secteur-filmes__liste {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--color-border-strong);
+}
+
+.secteur-filmes__liste li {
+    position: relative;
+    padding: var(--space-4) 0 var(--space-4) var(--space-6);
+    border-bottom: 1px solid var(--color-border-strong);
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.secteur-filmes__liste li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    margin-top: -5px;
+    border-radius: 50%;
+    background: var(--color-gold);
+}
+
+/* --- Méthode ------------------------------------------------------------- */
+
+.secteur-etapes {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-5);
+    counter-reset: none;
+}
+
+.secteur-etapes li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-gold-border);
+}
+
+.secteur-etapes__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--color-gold-soft);
+    border: 1px solid var(--color-gold-border);
+    color: var(--color-gold);
+    font-weight: 700;
+    font-size: var(--fs-sm);
+}
+
+.secteur-etapes h3 {
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    line-height: var(--lh-snug);
+}
+
+.secteur-etapes p {
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+}
+
+/* --- Réalisations -------------------------------------------------------- */
+
+.secteur-reals {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+}
+
+.secteur-real {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.secteur-real figcaption {
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.secteur-real .simu-video__poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- Simulateur + preuves ------------------------------------------------ */
+
+.secteur-simu {
+    max-width: var(--container-max);
+    margin-inline: max(var(--container-pad), calc((100% - var(--container-max)) / 2 + var(--container-pad)));
+    padding: clamp(1.75rem, 4vw, 3rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) auto;
+    gap: var(--space-6);
+    align-items: center;
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0.12), rgba(201, 168, 76, 0.03));
+    border: 1px solid var(--color-gold-border);
+    border-radius: var(--radius-xl);
+}
+
+.secteur-simu > div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.secteur-simu__titre {
+    font-size: var(--fs-display-md);
+    font-weight: 700;
+    line-height: var(--lh-snug);
+    letter-spacing: var(--tracking-tight);
+}
+
+.secteur-simu__titre em {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    color: var(--color-gold);
+}
+
+.secteur-simu p {
+    color: var(--color-text-muted);
+    max-width: 52ch;
+}
+
+.secteur-simu__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.secteur-simu__actions .btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.secteur-simu__actions span {
+    font-size: var(--fs-sm);
+    color: var(--color-text-faint);
+}
+
+.secteur-preuves {
+    max-width: var(--container-max);
+    margin: var(--space-6) auto 0;
+    padding-inline: var(--container-pad);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+}
+
+.secteur-preuves > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.secteur-preuves strong {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-gold);
+}
+
+.secteur-preuves span {
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+}
+
+/* --- Autres secteurs / liens secteurs (aussi utilisés sur l'accueil) ------ */
+
+.secteur-autres {
+    text-align: center;
+    padding-inline: var(--container-pad);
+}
+
+.secteur-autres__titre {
+    font-size: var(--fs-xl);
+    font-weight: 600;
+    margin-bottom: var(--space-5);
+}
+
+.secteurs-liens {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+}
+
+.secteurs-liens__lien {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.625rem 1.125rem;
+    border: 1px solid var(--color-gold-border);
+    border-radius: var(--radius-full);
+    color: var(--color-text);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.secteurs-liens__lien:hover {
+    background: var(--color-gold-soft);
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+}
+
+.secteurs-liens__lien--neutre {
+    border-color: var(--color-border-strong);
+    color: var(--color-text-muted);
+}
+
+.secteurs-accueil {
+    max-width: var(--container-max);
+    margin: var(--space-7) auto 0;
+    padding-inline: var(--container-pad);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    text-align: center;
+}
+
+.secteurs-accueil__titre {
+    font-size: var(--fs-sm);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    font-weight: 600;
+}
+
+/* --- Page 404 ------------------------------------------------------------ */
+
+.introuvable {
+    min-height: 70vh;
+    padding: clamp(8rem, 20vh, 12rem) var(--container-pad) var(--space-9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+    text-align: center;
+}
+
+.introuvable h1 {
+    font-size: var(--fs-display-lg);
+    font-weight: 700;
+    line-height: var(--lh-tight);
+    letter-spacing: var(--tracking-tight);
+}
+
+.introuvable h1 em {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    color: var(--color-gold);
+}
+
+.introuvable p {
+    color: var(--color-text-muted);
+    max-width: 48ch;
+}
+
+/* --- Responsive ---------------------------------------------------------- */
+
+@media (max-width: 960px) {
+    .secteur-etapes {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        row-gap: var(--space-6);
+    }
+
+    .secteur-filmes {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-6);
+    }
+
+    .secteur-reals {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .secteur-simu {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .secteur-simu__actions {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 640px) {
+    .secteur-section {
+        padding-block: var(--space-8);
+    }
+
+    .secteur-grille,
+    .secteur-etapes,
+    .secteur-reals,
+    .secteur-preuves {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .secteur-carte {
+        padding: var(--space-5);
+    }
+
+    .secteur-hero__boutons {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .secteur-hero__boutons .btn {
+        justify-content: center;
+    }
+
+    .secteur-simu__actions {
+        align-items: stretch;
+    }
+
+    .secteur-simu__actions .btn {
+        justify-content: center;
+    }
+
+    .secteur-simu__actions span {
+        text-align: center;
+    }
+}
+
+/* --- Pied de page : liens secteurs ---------------------------------------- */
+
+.footer__secteurs {
+    flex-basis: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-5);
+    padding-bottom: var(--space-5);
+    margin-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.footer__secteurs-titre {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+.footer__secteurs a {
+    transition: color var(--dur-fast) var(--ease-out);
+}
+
+.footer__secteurs a:hover {
+    color: var(--color-gold);
+}
+
+@media (max-width: 640px) {
+    .footer__secteurs {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+}
