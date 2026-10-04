@@ -1,5 +1,9 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { ouvrirPreferencesCookies } from '../lib/consentement'
+import { PIXEL_ID } from '../lib/pixel'
+
+const AVEC_PUBLICITE = Boolean(PIXEL_ID)
 
 function Confidentialite() {
   return (
@@ -52,10 +56,12 @@ function Confidentialite() {
                 fournies par vous dans le formulaire de réservation.
               </li>
               <li>
-                <strong>Navigation sur le site</strong> : données techniques
-                (adresse IP anonymisée, type de navigateur, pages visitées,
-                durée de visite) collectées par Vercel Web Analytics, sans
-                traceur publicitaire.
+                <strong>Navigation sur le site</strong>, uniquement si vous
+                l’acceptez dans le bandeau cookies : pages consultées, parcours
+                sur le site, type d’appareil et de navigateur, ville
+                approximative, source de la visite. Ces données sont mesurées
+                par Google Analytics{AVEC_PUBLICITE ? ' et, pour la publicité, par le pixel Meta' : ''}.
+                Sans votre accord, aucune mesure n’est effectuée.
               </li>
             </ul>
           </section>
@@ -80,8 +86,9 @@ function Confidentialite() {
               </li>
               <li>
                 <strong>Mesurer l'audience du site</strong> pour en améliorer
-                le contenu — base légale : intérêt légitime (statistiques
-                anonymisées).
+                le contenu{AVEC_PUBLICITE ? ' et mesurer les résultats de nos publicités' : ''} — base
+                légale : votre consentement, donné et retirable à tout moment
+                via le bandeau cookies.
               </li>
               <li>
                 <strong>Respecter nos obligations légales</strong> (comptabilité,
@@ -102,7 +109,12 @@ function Confidentialite() {
                 commerciale), et 10 ans pour les documents comptables.
               </li>
               <li>
-                <strong>Statistiques d'audience</strong> : 25 mois maximum.
+                <strong>Statistiques d'audience</strong> : 14 mois dans Google
+                Analytics ; cookies de mesure : 13 mois maximum.
+              </li>
+              <li>
+                <strong>Votre choix sur les cookies</strong> : 6 mois, après
+                quoi il vous est redemandé.
               </li>
             </ul>
           </section>
@@ -115,10 +127,13 @@ function Confidentialite() {
               l'exécution du service&nbsp;:
             </p>
             <ul className="legal__list">
-              <li><strong>Vercel Inc.</strong> — hébergement du site et mesure d'audience (États-Unis, garanties contractuelles type DPF).</li>
+              <li><strong>Vercel Inc.</strong> — hébergement du site (États-Unis, garanties contractuelles type DPF).</li>
               <li><strong>Calendly LLC</strong> — prise de rendez-vous en ligne (États-Unis, garanties contractuelles type DPF).</li>
               <li><strong>Make (Celonis)</strong> — transmission des réponses du simulateur vers nos outils de suivi (Union européenne).</li>
-              <li><strong>Google LLC</strong> — tableur de suivi des demandes (garanties contractuelles type DPF).</li>
+              <li><strong>Google LLC</strong> — tableur de suivi des demandes et, avec votre accord, mesure d'audience Google Analytics (garanties contractuelles type DPF).</li>
+              {AVEC_PUBLICITE && (
+                <li><strong>Meta Platforms Ireland Ltd</strong> — avec votre accord, mesure des résultats de nos publicités Facebook et Instagram (pixel Meta).</li>
+              )}
               <li><strong>Supabase Inc.</strong> — base de données (si utilisée pour stocker vos informations).</li>
             </ul>
             <p>
@@ -129,11 +144,41 @@ function Confidentialite() {
           <section className="legal__section">
             <h2 className="legal__h2">6. Cookies</h2>
             <p>
-              Le site utilise uniquement des cookies techniques (fonctionnement
-              du site) et des cookies de mesure d'audience anonymisée (Vercel
-              Web Analytics). Aucun cookie publicitaire tiers n'est déposé.
-              Vous pouvez paramétrer votre navigateur pour bloquer ou
-              supprimer les cookies à tout moment.
+              Lors de votre première visite, un bandeau vous demande votre
+              accord. Refuser est aussi simple qu’accepter, et rien n’est
+              mesuré tant que vous n’avez pas choisi.
+            </p>
+            <ul className="legal__list">
+              <li>
+                <strong>Nécessaires</strong> (sans accord) : mémorisation de
+                votre choix sur les cookies et de votre progression dans le
+                simulateur, stockées dans votre navigateur.
+              </li>
+              <li>
+                <strong>Mesure d’audience</strong> (avec accord) : cookies
+                Google Analytics <code>_ga</code> et <code>_ga_*</code>, 13 mois
+                maximum.
+              </li>
+              {AVEC_PUBLICITE && (
+                <li>
+                  <strong>Publicité</strong> (avec accord) : cookies Meta{' '}
+                  <code>_fbp</code> et <code>_fbc</code>, 3 mois.
+                </li>
+              )}
+              <li>
+                <strong>Agenda Calendly</strong> : l’agenda intégré, que vous
+                ouvrez pour réserver un appel, est fourni par Calendly qui
+                peut déposer ses propres cookies de fonctionnement.
+              </li>
+            </ul>
+            <p>
+              Vous pouvez modifier votre choix à tout moment&nbsp;: les cookies
+              de mesure sont alors supprimés.
+            </p>
+            <p>
+              <button type="button" className="btn btn--secondary" onClick={ouvrirPreferencesCookies}>
+                Gérer les cookies
+              </button>
             </p>
           </section>
 
