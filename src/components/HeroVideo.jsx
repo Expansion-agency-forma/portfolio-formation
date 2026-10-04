@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/simulateur.css'
 
@@ -24,15 +24,37 @@ function SoundIcon() {
   )
 }
 
+const POSTER = `https://i.ytimg.com/vi/${VIDEO.youtubeId}/maxresdefault.jpg`
+
 function HeroVideo() {
   const iframeRef = useRef(null)
   const [soundOn, setSoundOn] = useState(false)
+  // Le lecteur YouTube (lourd) est chargé une fois la page affichée : l'image s'affiche tout de suite,
+  // la vidéo démarre en muet juste après.
+  const [lecteurPret, setLecteurPret] = useState(false)
 
-  const origin = typeof window !== 'undefined' ? window.location.origin : ''
-  const src =
-    `https://www.youtube-nocookie.com/embed/${VIDEO.youtubeId}` +
-    `?autoplay=1&mute=1&loop=1&playlist=${VIDEO.youtubeId}` +
-    `&playsinline=1&rel=0&modestbranding=1&enablejsapi=1&origin=${encodeURIComponent(origin)}`
+  useEffect(() => {
+    let annule = false
+    const lancer = () => {
+      if (!annule) setLecteurPret(true)
+    }
+    const planifier = () => {
+      if ('requestIdleCallback' in window) window.requestIdleCallback(lancer, { timeout: 1500 })
+      else window.setTimeout(lancer, 300)
+    }
+    if (document.readyState === 'complete') planifier()
+    else window.addEventListener('load', planifier, { once: true })
+    return () => {
+      annule = true
+      window.removeEventListener('load', planifier)
+    }
+  }, [])
+
+  const src = lecteurPret
+    ? `https://www.youtube-nocookie.com/embed/${VIDEO.youtubeId}` +
+      `?autoplay=1&mute=1&loop=1&playlist=${VIDEO.youtubeId}` +
+      `&playsinline=1&rel=0&modestbranding=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`
+    : null
 
   const send = (func, args = []) => {
     iframeRef.current?.contentWindow?.postMessage(
@@ -52,15 +74,26 @@ function HeroVideo() {
   return (
     <section className="hero-video" aria-label="Vidéo de présentation">
       <div className="hero-video__frame" data-reveal="fade" style={{ '--reveal-delay': '480ms' }}>
-        <iframe
-          ref={iframeRef}
-          className="hero-video__iframe"
-          src={src}
-          title={VIDEO.title}
-          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-          allowFullScreen
+        <img
+          src={POSTER}
+          alt="Vidéo : comment Expansion digitalise les formations des organismes de formation"
+          width="1280"
+          height="720"
+          fetchpriority="high"
+          decoding="async"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
         />
-        {!soundOn && (
+        {src && (
+          <iframe
+            ref={iframeRef}
+            className="hero-video__iframe"
+            src={src}
+            title={VIDEO.title}
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+            allowFullScreen
+          />
+        )}
+        {src && !soundOn && (
           <button
             type="button"
             className="hero-video__unmute"
