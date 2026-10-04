@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 function Hero() {
   return (
     <section id="top" className="hero">
@@ -31,9 +33,9 @@ function Hero() {
               />
             </svg>
           </a>
-          <a href="#formations" className="btn btn--secondary">
-            Voir nos formations
-          </a>
+          <Link to="/simulateur" className="btn btn--secondary">
+            Calculer mon potentiel (1 min)
+          </Link>
         </div>
 
         <div className="hero__trust" data-reveal style={{ '--reveal-delay': '420ms' }}>
