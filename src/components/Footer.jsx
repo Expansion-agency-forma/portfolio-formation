@@ -1,9 +1,22 @@
 import { Link } from 'react-router-dom'
+import { SECTEURS } from '../data/secteurs'
+import '../styles/secteur.css'
 
 function Footer() {
   return (
     <footer className="footer">
       <div className="footer__inner" data-reveal="fade">
+        <nav className="footer__secteurs" aria-label="Créer sa formation en ligne par secteur">
+          <span className="footer__secteurs-titre">Créer sa formation en ligne</span>
+          {SECTEURS.map((s) => (
+            <Link key={s.slug} to={s.path}>
+              {s.nom}
+            </Link>
+          ))}
+          <Link to="/simulateur">Simulateur de potentiel</Link>
+          <Link to="/publicite">Publicité au résultat</Link>
+        </nav>
+
         <span className="footer__brand">
           <span className="navbar__brand-dot" aria-hidden="true" />
           Expansion Agency
