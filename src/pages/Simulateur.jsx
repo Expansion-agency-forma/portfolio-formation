@@ -730,7 +730,10 @@ function Resultat({ reponses, contact, partage, onRecommencer }) {
 /* ------------------------------------------------------------------ */
 
 function Simulateur() {
-  const params = useMemo(() => new URLSearchParams(window.location.search), [])
+  const params = useMemo(
+    () => new URLSearchParams(typeof window !== 'undefined' ? window.location.search : ''),
+    [],
+  )
   const partage = useMemo(() => {
     const code = params.get('r')
     return code ? decoderReponses(code) : null
