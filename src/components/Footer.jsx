@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { SECTEURS } from '../data/secteurs'
+import { ouvrirPreferencesCookies } from '../lib/consentement'
 import '../styles/secteur.css'
 
 function Footer() {
@@ -47,6 +48,9 @@ function Footer() {
           <Link to="/mentions-legales">Mentions légales</Link>
           <Link to="/confidentialite">Confidentialité</Link>
           <Link to="/cgv">CGV</Link>
+          <button type="button" className="footer__cookies" onClick={ouvrirPreferencesCookies}>
+            Gérer les cookies
+          </button>
         </nav>
 
         <span className="footer__copy">© 2026 Expansion Agency</span>
