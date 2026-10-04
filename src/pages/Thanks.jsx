@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { rdvReserve } from '../lib/analytics'
 
 const THANK_YOU_YOUTUBE_ID = 'pgJvzIeSPAc'
 
@@ -121,6 +122,10 @@ function Thanks() {
   const [playingIdx, setPlayingIdx] = useState(null)
   const [heroPlaying, setHeroPlaying] = useState(false)
   const titleSetRef = useRef(false)
+
+  useEffect(() => {
+    rdvReserve('page_merci')
+  }, [])
 
   useEffect(() => {
     const prevTitle = document.title
