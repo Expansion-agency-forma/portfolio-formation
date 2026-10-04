@@ -927,7 +927,9 @@ function Simulateur() {
           Expansion
         </Link>
       </header>
-      <main className={`simu-main${ecran === 'resultat' ? ' simu-main--large' : ''}`}>
+      <main
+        className={`simu-main${ecran === 'resultat' ? ' simu-main--large' : ''}${ecran === 'intro' ? ' simu-main--intro' : ''}`}
+      >
         {ecran === 'intro' && <Intro onStart={demarrer} />}
         {question && (
           <Question
