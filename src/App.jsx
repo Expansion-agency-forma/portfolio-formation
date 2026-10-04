@@ -8,8 +8,11 @@ import Confidentialite from './pages/Confidentialite'
 import Thanks from './pages/Thanks'
 import Simulateur from './pages/Simulateur'
 import Secteur from './pages/Secteur'
+import Ressources from './pages/Ressources'
+import Article from './pages/Article'
 import NotFound from './pages/NotFound'
 import { SECTEURS } from './data/secteurs'
+import { ARTICLES, BASE_RESSOURCES } from './data/ressources'
 import { appliquerHead } from './seo/head'
 import BandeauCookies from './components/BandeauCookies'
 import { initPixel, desactiverPixel, pageVuePixel } from './lib/pixel'
@@ -68,6 +71,10 @@ export function AppShell() {
         <Route path="/simulateur" element={<Simulateur />} />
         {SECTEURS.map((s) => (
           <Route key={s.slug} path={s.path} element={<Secteur secteur={s} />} />
+        ))}
+        <Route path={BASE_RESSOURCES} element={<Ressources />} />
+        {ARTICLES.map((a) => (
+          <Route key={a.slug} path={a.path} element={<Article article={a} />} />
         ))}
         <Route path="*" element={<NotFound />} />
       </Routes>
