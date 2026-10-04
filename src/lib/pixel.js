@@ -1,12 +1,37 @@
 // Pixel Meta — renseigner l'identifiant pour activer la mesure.
-// Tant qu'il est vide, toutes les fonctions ci-dessous ne font rien.
+// Tant qu'il est vide, toutes les fonctions ci-dessous ne font rien et le bandeau cookies
+// ne propose pas la catégorie « Publicité ».
+// Le pixel ne se charge qu'après accord de l'internaute (catégorie « Publicité »).
+import { lireConsentement } from './consentement'
+import { supprimerCookies } from './analytics'
+
 export const PIXEL_ID = ''
 
+const HOTES = ['www.expansion-agency.com', 'expansion-agency.com']
+
 let initialise = false
+let actif = false
+
+function autorise() {
+  return (
+    Boolean(PIXEL_ID) &&
+    typeof window !== 'undefined' &&
+    HOTES.includes(window.location.hostname) &&
+    Boolean(lireConsentement()?.publicite)
+  )
+}
 
 export function initPixel() {
-  if (!PIXEL_ID || initialise || typeof window === 'undefined') return
+  if (!autorise()) return
+  if (initialise) {
+    if (!actif) {
+      window.fbq('consent', 'grant')
+      actif = true
+    }
+    return
+  }
   initialise = true
+  actif = true
 
   !(function (f, b, e, v, n, t, s) {
     if (f.fbq) return
@@ -29,12 +54,25 @@ export function initPixel() {
   window.fbq('track', 'PageView')
 }
 
+export function desactiverPixel() {
+  if (typeof window === 'undefined') return
+  if (initialise && actif) window.fbq('consent', 'revoke')
+  actif = false
+  supprimerCookies(/^_fb[pc]$/)
+}
+
+// Page vue lors d'une navigation interne (la première est envoyée par initPixel).
+export function pageVuePixel() {
+  if (!actif || !window.fbq) return
+  window.fbq('track', 'PageView')
+}
+
 export function track(evenement, params) {
-  if (!PIXEL_ID || typeof window === 'undefined' || !window.fbq) return
+  if (!actif || !window.fbq) return
   window.fbq('track', evenement, params)
 }
 
 export function trackCustom(evenement, params) {
-  if (!PIXEL_ID || typeof window === 'undefined' || !window.fbq) return
+  if (!actif || !window.fbq) return
   window.fbq('trackCustom', evenement, params)
 }
