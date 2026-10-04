@@ -16,6 +16,7 @@ function Footer() {
           ))}
           <Link to="/simulateur">Simulateur de potentiel</Link>
           <Link to="/publicite">Publicité au résultat</Link>
+          <Link to="/ressources">Ressources et conseils</Link>
         </nav>
 
         <span className="footer__brand">
