@@ -1,6 +1,7 @@
 // Une entrée par page : titre, description, indexation et place dans le sitemap.
 // Source unique utilisée par le pré-rendu HTML, le sitemap et la mise à jour du <head> côté navigateur.
 import { SECTEURS } from '../data/secteurs.js'
+import { ARTICLES, BASE_RESSOURCES } from '../data/ressources.js'
 
 export const PAGES = [
   {
@@ -39,6 +40,26 @@ export const PAGES = [
     changefreq: 'monthly',
     fil: 'Publicité',
   },
+  {
+    path: BASE_RESSOURCES,
+    title: 'Ressources : digitaliser vos formations | Expansion',
+    description:
+      'Délais, rentabilité, tournage, Qualiopi, pédagogie : nos conseils pour créer et vendre une formation en ligne quand on dirige un organisme de formation.',
+    priority: 0.7,
+    changefreq: 'weekly',
+    fil: 'Ressources',
+    ressources: true,
+  },
+  ...ARTICLES.map((a) => ({
+    path: a.path,
+    title: a.seoTitle,
+    description: a.description,
+    priority: 0.7,
+    changefreq: 'monthly',
+    fil: a.fil,
+    filParent: { nom: 'Ressources', path: BASE_RESSOURCES },
+    article: a.slug,
+  })),
   {
     path: '/mentions-legales',
     title: 'Mentions légales | Expansion Agency',
