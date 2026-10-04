@@ -1,0 +1,230 @@
+/* ==========================================================================
+   Bandeau cookies — carte flottante en bas à gauche, n'empêche pas la lecture
+   ========================================================================== */
+.cookies {
+    position: fixed;
+    left: var(--space-5);
+    bottom: var(--space-5);
+    z-index: 200;
+    width: min(440px, calc(100vw - 2 * var(--space-5)));
+    max-height: calc(100vh - 2 * var(--space-5));
+    overflow-y: auto;
+    padding: var(--space-5);
+    background: var(--color-bg-soft);
+    color: var(--color-text);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    font-family: var(--font-sans);
+    animation: cookies-entree var(--dur-med) var(--ease-out) both;
+}
+
+.cookies--details {
+    width: min(520px, calc(100vw - 2 * var(--space-5)));
+}
+
+@keyframes cookies-entree {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.cookies__titre {
+    margin: 0 0 var(--space-2);
+    font-size: var(--fs-base);
+    font-weight: 600;
+    line-height: var(--lh-snug);
+}
+
+.cookies__texte {
+    margin: 0;
+    font-size: var(--fs-sm);
+    line-height: var(--lh-normal);
+    color: var(--color-text-muted);
+}
+
+.cookies__lien {
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.cookies__categories {
+    list-style: none;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+}
+
+.cookies__categorie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-muted);
+}
+
+.cookies__nom {
+    display: block;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--color-text);
+    cursor: pointer;
+}
+
+.cookies__categorie p {
+    margin: 2px 0 0;
+    font-size: var(--fs-xs);
+    line-height: 1.45;
+    color: var(--color-text-muted);
+}
+
+/* Interrupteur */
+.cookies__switch {
+    appearance: none;
+    flex: none;
+    position: relative;
+    width: 40px;
+    height: 22px;
+    margin: 0;
+    border-radius: var(--radius-full);
+    background: var(--color-border-strong);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out);
+}
+
+.cookies__switch::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ffffff;
+    transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.cookies__switch:checked {
+    background: var(--color-gold);
+}
+
+.cookies__switch:checked::after {
+    transform: translateX(18px);
+}
+
+.cookies__switch:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.cookies__switch:focus-visible,
+.cookies__btn:focus-visible,
+.cookies__lien:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+}
+
+/* Boutons : refuser et accepter strictement identiques */
+.cookies__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+}
+
+.cookies__btn {
+    flex: 1 1 0;
+    min-height: 44px;
+    padding: 0.625rem 1rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-gold-border);
+    background: var(--color-gold-soft);
+    color: var(--color-text);
+    font: 600 var(--fs-sm) / 1.2 var(--font-sans);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+
+.cookies__btn:hover {
+    background: rgba(201, 168, 76, 0.22);
+    border-color: var(--color-gold);
+}
+
+.cookies__btn--texte {
+    background: transparent;
+    border-color: transparent;
+    color: var(--color-text-muted);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.cookies__btn--texte:hover {
+    background: transparent;
+    border-color: transparent;
+    color: var(--color-text);
+}
+
+/* Dans le panneau détaillé, « Enregistrer mes choix » passe sur sa propre ligne */
+.cookies__btn--enregistrer {
+    order: 3;
+    flex-basis: 100%;
+}
+
+/* Lien « Gérer les cookies » du pied de page */
+.footer__cookies {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease-out);
+}
+
+.footer__cookies:hover {
+    color: var(--color-gold);
+}
+
+@media (max-width: 560px) {
+    .cookies,
+    .cookies--details {
+        left: var(--space-4);
+        right: var(--space-4);
+        bottom: var(--space-4);
+        width: auto;
+        padding: var(--space-4);
+    }
+
+    .cookies__actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .cookies__btn--texte,
+    .cookies__btn--enregistrer {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+
+    .cookies__btn--texte {
+        min-height: 36px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cookies {
+        animation: none;
+    }
+}

@@ -11,7 +11,10 @@ import Secteur from './pages/Secteur'
 import NotFound from './pages/NotFound'
 import { SECTEURS } from './data/secteurs'
 import { appliquerHead } from './seo/head'
-import { initPixel } from './lib/pixel'
+import BandeauCookies from './components/BandeauCookies'
+import { initPixel, desactiverPixel, pageVuePixel } from './lib/pixel'
+import { activerAnalytics, desactiverAnalytics, pageVue } from './lib/analytics'
+import { lireConsentement, surConsentement } from './lib/consentement'
 import { useRevealOnScroll, useCounterAnimation } from './hooks/useScrollEffects'
 
 function ScrollToTop() {
@@ -27,8 +30,18 @@ function Head() {
   const { pathname } = useLocation()
   useEffect(() => {
     appliquerHead(pathname)
+    pageVue()
+    pageVuePixel()
   }, [pathname])
   return null
+}
+
+// Applique le choix du bandeau cookies : rien n'est chargé sans accord.
+function appliquerConsentement(choix) {
+  if (choix?.mesure) activerAnalytics({ publicite: choix.publicite })
+  else desactiverAnalytics()
+  if (choix?.publicite) initPixel()
+  else desactiverPixel()
 }
 
 export function AppShell() {
@@ -36,7 +49,9 @@ export function AppShell() {
   useCounterAnimation()
 
   useEffect(() => {
-    initPixel()
+    const choix = lireConsentement()
+    if (choix) appliquerConsentement(choix)
+    return surConsentement(appliquerConsentement)
   }, [])
 
   return (
@@ -56,6 +71,7 @@ export function AppShell() {
         ))}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <BandeauCookies />
     </>
   )
 }
