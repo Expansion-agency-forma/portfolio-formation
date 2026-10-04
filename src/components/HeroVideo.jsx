@@ -1,4 +1,6 @@
 import { useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
+import '../styles/simulateur.css'
 
 // Vidéo de présentation de l'offre Expansion (master 16:9), hébergée sur YouTube.
 // Les navigateurs n'autorisent la lecture automatique que sans le son :
@@ -71,6 +73,33 @@ function HeroVideo() {
             </span>
           </button>
         )}
+      </div>
+
+      <div className="hero-video__cta" data-reveal>
+        <h2 className="hero-video__cta-titre">
+          Calculez combien votre organisme de formation pourrait gagner{' '}
+          <em>avec une formation en ligne</em>
+        </h2>
+        <p className="hero-video__cta-texte">
+          Simulation gratuite basée sur vos vrais chiffres : élèves, abonnés, prix de vos formations.
+        </p>
+        <div className="hero-video__cta-boutons">
+          <Link to="/simulateur" className="btn btn--primary">
+            Calculer mon potentiel
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M4 10h11M11 5l5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
+          <a
+            href="https://calendly.com/expansionagency/appel-decouverte-formation-en-ligne-clone"
+            target="_blank"
+            rel="noreferrer"
+            className="btn btn--secondary"
+          >
+            Réserver un appel
+          </a>
+        </div>
+        <p className="simu-confiance">Gratuit · 1 minute · Résultat immédiat</p>
       </div>
     </section>
   )
