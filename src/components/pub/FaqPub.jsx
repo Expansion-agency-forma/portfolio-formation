@@ -1,4 +1,4 @@
-const FAQS = [
+export const FAQS = [
   {
     q: 'Comment fonctionnent les 10 à 20% ?',
     a: "Nous prélevons un pourcentage du chiffre d'affaires généré exclusivement par nos campagnes publicitaires. Ce pourcentage est fixé dès l'audit (entre 10 et 20% selon votre marge et votre ticket moyen). Vous ne payez jamais sur votre CA organique ou via d'autres canaux.",
