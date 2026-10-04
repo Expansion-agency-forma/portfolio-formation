@@ -13,7 +13,7 @@ const METHODE = [
   {
     titre: 'Tournage dans votre centre',
     texte:
-      'Notre équipe vient avec caméras, micros et lumières. Une journée suffit en général pour une formation de 8 à 12 modules.',
+      'Notre équipe vient avec plusieurs caméras, micros, lumières et prompteur. Comptez 2 à 3 jours de tournage en moyenne, selon la longueur de votre formation.',
   },
   {
     titre: 'Montage en modules',
@@ -83,7 +83,7 @@ export const SECTEURS = [
     faq: [
       {
         q: 'Faut-il prévoir une modèle pour le tournage ?',
-        a: 'Oui, comme pour une démonstration en cabine. Nous vous indiquons à l’avance combien de modèles prévoir selon le nombre de techniques à filmer, et nous organisons le planning de la journée avec vous.',
+        a: 'Oui, comme pour une démonstration en cabine. Nous vous indiquons à l’avance combien de modèles prévoir selon le nombre de techniques à filmer, et nous organisons le planning du tournage avec vous.',
       },
       {
         q: 'Une formation en ligne suffit-elle pour apprendre un geste esthétique ?',
@@ -91,7 +91,7 @@ export const SECTEURS = [
       },
       {
         q: 'Combien de temps dure le tournage ?',
-        a: 'Une journée suffit en général pour une formation de 8 à 12 modules. Pour plusieurs techniques ou plusieurs intervenantes, on prévoit 2 à 3 journées de tournage.',
+        a: 'Deux à trois jours en moyenne. Plus la formation est longue, avec plusieurs techniques ou plusieurs intervenantes, plus le tournage prend de temps : on fixe le planning avec vous.',
       },
       FAQ_PROPRIETE,
     ],
@@ -150,7 +150,7 @@ export const SECTEURS = [
       },
       {
         q: 'Faut-il des modèles ?',
-        a: 'Pour les techniques sur cheveux réels (extensions, lissage, coloration), oui. Nous vous aidons à planifier la journée pour enchaîner les techniques sans temps mort.',
+        a: 'Pour les techniques sur cheveux réels (extensions, lissage, coloration), oui. Nous vous aidons à planifier le tournage pour enchaîner les techniques sans temps mort.',
       },
       {
         q: 'Combien de temps entre le tournage et la mise en ligne ?',
@@ -275,7 +275,7 @@ export const SECTEURS = [
       },
       {
         q: 'Combien de temps dure le tournage ?',
-        a: 'Une journée suffit en général pour une formation de 8 à 12 modules. Pour les formations plus denses ou avec plusieurs intervenants, on prévoit 2 à 3 journées.',
+        a: 'Deux à trois jours en moyenne. Plus la formation est longue et dense, ou plus il y a d’intervenants, plus le tournage prend de temps : on fixe le planning avec vous.',
       },
       {
         q: 'Comment la formation est-elle vendue ?',
