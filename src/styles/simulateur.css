@@ -34,6 +34,11 @@
     max-width: 920px;
 }
 
+/* Écran d'accueil : titre en grand sur toute la largeur */
+.simu-main--intro {
+    max-width: 1320px;
+}
+
 .simu-confiance {
     font-size: var(--fs-sm);
     color: var(--color-text-muted);
@@ -51,9 +56,9 @@
 }
 
 .simu-intro__titre {
-    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-size: clamp(2.125rem, 4vw, 3.6rem);
     font-weight: 700;
-    line-height: 1.08;
+    line-height: 1.05;
     letter-spacing: var(--tracking-tight);
     text-wrap: balance;
 }
@@ -62,14 +67,16 @@
     font-family: var(--font-serif);
     font-style: italic;
     font-weight: 400;
+    font-size: 1.08em;
     color: var(--color-gold);
 }
 
 .simu-intro__texte {
-    font-size: var(--fs-lg);
+    font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
     color: var(--color-text-muted);
-    max-width: 52ch;
+    max-width: 58ch;
     line-height: 1.55;
+    text-wrap: balance;
 }
 
 .simu-intro__bouton {
@@ -77,6 +84,8 @@
 }
 
 .simu-intro__points {
+    width: 100%;
+    max-width: 620px;
     list-style: none;
     margin: var(--space-3) 0 0;
     padding: var(--space-5);
