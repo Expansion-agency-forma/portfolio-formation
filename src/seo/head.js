@@ -5,9 +5,13 @@ import { SITE_URL, SITE_NAME, OG_IMAGE, LOGO_URL, CONTACT_EMAIL, RESEAUX } from 
 import { FAQS as FAQ_ACCUEIL } from '../components/Faq.jsx'
 import { FAQS as FAQ_PUB } from '../components/pub/FaqPub.jsx'
 import { SECTEURS } from '../data/secteurs.js'
+import { ARTICLES, AUTEUR, BASE_RESSOURCES } from '../data/ressources.js'
+import { texteBrut } from '../lib/article.js'
 
 const ORG_ID = `${SITE_URL}/#organisation`
 const SITE_ID = `${SITE_URL}/#site`
+const AUTEUR_ID = `${SITE_URL}/#nathanael-dahomais`
+const BLOG_ID = `${SITE_URL}${BASE_RESSOURCES}#blog`
 
 function urlAbsolue(path) {
   return path === '/' ? `${SITE_URL}/` : `${SITE_URL}${path}`
@@ -39,7 +43,7 @@ export function donneesStructurees(page) {
       email: CONTACT_EMAIL,
       description:
         'Agence marketing pour organismes de formation : tournage des formations sur site, montage en modules, système de vente en ligne et publicité.',
-      founder: { '@type': 'Person', name: 'Nathanaël Dahomais' },
+      founder: { '@id': AUTEUR_ID },
       foundingDate: '2021',
       address: {
         '@type': 'PostalAddress',
@@ -79,15 +83,79 @@ export function donneesStructurees(page) {
     },
   ]
 
+  // Fondateur et auteur des articles (référencé par l'organisation sur toutes les pages).
+  graph.push({
+    '@type': 'Person',
+    '@id': AUTEUR_ID,
+    name: AUTEUR.nom,
+    jobTitle: AUTEUR.role,
+    url: AUTEUR.url,
+    sameAs: RESEAUX,
+    worksFor: { '@id': ORG_ID },
+  })
+
   if (page.fil) {
+    const etapes = [
+      { name: 'Accueil', item: `${SITE_URL}/` },
+      ...(page.filParent ? [{ name: page.filParent.nom, item: urlAbsolue(page.filParent.path) }] : []),
+      { name: page.fil, item: url },
+    ]
     graph.push({
       '@type': 'BreadcrumbList',
       '@id': `${url}#fil`,
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${SITE_URL}/` },
-        { '@type': 'ListItem', position: 2, name: page.fil, item: url },
-      ],
+      itemListElement: etapes.map((e, i) => ({ '@type': 'ListItem', position: i + 1, ...e })),
     })
+  }
+
+  if (page.ressources) {
+    graph.push({
+      '@type': 'Blog',
+      '@id': BLOG_ID,
+      url,
+      name: 'Ressources Expansion Agency',
+      description: page.description,
+      inLanguage: 'fr-FR',
+      publisher: { '@id': ORG_ID },
+      blogPost: ARTICLES.map((a) => ({ '@id': `${urlAbsolue(a.path)}#article` })),
+    })
+    ARTICLES.forEach((a) => {
+      graph.push({
+        '@type': 'BlogPosting',
+        '@id': `${urlAbsolue(a.path)}#article`,
+        headline: a.titre,
+        url: urlAbsolue(a.path),
+        datePublished: a.publie,
+        dateModified: a.maj,
+        author: { '@id': AUTEUR_ID },
+      })
+    })
+  }
+
+  if (page.article) {
+    const a = ARTICLES.find((x) => x.slug === page.article)
+    graph.push(
+      {
+        '@type': 'BlogPosting',
+        '@id': `${url}#article`,
+        headline: a.titre,
+        description: a.description,
+        url,
+        datePublished: a.publie,
+        dateModified: a.maj,
+        inLanguage: 'fr-FR',
+        articleSection: a.categorie,
+        wordCount: a.mots,
+        image: OG_IMAGE.url,
+        author: { '@id': AUTEUR_ID },
+        publisher: { '@id': ORG_ID },
+        mainEntityOfPage: { '@id': `${url}#page` },
+        isPartOf: { '@id': BLOG_ID },
+      },
+      faqPage(
+        url,
+        a.faq.map((f) => ({ q: texteBrut(f.q), a: texteBrut(f.a) })),
+      ),
+    )
   }
 
   if (page.path === '/') {
@@ -149,6 +217,16 @@ function echapper(texte) {
     .replace(/>/g, '&gt;')
 }
 
+function articleMetas(page) {
+  if (!page.article) return []
+  const a = ARTICLES.find((x) => x.slug === page.article)
+  return [
+    { property: 'article:published_time', content: a.publie },
+    { property: 'article:modified_time', content: a.maj },
+    { property: 'article:section', content: a.categorie },
+  ]
+}
+
 // Liste des balises <meta>/<link> d'une page, sous forme neutre (réutilisée côté serveur et navigateur).
 export function balises(pathname) {
   const page = pagePour(pathname)
@@ -156,7 +234,7 @@ export function balises(pathname) {
   const metas = [
     { name: 'description', content: page.description },
     { name: 'robots', content: page.noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large' },
-    { property: 'og:type', content: 'website' },
+    { property: 'og:type', content: page.article ? 'article' : 'website' },
     { property: 'og:site_name', content: SITE_NAME },
     { property: 'og:locale', content: 'fr_FR' },
     { property: 'og:title', content: page.title },
@@ -166,6 +244,7 @@ export function balises(pathname) {
     { property: 'og:image:width', content: String(OG_IMAGE.width) },
     { property: 'og:image:height', content: String(OG_IMAGE.height) },
     { property: 'og:image:alt', content: OG_IMAGE.alt },
+    ...articleMetas(page),
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: page.title },
     { name: 'twitter:description', content: page.description },
@@ -195,6 +274,11 @@ export function appliquerHead(pathname) {
   if (typeof document === 'undefined') return
   const { page, url, metas, jsonLd } = balises(pathname)
   document.title = page.title
+
+  // Balises propres aux articles : retirées en quittant un article.
+  document.head.querySelectorAll('meta[property^="article:"]').forEach((el) => {
+    if (!metas.some((m) => m.property === el.getAttribute('property'))) el.remove()
+  })
 
   metas.forEach((m) => {
     const selecteur = m.name ? `meta[name="${m.name}"]` : `meta[property="${m.property}"]`
