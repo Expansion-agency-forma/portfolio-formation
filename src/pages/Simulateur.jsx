@@ -22,7 +22,8 @@ import {
   scoreLead,
   ventes,
 } from '../lib/simulateur'
-import { initPixel, track, trackCustom } from '../lib/pixel'
+import { track, trackCustom } from '../lib/pixel'
+import { evenementGA, rdvReserve } from '../lib/analytics'
 
 const STOCKAGE = 'expansion-simulateur-v1'
 const PRIX_EN_LIGNE = [47, 97, 147, 197, 247, 297, 347, 397, 497, 597, 697, 797, 997, 1297, 1497]
@@ -756,8 +757,6 @@ function Simulateur() {
   const haut = useRef(null)
 
   useEffect(() => {
-    document.title = 'Simulateur — combien votre formation en ligne pourrait rapporter | Expansion'
-    initPixel()
     if (params.has('d')) {
       const propre = new URLSearchParams(params)
       propre.delete('d')
@@ -789,6 +788,7 @@ function Simulateur() {
     const surMessage = (e) => {
       if (e.origin === 'https://calendly.com' && e.data?.event === 'calendly.event_scheduled') {
         track('Schedule')
+        rdvReserve('simulateur')
       }
     }
     window.addEventListener('message', surMessage)
@@ -797,6 +797,7 @@ function Simulateur() {
 
   const demarrer = () => {
     trackCustom('SimulateurDebut')
+    evenementGA('simulateur_debut')
     setEcran(0)
   }
 
@@ -805,6 +806,7 @@ function Simulateur() {
       setReponses((r) => ({ ...r, [id]: valeur }))
       const index = QUESTIONS.findIndex((q) => q.id === id)
       trackCustom('SimulateurQuestion', { question: index + 1 })
+      evenementGA('simulateur_question', { numero: index + 1, question: id })
       const suivant = () => setEcran(index + 1 < QUESTIONS.length ? index + 1 : 'contact')
       const q = QUESTIONS[index]
       if (!q.type) setTimeout(suivant, 220)
@@ -893,6 +895,14 @@ function Simulateur() {
       }
     }
     track('Lead', { value: Math.round(res.annee1[0]), currency: 'EUR' })
+    evenementGA('generate_lead', {
+      lead_source: 'simulateur',
+      value: Math.round(res.annee1[0]),
+      currency: 'EUR',
+      domaine: reponses.domaine || '',
+      chaleur,
+      score,
+    })
     setContact({ prenom: infos.prenom, email: infos.email })
     setEnvoye(true)
     setEnvoiEnCours(false)
