@@ -2,7 +2,7 @@ function Hero() {
   return (
     <section id="top" className="hero">
       <div className="hero__inner">
-        <span className="eyebrow hero__eyebrow" data-reveal>Agence de formation</span>
+        <span className="eyebrow hero__eyebrow" data-reveal>Agence marketing pour organisme de formation</span>
 
         <h1 className="hero__title" data-reveal style={{ '--reveal-delay': '120ms' }}>
           On digitalise vos formations{' '}
