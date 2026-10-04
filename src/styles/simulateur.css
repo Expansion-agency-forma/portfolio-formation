@@ -1,0 +1,1116 @@
+/* ==========================================================================
+   Simulateur de potentiel (page /simulateur) + points d'entrée de l'accueil
+   ========================================================================== */
+
+/* --- Page ---------------------------------------------------------------- */
+.simu-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+.simu-header {
+    padding: var(--space-5) var(--container-pad);
+    display: flex;
+    justify-content: center;
+    scroll-margin-top: 0;
+}
+
+.simu-header__marque {
+    border-right: none;
+    padding-right: 0;
+}
+
+.simu-main {
+    flex: 1;
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: var(--space-4) var(--container-pad) var(--space-9);
+}
+
+.simu-main--large {
+    max-width: 920px;
+}
+
+.simu-confiance {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    text-align: center;
+}
+
+/* --- Accueil du quiz ----------------------------------------------------- */
+.simu-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-5);
+    padding-top: var(--space-6);
+}
+
+.simu-intro__titre {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+}
+
+.simu-intro__italique {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-gold);
+}
+
+.simu-intro__texte {
+    font-size: var(--fs-lg);
+    color: var(--color-text-muted);
+    max-width: 52ch;
+    line-height: 1.55;
+}
+
+.simu-intro__bouton {
+    margin-top: var(--space-2);
+}
+
+.simu-intro__points {
+    list-style: none;
+    margin: var(--space-3) 0 0;
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    text-align: left;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-soft);
+}
+
+.simu-intro__points li {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+    font-size: var(--fs-base);
+    color: var(--color-text);
+}
+
+.simu-intro__points svg {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    margin-top: 3px;
+    color: var(--color-gold);
+}
+
+/* --- Question ------------------------------------------------------------ */
+.simu-question,
+.simu-contact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.simu-question__haut {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--fs-sm);
+}
+
+.simu-retour {
+    background: none;
+    border: none;
+    padding: var(--space-2) 0;
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+    cursor: pointer;
+}
+
+.simu-retour:hover {
+    color: var(--color-text);
+}
+
+.simu-etape {
+    color: var(--color-gold);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-align: right;
+}
+
+.simu-progression {
+    height: 4px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.simu-progression span {
+    display: block;
+    height: 100%;
+    background: var(--color-gold);
+    border-radius: inherit;
+    transition: width var(--dur-med) var(--ease-out);
+}
+
+.simu-compteur {
+    font-size: var(--fs-xs);
+    color: var(--color-text-faint);
+    margin-top: var(--space-2);
+}
+
+.simu-question__titre {
+    font-size: clamp(1.5rem, 4vw, 2.125rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+    outline: none;
+    text-wrap: balance;
+}
+
+.simu-question__aide {
+    color: var(--color-text-muted);
+    font-size: var(--fs-base);
+    margin-top: calc(-1 * var(--space-2));
+}
+
+.simu-options {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+}
+
+.simu-options--grille {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.simu-option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    min-height: 56px;
+    padding: 0.875rem 1.125rem;
+    text-align: left;
+    font-family: var(--font-sans);
+    font-size: var(--fs-base);
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--color-text);
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition:
+        border-color var(--dur-fast) var(--ease-out),
+        background var(--dur-fast) var(--ease-out),
+        transform var(--dur-fast) var(--ease-out);
+}
+
+.simu-option:hover {
+    border-color: var(--color-gold-border);
+    background: var(--color-bg-muted);
+}
+
+.simu-option:active {
+    transform: scale(0.99);
+}
+
+.simu-option.is-actif {
+    border-color: var(--color-gold);
+    background: var(--color-gold-soft);
+}
+
+.simu-option--inconnu {
+    color: var(--color-text-muted);
+    border-style: dashed;
+}
+
+.simu-option__case {
+    width: 22px;
+    height: 22px;
+    flex: 0 0 22px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    border: 1.5px solid var(--color-border-strong);
+    color: #170000;
+}
+
+.simu-option.is-actif .simu-option__case {
+    background: var(--color-gold);
+    border-color: var(--color-gold);
+}
+
+.simu-option__case svg {
+    width: 14px;
+    height: 14px;
+}
+
+.simu-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+    margin-top: var(--space-3);
+}
+
+.simu-actions .btn[disabled] {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.simu-lien {
+    background: none;
+    border: none;
+    padding: var(--space-2) 0;
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+.simu-lien:hover {
+    color: var(--color-text);
+}
+
+/* --- Curseur ------------------------------------------------------------- */
+.simu-slider {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-6) var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-soft);
+}
+
+.simu-slider__valeur {
+    font-size: clamp(2.5rem, 7vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1;
+    text-align: center;
+}
+
+.simu-slider__valeur span {
+    color: var(--color-gold);
+}
+
+.simu-slider input[type='range'] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: linear-gradient(
+        to right,
+        var(--color-gold) 0%,
+        var(--color-gold) var(--progress, 0%),
+        rgba(255, 255, 255, 0.12) var(--progress, 0%),
+        rgba(255, 255, 255, 0.12) 100%
+    );
+    outline: none;
+    cursor: pointer;
+}
+
+.simu-slider input[type='range']:focus-visible {
+    box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.25);
+}
+
+.simu-slider input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-full);
+    background: var(--color-gold);
+    border: 3px solid #170000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    cursor: grab;
+}
+
+.simu-slider input[type='range']::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-full);
+    background: var(--color-gold);
+    border: 3px solid #170000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    cursor: grab;
+}
+
+.simu-slider__bornes {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--fs-xs);
+    color: var(--color-text-faint);
+}
+
+.simu-slider .simu-actions {
+    justify-content: center;
+}
+
+/* --- Jauge --------------------------------------------------------------- */
+.simu-jauge {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-gold-border);
+    background: var(--color-gold-soft);
+    font-size: var(--fs-sm);
+    align-self: flex-start;
+}
+
+.simu-jauge--compacte {
+    margin-top: 0;
+}
+
+.simu-jauge__label {
+    color: var(--color-text-muted);
+}
+
+.simu-jauge__barres {
+    display: inline-flex;
+    gap: 4px;
+}
+
+.simu-jauge__barre {
+    width: 18px;
+    height: 8px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.14);
+    transition: background var(--dur-med) var(--ease-out);
+}
+
+.simu-jauge__barre.is-on {
+    background: var(--color-gold);
+}
+
+.simu-jauge__valeur {
+    color: var(--color-gold);
+    font-weight: 700;
+}
+
+/* --- Formulaire ---------------------------------------------------------- */
+.simu-champs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin-top: var(--space-2);
+}
+
+.simu-champ {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    min-width: 0;
+}
+
+.simu-champ small {
+    color: var(--color-text-faint);
+}
+
+.simu-champ input {
+    width: 100%;
+    min-height: 50px;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color: var(--color-text);
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    outline: none;
+    transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.simu-champ input:focus {
+    border-color: var(--color-gold);
+}
+
+.simu-champ.has-erreur input {
+    border-color: #e5484d;
+}
+
+.simu-champ em,
+.simu-erreur {
+    font-style: normal;
+    font-size: var(--fs-xs);
+    color: #ff8589;
+}
+
+.simu-champ--cache {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.simu-consentement {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.simu-consentement input {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    margin-top: 2px;
+    accent-color: var(--color-gold);
+}
+
+.simu-consentement a {
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.simu-consentement.has-erreur span {
+    color: #ff8589;
+}
+
+/* --- Résultat ------------------------------------------------------------ */
+.simu-resultat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7);
+}
+
+.simu-resultat__entete {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-4);
+    padding-top: var(--space-4);
+}
+
+.simu-resultat__titre {
+    font-size: clamp(1.625rem, 4vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+    max-width: 24ch;
+    text-wrap: balance;
+}
+
+.simu-resultat__chiffre {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-5) var(--space-6);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-gold-border);
+    background: var(--color-gold-soft);
+}
+
+.simu-resultat__montant {
+    font-size: clamp(2rem, 7vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.05;
+    color: var(--color-gold);
+    text-wrap: balance;
+}
+
+.simu-resultat__periode {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-widest);
+}
+
+.simu-resultat__montant sup {
+    font-size: 0.45em;
+    vertical-align: super;
+    margin-left: 2px;
+}
+
+.simu-resultat__asterisque {
+    font-size: var(--fs-xs);
+    color: var(--color-text-faint);
+    max-width: 60ch;
+    line-height: 1.5;
+}
+
+.simu-frein-video {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.simu-frein-video__question {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.simu-frein-video__question span {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-widest);
+    color: var(--color-gold);
+}
+
+.simu-resultat__sous {
+    color: var(--color-text-muted);
+    max-width: 52ch;
+}
+
+.simu-cartes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+}
+
+.simu-carte {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-soft);
+    min-width: 0;
+}
+
+.simu-carte h3 {
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-widest);
+    color: var(--color-gold);
+    font-weight: 600;
+}
+
+.simu-carte__valeur {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.2;
+}
+
+.simu-carte p:not(.simu-carte__valeur) {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+.simu-carte strong {
+    color: var(--color-text);
+}
+
+.simu-bloc {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.simu-bloc__titre {
+    font-size: clamp(1.25rem, 3vw, 1.625rem);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+}
+
+.simu-bloc__texte {
+    color: var(--color-text-muted);
+    line-height: 1.55;
+}
+
+.simu-bloc__texte--note {
+    font-size: var(--fs-sm);
+    padding: var(--space-3) var(--space-4);
+    border-left: 2px solid var(--color-gold);
+    background: var(--color-bg-soft);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.simu-slider--resultat {
+    padding: var(--space-5);
+}
+
+.simu-sources {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.simu-sources li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+}
+
+.simu-sources li + li {
+    border-top: 1px solid var(--color-border);
+}
+
+.simu-sources strong {
+    color: var(--color-text);
+    white-space: nowrap;
+    text-align: right;
+}
+
+.simu-scenarios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-4);
+}
+
+.simu-scenario {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-md);
+    border: 1px dashed var(--color-gold-border);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+}
+
+.simu-scenario strong {
+    font-size: 1.25rem;
+    color: var(--color-text);
+    letter-spacing: var(--tracking-tight);
+}
+
+.simu-scenario small {
+    font-size: var(--fs-xs);
+    color: var(--color-text-faint);
+}
+
+.simu-plan {
+    list-style: none;
+    counter-reset: plan;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.simu-plan li {
+    counter-increment: plan;
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    column-gap: var(--space-4);
+    row-gap: var(--space-1);
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-border);
+}
+
+.simu-plan li::before {
+    content: counter(plan);
+    grid-row: span 2;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-full);
+    background: var(--color-gold);
+    color: #170000;
+    font-weight: 700;
+}
+
+.simu-plan strong {
+    font-size: var(--fs-base);
+}
+
+.simu-plan span {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+.simu-video {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--color-gold-border);
+    background: var(--color-bg-muted);
+}
+
+.simu-video__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.simu-video__poster img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    display: block;
+}
+
+.simu-video__play {
+    position: absolute;
+    right: var(--space-4);
+    bottom: var(--space-4);
+    width: 60px;
+    height: 60px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-full);
+    background: var(--color-gold);
+    color: #170000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.simu-video__play svg {
+    width: 22px;
+    height: 22px;
+    margin-left: 2px;
+}
+
+.simu-video__iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.simu-freins {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-4);
+}
+
+.simu-frein {
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-soft);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.simu-frein h3 {
+    font-size: var(--fs-base);
+    color: var(--color-gold);
+}
+
+.simu-frein p {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    line-height: 1.55;
+}
+
+.simu-cas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+}
+
+.simu-cas__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-gold-border);
+    background: var(--color-gold-soft);
+}
+
+.simu-cas__item strong {
+    font-size: 1.75rem;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-gold);
+}
+
+.simu-cas__item span {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+.simu-reserver {
+    scroll-margin-top: var(--space-5);
+}
+
+.simu-calendly {
+    min-height: 700px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.simu-calendly > .btn {
+    margin: var(--space-6);
+}
+
+.simu-calendly iframe {
+    width: 100%;
+    min-height: 700px;
+    border: 0;
+}
+
+.simu-calendly__secours {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    text-align: center;
+}
+
+.simu-calendly__secours a {
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.simu-bloc--discret {
+    gap: var(--space-3);
+}
+
+.simu-mention {
+    font-size: var(--fs-xs);
+    color: var(--color-text-faint);
+    line-height: 1.6;
+}
+
+.simu-hypotheses {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+}
+
+.simu-hypotheses summary {
+    cursor: pointer;
+    color: var(--color-text);
+}
+
+.simu-hypotheses ul {
+    margin: var(--space-3) 0 0;
+    padding-left: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    line-height: 1.5;
+}
+
+.simu-pied {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
+}
+
+/* --- Mobile -------------------------------------------------------------- */
+@media (max-width: 720px) {
+    .simu-options--grille {
+        grid-template-columns: 1fr;
+    }
+    .simu-champs {
+        grid-template-columns: 1fr;
+    }
+    .simu-cartes {
+        grid-template-columns: 1fr;
+    }
+    .simu-cas {
+        grid-template-columns: 1fr;
+    }
+    .simu-intro {
+        padding-top: var(--space-3);
+    }
+    .simu-intro__texte {
+        font-size: var(--fs-base);
+    }
+    .simu-resultat__chiffre {
+        width: 100%;
+        padding: var(--space-5) var(--space-4);
+    }
+    .simu-sources li {
+        flex-direction: column;
+        gap: var(--space-1);
+        padding: var(--space-3) var(--space-4);
+    }
+    .simu-sources strong {
+        text-align: left;
+    }
+    .simu-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    .simu-jauge {
+        align-self: stretch;
+        justify-content: center;
+    }
+    .simu-calendly,
+    .simu-calendly iframe {
+        min-height: 1000px;
+    }
+}
+
+/* ==========================================================================
+   Accueil : barre sous la vidéo
+   ========================================================================== */
+.hero-video__cta {
+    max-width: 960px;
+    margin: var(--space-7) auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-4);
+}
+
+.hero-video__cta-titre {
+    font-size: clamp(1.5rem, 3.6vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+    max-width: 26ch;
+    text-wrap: balance;
+}
+
+.hero-video__cta-titre em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-gold);
+}
+
+.hero-video__cta-texte {
+    color: var(--color-text-muted);
+    max-width: 54ch;
+}
+
+.hero-video__cta-boutons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+}
+
+@media (max-width: 720px) {
+    .hero-video__cta {
+        margin-top: var(--space-6);
+    }
+    .hero-video__cta-boutons {
+        width: 100%;
+        flex-direction: column;
+    }
+    .hero-video__cta-boutons .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ==========================================================================
+   Accueil : encart simulateur (remplace la section Rentabilité)
+   ========================================================================== */
+.simu-teaser {
+    padding: var(--space-9) var(--container-pad);
+}
+
+.simu-teaser__carte {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-gold-border);
+    background: var(--color-bg-soft);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.simu-teaser__haut {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    font-size: var(--fs-sm);
+}
+
+.simu-teaser__haut span:first-child {
+    color: var(--color-gold);
+    font-weight: 600;
+}
+
+.simu-teaser__haut span:last-child {
+    color: var(--color-text-faint);
+}
+
+.simu-teaser__question {
+    font-size: clamp(1.375rem, 3vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+}
+
+.simu-teaser .simu-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.simu-teaser__pied {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    text-align: center;
+}
+
+@media (max-width: 720px) {
+    .simu-teaser {
+        padding: var(--space-8) var(--container-pad);
+    }
+    .simu-teaser__carte {
+        padding: var(--space-5);
+    }
+    .simu-teaser .simu-options {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Bas de page : lien secondaire */
+.cta-final__lien {
+    display: inline-block;
+    margin-top: var(--space-2);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.cta-final__lien:hover {
+    color: var(--color-gold);
+}
