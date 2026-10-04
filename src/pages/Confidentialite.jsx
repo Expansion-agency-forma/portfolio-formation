@@ -13,7 +13,7 @@ function Confidentialite() {
               Politique de{' '}
               <span className="legal__title-italic">confidentialité</span>
             </h1>
-            <p className="legal__updated">Dernière mise à jour : avril 2026</p>
+            <p className="legal__updated">Dernière mise à jour : octobre 2026</p>
           </header>
 
           <section className="legal__section">
@@ -42,6 +42,12 @@ function Confidentialite() {
                 nom, prénom, email, téléphone, nom de l'organisme, message.
               </li>
               <li>
+                <strong>Simulateur de potentiel</strong> : vos réponses au
+                questionnaire (domaine, élèves, audience, projet…) ainsi que
+                prénom, nom de votre organisme, ville, email, téléphone et, si
+                vous le renseignez, votre compte Instagram.
+              </li>
+              <li>
                 <strong>Réservation d'appel via Calendly</strong> : informations
                 fournies par vous dans le formulaire de réservation.
               </li>
@@ -61,6 +67,12 @@ function Confidentialite() {
                 <strong>Répondre à vos demandes</strong> (formulaires, emails,
                 rendez-vous) — base légale : exécution de mesures
                 précontractuelles ou intérêt légitime.
+              </li>
+              <li>
+                <strong>Vous envoyer le récapitulatif de votre simulation et
+                vous recontacter au sujet de votre projet</strong> — base
+                légale : votre consentement, que vous pouvez retirer à tout
+                moment.
               </li>
               <li>
                 <strong>Exécuter le contrat</strong> si vous devenez client —
@@ -105,6 +117,8 @@ function Confidentialite() {
             <ul className="legal__list">
               <li><strong>Vercel Inc.</strong> — hébergement du site et mesure d'audience (États-Unis, garanties contractuelles type DPF).</li>
               <li><strong>Calendly LLC</strong> — prise de rendez-vous en ligne (États-Unis, garanties contractuelles type DPF).</li>
+              <li><strong>Make (Celonis)</strong> — transmission des réponses du simulateur vers nos outils de suivi (Union européenne).</li>
+              <li><strong>Google LLC</strong> — tableur de suivi des demandes (garanties contractuelles type DPF).</li>
               <li><strong>Supabase Inc.</strong> — base de données (si utilisée pour stocker vos informations).</li>
             </ul>
             <p>
