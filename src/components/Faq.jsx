@@ -1,4 +1,4 @@
-const FAQS = [
+export const FAQS = [
   {
     q: 'Combien de temps dure le tournage ?',
     a: "En général, une journée suffit pour une formation standard (8 à 12 modules). Pour les formations plus denses ou nécessitant plusieurs intervenants, nous planifions 2 à 3 journées de captation sur site.",
