@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom'
+import '../styles/simulateur.css'
+
 function Cta() {
   return (
     <section id="contact" className="cta-final">
@@ -31,6 +34,9 @@ function Cta() {
           <span className="cta-final__reassurance">
             Gratuit · Sans engagement · 30 minutes
           </span>
+          <Link to="/simulateur" className="cta-final__lien">
+            Pas encore prêt ? Calculez d’abord votre potentiel en 1 minute
+          </Link>
         </div>
       </div>
     </section>
