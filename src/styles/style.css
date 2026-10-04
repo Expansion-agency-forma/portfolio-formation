@@ -417,6 +417,18 @@
     margin-bottom: var(--space-2);
 }
 
+@media (max-width: 720px) {
+    .hero__eyebrow {
+        max-width: 26ch;
+        text-align: center;
+        text-wrap: balance;
+        line-height: 1.6;
+    }
+    .hero__eyebrow::before {
+        display: none;
+    }
+}
+
 .hero__title {
     font-family: var(--font-sans);
     font-size: var(--fs-display-xl);
