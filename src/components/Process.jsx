@@ -107,10 +107,10 @@ const STEPS = [
   {
     key: 'shoot',
     title: 'Étape 1 — Tournage sur site',
-    desc: "On envoie notre équipe avec caméras, micros et éclairage pro directement sur votre lieu de formation. En 1 à 2 journées, on capte votre savoir-faire en conditions réelles — pas de fond vert, pas de motion design.",
+    desc: "On envoie notre équipe avec caméras, micros et éclairage pro directement sur votre lieu de formation. En 2 à 3 jours en moyenne, on capte votre savoir-faire en conditions réelles — pas de fond vert, pas de motion design.",
     Mockup: ShootMockup,
     badges: [
-      { text: '1 journée', position: 'top-right' },
+      { text: '2 à 3 jours', position: 'top-right' },
       { text: 'Équipe de 3', position: 'bottom-left' },
     ],
   },

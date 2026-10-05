@@ -1,11 +1,11 @@
 export const FAQS = [
   {
     q: 'Combien de temps dure le tournage ?',
-    a: "En général, une journée suffit pour une formation standard (8 à 12 modules). Pour les formations plus denses ou nécessitant plusieurs intervenants, nous planifions 2 à 3 journées de captation sur site.",
+    a: "Deux à trois jours en moyenne. La durée dépend de votre formation : plus elle est longue et dense, ou plus il y a d'intervenants, plus le tournage prend de temps. On fixe le planning avec vous avant de venir.",
   },
   {
     q: "Qui s'occupe du matériel et de l'équipe ?",
-    a: "Nous venons avec tout l'équipement nécessaire : caméras, micros, éclairages, prompteur si besoin. Une équipe de 2 à 4 personnes (réalisateur, cadreur, preneur de son) se déplace chez vous.",
+    a: "Nous venons avec tout l'équipement nécessaire : plusieurs caméras avec un retour vidéo pour chacune, micros, éclairages et prompteur. Une équipe de 2 à 4 personnes (réalisateur, cadreur, preneur de son) se déplace chez vous.",
   },
   {
     q: 'À qui appartiennent les vidéos finales ?',
