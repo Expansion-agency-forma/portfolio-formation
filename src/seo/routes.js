@@ -41,6 +41,15 @@ export const PAGES = [
     secteur: s.slug,
   })),
   {
+    path: '/cfa',
+    title: 'Publicité pour CFA : entreprises et alternants | Expansion',
+    description:
+      'Campagnes publicitaires pour CFA : on vous amène des entreprises prêtes à recruter vos alternants et des candidats pour remplir vos rentrées. Vidéos, formulaires et suivi inclus.',
+    priority: 0.8,
+    changefreq: 'monthly',
+    fil: 'CFA',
+  },
+  {
     path: '/publicite',
     title: 'Publicité Meta Ads pour organismes de formation | Expansion',
     description:
