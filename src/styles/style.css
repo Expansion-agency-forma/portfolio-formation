@@ -15,10 +15,10 @@
     max-width: var(--container-max);
     margin: 0 auto;
     padding-inline: var(--container-pad);
-    padding-bottom: var(--space-7);
+    padding-bottom: var(--space-6);
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-3);
     text-align: center;
     align-items: center;
 }
@@ -1862,7 +1862,7 @@
     max-width: 1600px;
     margin-inline: auto;
     padding-inline: var(--container-pad);
-    height: clamp(320px, 48vw, 520px);
+    height: clamp(260px, 36vw, 430px);
 }
 
 .carousel-stage {

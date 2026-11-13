@@ -28,7 +28,7 @@
 
     /* Display scale */
     --fs-display-xl: clamp(2.75rem, 7vw, 5.75rem);
-    --fs-display-lg: clamp(2.25rem, 5vw, 4rem);
+    --fs-display-lg: clamp(2rem, 4.2vw, 3.25rem);
     --fs-display-md: clamp(1.75rem, 3.5vw, 2.75rem);
 
     /* Text scale */
@@ -56,8 +56,8 @@
     --space-6: 2rem;
     --space-7: 3rem;
     --space-8: 4rem;
-    --space-9: 6rem;
-    --space-10: 8rem;
+    --space-9: clamp(4rem, 7vw, 5.5rem);
+    --space-10: clamp(5rem, 9vw, 7rem);
 
     /* --- Radii ----------------------------------------------------------- */
     --radius-sm: 10px;
