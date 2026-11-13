@@ -13,7 +13,7 @@ import Cta from '../components/Cta'
 import Footer from '../components/Footer'
 
 const NAV_ITEMS = [
-  { href: '#formations', label: 'Nos réalisations' },
+  { href: '/realisations', label: 'Nos réalisations' },
   { href: '#services', label: 'Comment ça marche' },
   { href: '#temoignages', label: 'Avis' },
   { href: '#faq', label: 'FAQ' },
