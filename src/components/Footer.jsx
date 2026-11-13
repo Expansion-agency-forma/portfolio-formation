@@ -14,6 +14,7 @@ function Footer() {
               {s.nom}
             </Link>
           ))}
+          <Link to="/realisations">Nos réalisations</Link>
           <Link to="/simulateur">Simulateur de potentiel</Link>
           <Link to="/publicite">Publicité au résultat</Link>
           <Link to="/ressources">Ressources et conseils</Link>

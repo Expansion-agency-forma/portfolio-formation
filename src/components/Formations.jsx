@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { SECTEURS } from '../data/secteurs'
 import '../styles/secteur.css'
+import '../styles/realisations.css'
 
 export const FORMATIONS = [
   { key: 'prothesie', title: 'Prothésie ongulaire', category: 'Beauté', youtubeId: 'Xb462FbfVuE' },
@@ -56,7 +57,7 @@ function Formations() {
           <span className="section-head__title-italic">digitalisées</span>
         </h2>
         <p className="section-head__subtitle">
-          Un aperçu des formations tournées, montées et mises en ligne pour nos clients.
+          Quelques formations que nous avons tournées dans les centres de nos clients, puis montées et mises en ligne. Lancez une vidéo pour voir le rendu final.
         </p>
       </div>
 
@@ -158,6 +159,12 @@ function Formations() {
             aria-selected={i === activeIndex}
           />
         ))}
+      </div>
+
+      <div className="formations__tout-voir" data-reveal="fade">
+        <Link to="/realisations" className="btn btn--primary">
+          Voir tous nos extraits de formations
+        </Link>
       </div>
 
       <nav className="secteurs-accueil" aria-label="Formations en ligne par secteur" data-reveal="fade">

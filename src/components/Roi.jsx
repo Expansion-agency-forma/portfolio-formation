@@ -16,15 +16,15 @@ function Roi() {
           <span className="section-head__title-italic">vous rapporter&nbsp;?</span>
         </h2>
         <p className="section-head__subtitle">
-          Répondez à 13 questions en un clic : on calcule ce que vous pourriez vendre dès le lancement,
-          puis chaque mois, à partir de vos vrais chiffres.
+          Avant d’investir, sachez ce que vous pouvez en attendre. Répondez à {QUESTIONS.length} questions
+          rapides sur votre activité : on estime vos ventes au lancement, puis chaque mois.
         </p>
       </div>
 
       <div className="simu-teaser__carte" data-reveal="fade" style={{ '--reveal-delay': '120ms' }}>
         <div className="simu-teaser__haut">
           <span>Question 1 sur {QUESTIONS.length}</span>
-          <span>1 minute</span>
+          <span>Environ 1 minute</span>
         </div>
         <h3 className="simu-teaser__question">{premiere.titre}</h3>
         <div className="simu-options">
@@ -39,7 +39,7 @@ function Roi() {
             </button>
           ))}
         </div>
-        <p className="simu-teaser__pied">Gratuit · Résultat immédiat · Sans engagement</p>
+        <p className="simu-teaser__pied">Cliquez sur une réponse pour commencer · Gratuit · Résultat immédiat</p>
       </div>
     </section>
   )
