@@ -7,6 +7,7 @@ import Cgv from './pages/Cgv'
 import Confidentialite from './pages/Confidentialite'
 import Thanks from './pages/Thanks'
 import Simulateur from './pages/Simulateur'
+import Realisations from './pages/Realisations'
 import Secteur from './pages/Secteur'
 import Ressources from './pages/Ressources'
 import Article from './pages/Article'
@@ -69,6 +70,7 @@ export function AppShell() {
         <Route path="/confidentialite" element={<Confidentialite />} />
         <Route path="/merci" element={<Thanks />} />
         <Route path="/simulateur" element={<Simulateur />} />
+        <Route path="/realisations" element={<Realisations />} />
         {SECTEURS.map((s) => (
           <Route key={s.slug} path={s.path} element={<Secteur secteur={s} />} />
         ))}
