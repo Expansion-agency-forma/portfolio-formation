@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { href: '#services', label: 'Comment ça marche' },
   { href: '#temoignages', label: 'Avis' },
   { href: '#faq', label: 'FAQ' },
+  { href: 'https://expansion-formation.com', label: 'Entreprises' },
 ]
 
 function PubLanding() {
