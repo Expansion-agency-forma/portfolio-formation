@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
-import Creations from '../components/pub/Creations'
 import Footer from '../components/Footer'
 import '../styles/simulateur.css'
 import '../styles/secteur.css'
@@ -110,7 +109,6 @@ function Cfa() {
   const nav = [
     { href: '#leviers', label: 'Ce qu’on apporte' },
     { href: '#methode', label: 'Méthode' },
-    { href: '#creations', label: 'Exemples' },
     { href: '#faq', label: 'FAQ' },
   ]
 
@@ -210,8 +208,6 @@ function Cfa() {
             ))}
           </ol>
         </section>
-
-        <Creations />
 
         <section id="faq" className="faq">
           <div className="section-head" data-reveal>
