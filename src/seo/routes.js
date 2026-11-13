@@ -22,6 +22,15 @@ export const PAGES = [
     fil: 'Simulateur de potentiel',
     hydrate: false,
   },
+  {
+    path: '/realisations',
+    title: 'Nos réalisations : extraits de formations filmées | Expansion',
+    description:
+      'Extraits de formations tournées dans les centres de nos clients : pratique filmée sous plusieurs angles et modules théoriques face caméra. Beauté, coiffure, santé, automobile.',
+    priority: 0.9,
+    changefreq: 'weekly',
+    fil: 'Nos réalisations',
+  },
   ...SECTEURS.map((s) => ({
     path: s.path,
     title: s.seoTitle,
