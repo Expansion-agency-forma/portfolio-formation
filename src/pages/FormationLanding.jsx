@@ -6,6 +6,7 @@ import Process from '../components/Process'
 import Formations from '../components/Formations'
 import CrossLinkPub from '../components/CrossLinkPub'
 import Testimonials from '../components/Testimonials'
+import AvisClients from '../components/AvisClients'
 import Roi from '../components/Roi'
 import Compare from '../components/Compare'
 import Faq from '../components/Faq'
@@ -38,6 +39,7 @@ function FormationLanding() {
       <Formations />
       <CrossLinkPub />
       <Testimonials />
+      <AvisClients />
       <Roi />
       <Compare />
       <Faq />

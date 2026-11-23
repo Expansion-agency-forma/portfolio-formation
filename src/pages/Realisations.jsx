@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Cta from '../components/Cta'
+import AvisClients from '../components/AvisClients'
 import Footer from '../components/Footer'
 import { REALISATIONS, TYPES, LIBELLE_TYPE } from '../data/realisations'
 import { CALENDLY_URL } from '../seo/site'
@@ -152,6 +153,7 @@ function Realisations() {
             <p className="real-vide">Pas encore d’extrait pour ce choix. Essayez un autre secteur.</p>
           )}
         </section>
+        <AvisClients />
       </main>
 
       <Cta />
