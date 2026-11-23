@@ -24,6 +24,7 @@ import {
 } from '../lib/simulateur'
 import { track, trackCustom } from '../lib/pixel'
 import { evenementGA, rdvReserve } from '../lib/analytics'
+import { lireSource, ajouterSourceCalendly } from '../lib/attribution'
 
 const STOCKAGE = 'expansion-simulateur-v1'
 const PRIX_EN_LIGNE = [47, 97, 147, 197, 247, 297, 347, 397, 497, 597, 697, 797, 997, 1297, 1497]
@@ -126,7 +127,7 @@ function Calendly({ prenom, email }) {
       text_color: 'ffffff',
       primary_color: 'c9a84c',
     })
-    const url = `${CALENDLY_URL}?${params.toString()}`
+    const url = ajouterSourceCalendly(`${CALENDLY_URL}?${params.toString()}`)
     const lancer = () => {
       if (!ref.current || !window.Calendly) return
       ref.current.innerHTML = ''
@@ -880,6 +881,8 @@ function Simulateur() {
       utm_content: utm.utm_content || '',
       utm_term: utm.utm_term || '',
       fbclid: utm.fbclid || '',
+      source_trafic: lireSource()?.libelle || '',
+      canal_trafic: lireSource()?.canal || '',
       consentement: 'oui',
     }
     if (WEBHOOK_URL && !envoye) {
@@ -897,6 +900,8 @@ function Simulateur() {
     track('Lead', { value: Math.round(res.annee1[0]), currency: 'EUR' })
     evenementGA('generate_lead', {
       lead_source: 'simulateur',
+      canal_source: lireSource()?.canal || '',
+      outil_source: lireSource()?.outil || '',
       value: Math.round(res.annee1[0]),
       currency: 'EUR',
       domaine: reponses.domaine || '',

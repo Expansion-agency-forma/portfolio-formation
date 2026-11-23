@@ -125,7 +125,16 @@ export function rdvReserve(source) {
   } catch {
     /* ignore */
   }
-  evenementGA('rdv_reserve', { source })
+  let canal = ''
+  let outil = ''
+  try {
+    const s = JSON.parse(window.sessionStorage.getItem('expansion-source')) || {}
+    canal = s.canal || ''
+    outil = s.outil || ''
+  } catch {
+    /* ignore */
+  }
+  evenementGA('rdv_reserve', { source, canal_source: canal, outil_source: outil })
 }
 
 export function supprimerCookies(motif) {

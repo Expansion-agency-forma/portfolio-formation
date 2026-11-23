@@ -14,7 +14,7 @@ function HeroPub() {
         <p className="hero__description" data-reveal style={{ '--reveal-delay': '220ms' }}>
           Meta, TikTok, YouTube, Snapchat. Notre rémunération : 15 % du CA que
           nos campagnes génèrent. Vous gagnez, on gagne. Vous préférez un
-          forfait fixe ? C'est possible aussi.
+          forfait fixe ? C’est possible aussi.
         </p>
 
         <div className="hero__cta-row" data-reveal style={{ '--reveal-delay': '320ms' }}>

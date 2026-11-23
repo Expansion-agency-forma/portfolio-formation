@@ -20,6 +20,7 @@ import BandeauCookies from './components/BandeauCookies'
 import { initPixel, desactiverPixel, pageVuePixel } from './lib/pixel'
 import { activerAnalytics, desactiverAnalytics, pageVue } from './lib/analytics'
 import { lireConsentement, surConsentement } from './lib/consentement'
+import { initialiserSource, suivreClicsCalendly } from './lib/attribution'
 import { useRevealOnScroll, useCounterAnimation } from './hooks/useScrollEffects'
 
 function ScrollToTop() {
@@ -52,6 +53,12 @@ function appliquerConsentement(choix) {
 export function AppShell() {
   useRevealOnScroll()
   useCounterAnimation()
+
+  // Source de trafic de la visite (IA, Google, réseaux…) + suivi des liens Calendly.
+  useEffect(() => {
+    initialiserSource()
+    return suivreClicsCalendly()
+  }, [])
 
   useEffect(() => {
     const choix = lireConsentement()

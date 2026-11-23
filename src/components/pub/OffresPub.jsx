@@ -60,7 +60,7 @@ function OffresPub() {
           <span className="offre__tag">Recommandée</span>
           <h3 className="offre__name">Au résultat</h3>
           <p className="offre__pitch">
-            Notre rémunération est indexée sur vos ventes. Pas d'abonnement : si
+            Notre rémunération est indexée sur vos ventes. Pas d’abonnement : si
             nos campagnes ne vendent pas, on ne touche rien.
           </p>
           <div className="offre__price">
@@ -75,7 +75,7 @@ function OffresPub() {
           <p className="offre__option">
             <b>Option closing.</b> Notre équipe appelle vos leads et signe pour
             vous, contre un pourcentage supplémentaire sur le CA encaissé,
-            défini à l'audit.
+            défini à l’audit.
           </p>
           <p className="offre__fit">
             <b>Pour vous si</b> vous voulez partager le risque et scaler sans
@@ -94,7 +94,7 @@ function OffresPub() {
           <h3 className="offre__name">Forfait</h3>
           <p className="offre__pitch">
             Un budget prévisible et 0 % de commission : vous gardez 100 % de
-            votre chiffre d'affaires.
+            votre chiffre d’affaires.
           </p>
           <div className="offre__price">
             <span className="offre__big">2&nbsp;000&nbsp;€</span>
