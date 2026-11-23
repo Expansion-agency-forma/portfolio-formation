@@ -21,6 +21,7 @@ import { initPixel, desactiverPixel, pageVuePixel } from './lib/pixel'
 import { activerAnalytics, desactiverAnalytics, pageVue } from './lib/analytics'
 import { lireConsentement, surConsentement } from './lib/consentement'
 import { initialiserSource, suivreClicsCalendly } from './lib/attribution'
+import { Analytics } from '@vercel/analytics/react'
 import { useRevealOnScroll, useCounterAnimation } from './hooks/useScrollEffects'
 
 function ScrollToTop() {
@@ -70,6 +71,8 @@ export function AppShell() {
     <>
       <ScrollToTop />
       <Head />
+      {/* Statistiques de visites sans cookie ni donnée personnelle (Vercel Web Analytics) */}
+      <Analytics />
       <Routes>
         <Route path="/" element={<FormationLanding />} />
         <Route path="/publicite" element={<PubLanding />} />

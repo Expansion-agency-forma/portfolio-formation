@@ -63,6 +63,13 @@ function Confidentialite() {
                 par Google Analytics{AVEC_PUBLICITE ? ' et, pour la publicité, par le pixel Meta' : ''}.
                 Sans votre accord, aucune mesure n’est effectuée.
               </li>
+              <li>
+                <strong>Statistiques de fréquentation anonymes</strong> : nombre de
+                pages vues, site ou lien d’origine de la visite, pays, type
+                d’appareil. Elles sont mesurées par Vercel Web Analytics, sans
+                cookie, sans identifiant et sans donnée permettant de vous
+                reconnaître, uniquement pour connaître l’audience globale du site.
+              </li>
             </ul>
           </section>
 
@@ -127,7 +134,7 @@ function Confidentialite() {
               l'exécution du service&nbsp;:
             </p>
             <ul className="legal__list">
-              <li><strong>Vercel Inc.</strong> — hébergement du site (États-Unis, garanties contractuelles type DPF).</li>
+              <li><strong>Vercel Inc.</strong> — hébergement du site et statistiques de fréquentation anonymes sans cookie (États-Unis, garanties contractuelles type DPF).</li>
               <li><strong>Calendly LLC</strong> — prise de rendez-vous en ligne (États-Unis, garanties contractuelles type DPF).</li>
               <li><strong>Make (Celonis)</strong> — transmission des réponses du simulateur vers nos outils de suivi (Union européenne).</li>
               <li><strong>Google LLC</strong> — tableur de suivi des demandes et, avec votre accord, mesure d'audience Google Analytics (garanties contractuelles type DPF).</li>
