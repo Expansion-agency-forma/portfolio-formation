@@ -13,8 +13,8 @@ function CrossLinkPub() {
             </h2>
             <p className="cross-link__desc">
               Notre équipe lance vos campagnes Meta, TikTok, YouTube et Snapchat.
-              Vous nous payez <strong>10 à 20% du CA généré</strong> — zéro frais
-              fixe, zéro risque.
+              Notre rémunération : <strong>15 % du CA généré</strong> par nos
+              campagnes. Vous gagnez, on gagne.
             </p>
             <Link to="/publicite" className="btn btn--primary cross-link__cta">
               Je veux promouvoir ma formation
@@ -35,7 +35,7 @@ function CrossLinkPub() {
             <div className="cross-link__chip cross-link__chip--yt">YouTube Ads</div>
             <div className="cross-link__chip cross-link__chip--snap">Snapchat</div>
             <div className="cross-link__big-stat">
-              <span className="cross-link__big-stat-pct">10–20<small>%</small></span>
+              <span className="cross-link__big-stat-pct">15<small>%</small></span>
               <span className="cross-link__big-stat-label">du CA généré</span>
             </div>
           </div>

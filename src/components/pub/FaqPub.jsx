@@ -1,15 +1,15 @@
 export const FAQS = [
   {
-    q: 'Comment fonctionnent les 10 à 20% ?',
-    a: "Nous prélevons un pourcentage du chiffre d'affaires généré exclusivement par nos campagnes publicitaires. Ce pourcentage est fixé dès l'audit (entre 10 et 20% selon votre marge et votre ticket moyen). Vous ne payez jamais sur votre CA organique ou via d'autres canaux.",
+    q: 'Comment fonctionnent les 15 % ?',
+    a: "Nous prélevons 15 % du chiffre d'affaires réellement encaissé grâce à nos campagnes publicitaires, mesuré par le tracking mis en place au démarrage. Une vente signée mais non payée ne vous coûte rien. Vous ne payez jamais sur votre CA organique ou via d'autres canaux. Le premier mois, des frais de mise en place de 1 500 € TTC couvrent l'audit, l'installation du tracking, le tournage et les créas de lancement.",
   },
   {
     q: 'Y a-t-il un engagement de durée ?',
-    a: "Non. Notre offre n'a pas d'engagement minimum : vous pouvez arrêter à tout moment si vous n'êtes pas satisfait. Nous prenons le risque, pas vous.",
+    a: "Non. Nos offres n'ont pas d'engagement minimum : vous pouvez arrêter à tout moment si vous n'êtes pas satisfait.",
   },
   {
     q: 'Quel budget publicitaire minimum prévoir ?',
-    a: "Nous recommandons un budget média minimum de 2 000 € / mois pour obtenir des données exploitables et commencer à scaler. En-dessous, le modèle au résultat devient moins pertinent pour les deux parties.",
+    a: "Nous recommandons un budget média minimum de 2 000 € / mois pour obtenir des données exploitables et commencer à scaler. Ce budget est payé directement aux plateformes (Meta, TikTok…) : il n'est pas inclus dans nos offres et nous ne le touchons jamais.",
   },
   {
     q: 'Qui produit les créas vidéo ?',
@@ -29,7 +29,15 @@ export const FAQS = [
   },
   {
     q: 'Que se passe-t-il si les campagnes ne convertissent pas ?',
-    a: "Si après 30 jours de campagne les résultats sont insuffisants, on itère sur la stratégie, les créas ou l'offre. Si après 60 jours rien ne décolle, on arrête la collaboration — vous n'avez rien payé, on a investi notre temps.",
+    a: "Si après 30 jours de campagne les résultats sont insuffisants, on itère sur la stratégie, les créas ou l'offre. Si après 60 jours rien ne décolle, on arrête la collaboration : sans ventes, aucune commission ne vous est facturée.",
+  },
+  {
+    q: 'Pourquoi des frais de mise en place ?',
+    a: "Avant la première vente, il y a un vrai travail : audit de votre offre, installation du tracking (Pixel, CAPI, CRM), écriture des scripts, tournage, montage et paramétrage des campagnes. Les 1 500 € TTC couvrent ce temps, une seule fois. Ensuite, on n'est payés que sur le CA encaissé.",
+  },
+  {
+    q: 'Offre au résultat ou forfait : laquelle choisir ?',
+    a: "Vous voulez limiter votre risque et partager la croissance avec nous : l'offre au résultat. Vous générez déjà un gros volume et voulez un coût fixe : le forfait. On vous conseille la plus rentable pendant l'audit.",
   },
 ]
 

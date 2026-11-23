@@ -137,7 +137,7 @@ const STEPS = [
   {
     key: 'scale',
     title: 'Étape 3 — Scaling au résultat',
-    desc: "On scale ce qui convertit, on coupe ce qui ne marche pas. Reporting transparent sur le CA généré, le CPL, le ROAS. Vous nous payez uniquement sur les ventes réalisées.",
+    desc: "On scale ce qui convertit, on coupe ce qui ne marche pas. Reporting transparent sur le CA généré, le CPL, le ROAS. Notre commission dépend uniquement des ventes encaissées.",
     Mockup: DashboardMockup,
     badges: [
       { text: 'ROAS x4+', position: 'top-right' },
@@ -185,8 +185,8 @@ function ProcessTeaserPub() {
           <span className="section-head__title-italic">en 3 étapes</span>
         </h2>
         <p className="process-teaser__desc">
-          De l'audit stratégique au scaling, on gère tout pour vous. Vous ne
-          payez que sur le CA que nos campagnes génèrent.
+          De l'audit stratégique au scaling, on gère tout pour vous. Notre
+          commission dépend du CA que nos campagnes génèrent.
         </p>
         <a
           href="https://calendly.com/expansionagency/30min?month=2026-04"

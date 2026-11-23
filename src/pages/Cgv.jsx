@@ -84,7 +84,7 @@ function Cgv() {
             <p>
               Pour les campagnes publicitaires au résultat, la rémunération du
               Prestataire correspond à un pourcentage du chiffre d'affaires
-              généré, indiqué dans le devis (généralement 10 à 20&nbsp;%).
+              encaissé grâce aux campagnes, indiqué dans le devis (15&nbsp;% sauf mention contraire), auquel s'ajoutent des frais de mise en place précisés au devis.
             </p>
             <p>
               Tout retard de paiement entraîne l'application de pénalités au

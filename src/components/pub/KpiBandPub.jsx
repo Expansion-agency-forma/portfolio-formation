@@ -1,7 +1,7 @@
 const KPIS = [
-  { value: '10', suffix: '–15%', label: 'taux de closing moyen' },
-  { value: '0', suffix: '€', label: 'de frais fixe' },
-  { value: '10', suffix: '–20%', label: 'du CA généré facturé' },
+  { value: '10', suffix: '–15%', label: 'taux de closing moyen', counter: true },
+  { value: 'J+14', suffix: '', label: "premiers leads après l'audit" },
+  { value: '15', suffix: '%', label: 'du CA généré, rien de plus', counter: true },
 ]
 
 function KpiBandPub() {
@@ -16,12 +16,12 @@ function KpiBandPub() {
             style={{ '--reveal-delay': `${i * 100}ms` }}
           >
             <span className="kpi__value">
-              {kpi.value === '0' ? (
-                <span>{kpi.value}</span>
+              {kpi.counter ? (
+                <span data-counter={kpi.value}>{kpi.value}</span>
               ) : (
-                <span data-counter={kpi.value}>0</span>
+                <span>{kpi.value}</span>
               )}
-              <span className="kpi__value-suffix">{kpi.suffix}</span>
+              {kpi.suffix && <span className="kpi__value-suffix">{kpi.suffix}</span>}
             </span>
             <span className="kpi__label">{kpi.label}</span>
           </div>

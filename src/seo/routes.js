@@ -53,7 +53,7 @@ export const PAGES = [
     path: '/publicite',
     title: 'Publicité Meta Ads pour organismes de formation | Expansion',
     description:
-      'Campagnes Meta, TikTok, YouTube et Snapchat pour remplir vos formations. Payé au résultat : 10 à 20 % du chiffre d’affaires généré, sans frais fixes.',
+      'Campagnes Meta, TikTok, YouTube et Snapchat pour remplir vos formations. Payé au résultat : 15 % du chiffre d’affaires encaissé grâce à nos campagnes. Tournage pub inclus.',
     priority: 0.7,
     changefreq: 'monthly',
     fil: 'Publicité',

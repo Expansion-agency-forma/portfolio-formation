@@ -1,0 +1,49 @@
+/* Section « Nos offres » — page /publicite */
+.offres{padding:clamp(4rem,9vw,7rem) var(--container-pad)}
+
+.offres__grid{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:1.15fr 1fr;gap:1.25rem;align-items:stretch}
+
+.offre{position:relative;display:flex;flex-direction:column;background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:clamp(1.6rem,3vw,2.4rem);min-width:0}
+
+.offre--main{border-color:var(--color-gold-border);background:linear-gradient(180deg,rgba(201,168,76,.09),rgba(201,168,76,0) 55%),var(--color-bg-card);box-shadow:var(--shadow-gold)}
+
+.offre__tag{align-self:flex-start;font-size:var(--fs-xs);letter-spacing:var(--tracking-widest);text-transform:uppercase;font-weight:600;color:var(--color-text-muted);border:1px solid var(--color-border-strong);border-radius:var(--radius-full);padding:.35rem .8rem}
+
+.offre--main .offre__tag{color:#170000;background:var(--color-gold);border-color:var(--color-gold)}
+
+.offre__name{margin:1.1rem 0 .3rem;font-size:var(--fs-xl);font-weight:600;letter-spacing:var(--tracking-tight)}
+
+.offre__pitch{margin:0;color:var(--color-text-muted);font-size:var(--fs-sm);line-height:var(--lh-normal)}
+
+.offre__price{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;margin:1.6rem 0 .25rem}
+
+.offre__big{font-size:clamp(3.4rem,7vw,5rem);font-weight:700;letter-spacing:var(--tracking-tight);line-height:1}
+
+.offre--main .offre__big{color:var(--color-gold)}
+
+.offre__unit{font-family:var(--font-serif);font-style:italic;font-size:clamp(1.25rem,2.2vw,1.6rem);color:var(--color-text)}
+
+.offre__setup{margin:.4rem 0 0;font-size:var(--fs-xs);color:var(--color-text-faint);line-height:1.5}
+
+.offre__list{list-style:none;margin:1.6rem 0 1.8rem;padding:1.4rem 0 0;border-top:1px solid var(--color-border);display:grid;gap:.75rem;flex:1;align-content:start}
+
+.offre__list li{display:grid;grid-template-columns:18px 1fr;gap:.7rem;font-size:var(--fs-sm);line-height:1.45;color:var(--color-text)}
+
+.offre__list svg{width:18px;height:18px;margin-top:1px;color:var(--color-gold)}
+
+.offre__list strong{font-weight:600}
+
+.offre__option{margin:-.6rem 0 1.6rem;padding:.9rem 1rem;border:1px dashed var(--color-gold-border);border-radius:var(--radius-sm);font-size:var(--fs-sm);color:var(--color-text-muted);line-height:1.45}
+
+.offre__option b{color:var(--color-gold);font-weight:600}
+
+.offre__fit{margin:0 0 1.2rem;font-size:var(--fs-sm);color:var(--color-text-muted)}
+
+.offre__fit b{color:var(--color-text);font-weight:600}
+
+.offre .btn{width:100%;justify-content:center}
+
+.offres__note{max-width:1040px;margin:1.4rem auto 0;text-align:center;font-size:var(--fs-xs);color:var(--color-text-faint)}
+
+@media (max-width:860px){.offres__grid{grid-template-columns:1fr}
+}

@@ -5,6 +5,7 @@ import ProcessPub from '../components/pub/ProcessPub'
 import Creations from '../components/pub/Creations'
 import TestimonialsPub from '../components/pub/TestimonialsPub'
 import ResultsScrollPub from '../components/pub/ResultsScrollPub'
+import OffresPub from '../components/pub/OffresPub'
 import ComparePub from '../components/pub/ComparePub'
 import FaqPub from '../components/pub/FaqPub'
 import CtaPub from '../components/pub/CtaPub'
@@ -13,6 +14,7 @@ import Footer from '../components/Footer'
 const NAV_ITEMS = [
   { href: '#creations', label: 'Nos campagnes' },
   { href: '#services', label: 'Comment ça marche' },
+  { href: '#offres', label: 'Offres' },
   { href: '#temoignages', label: 'Avis' },
   { href: '#faq', label: 'FAQ' },
   { href: 'https://expansion-formation.com', label: 'Entreprises' },
@@ -35,6 +37,7 @@ function PubLanding() {
       <Creations />
       <TestimonialsPub />
       <ResultsScrollPub />
+      <OffresPub />
       <ComparePub />
       <FaqPub />
       <CtaPub />

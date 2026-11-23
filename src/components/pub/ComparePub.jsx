@@ -1,13 +1,13 @@
 const CRITERIA = [
   {
     label: 'Paiement au résultat',
-    expansion: { status: 'yes', detail: '10-20% du CA généré' },
+    expansion: { status: 'yes', detail: '15 % du CA encaissé' },
     freelance: { status: 'no' },
     agency: { status: 'no' },
   },
   {
-    label: 'Zéro frais fixe / retainer',
-    expansion: { status: 'yes', detail: 'Aucun acompte' },
+    label: 'Pas d\'abonnement mensuel',
+    expansion: { status: 'yes', detail: 'Offre au résultat' },
     freelance: { status: 'warn' },
     agency: { status: 'no' },
   },
@@ -25,7 +25,7 @@ const CRITERIA = [
   },
   {
     label: 'Créas produites en interne',
-    expansion: { status: 'yes', detail: 'Script + tournage + montage' },
+    expansion: { status: 'yes', detail: 'Tournage pub dans votre centre' },
     freelance: { status: 'no' },
     agency: { status: 'warn' },
   },

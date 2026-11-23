@@ -10,7 +10,7 @@ function CtaPub() {
           </h2>
           <p className="cta-final__desc">
             On audite votre offre, on définit la stratégie, on lance.
-            Vous ne payez que si nos campagnes génèrent du CA.
+            Notre rémunération dépend du CA que nos campagnes génèrent.
           </p>
           <a
             href="https://calendly.com/expansionagency/30min?month=2026-04"
