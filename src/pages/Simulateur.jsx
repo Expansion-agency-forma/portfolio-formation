@@ -1,17 +1,22 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import '../styles/simulateur.css'
 import {
   CALENDLY_URL,
+  CONVERSION_PUB,
   ETAPES,
+  ETAPES_PUB,
   HYPOTHESES,
   INVESTISSEMENT_PAR_FORMATION,
+  PRIX_EN_LIGNE,
   QUESTIONS,
+  QUESTIONS_PUB,
   REPONSES_FREINS,
+  ROLES,
   VIDEO_OFFRE_ID,
   WEBHOOK_URL,
-  WEBHOOK_VIDEO_URL,
   calculer,
+  calculerPub,
   decoderReponses,
   encoderReponses,
   fourchette,
@@ -20,19 +25,19 @@ import {
   normaliserEmail,
   normaliserTelephone,
   prixEnLigneConseille,
+  questionsActives,
+  resultat,
   scoreLead,
+  titreQuestion,
   ventes,
 } from '../lib/simulateur'
 import { track, trackCustom } from '../lib/pixel'
 import { evenementGA, rdvReserve } from '../lib/analytics'
 import { lireSource, ajouterSourceCalendly } from '../lib/attribution'
-import { NICHES } from '../lib/niches'
 
-const STOCKAGE_DEFAUT = 'expansion-simulateur-v1'
-const PRIX_EN_LIGNE = [47, 97, 147, 197, 247, 297, 347, 397, 497, 597, 697, 797, 997, 1297, 1497]
-const UTM_CLES = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid']
+const STOCKAGE = 'expansion-simulateur-v2'
 
-function lireStockage(STOCKAGE) {
+function lireStockage() {
   try {
     return JSON.parse(window.localStorage.getItem(STOCKAGE)) || null
   } catch {
@@ -40,7 +45,7 @@ function lireStockage(STOCKAGE) {
   }
 }
 
-function ecrireStockage(STOCKAGE, valeur) {
+function ecrireStockage(valeur) {
   try {
     window.localStorage.setItem(STOCKAGE, JSON.stringify(valeur))
   } catch {
@@ -68,8 +73,8 @@ function Coche() {
   )
 }
 
-function Jauge({ reponses, compacte = false }) {
-  const { niveau, label } = niveauPotentiel(reponses)
+function Jauge({ mode, reponses, compacte = false }) {
+  const { niveau, label } = niveauPotentiel(mode, reponses)
   return (
     <div className={`simu-jauge${compacte ? ' simu-jauge--compacte' : ''}`} aria-label={`Potentiel estimé : ${label}`}>
       <span className="simu-jauge__label">Votre potentiel</span>
@@ -179,74 +184,72 @@ function Calendly({ prenom, email }) {
 /* Écrans du quiz                                                       */
 /* ------------------------------------------------------------------ */
 
-function Intro({ onStart, cfg, total }) {
-  if (cfg) {
-    return (
-      <div className="simu-intro">
-        <span className="eyebrow">{cfg.eyebrow}</span>
-        <h1 className="simu-intro__titre">
-          {cfg.titre} <span className="simu-intro__italique">{cfg.titreItalique}</span>
-        </h1>
-        <p className="simu-intro__texte">
-          {cfg.texte} {total} questions en un clic, basées sur vos vrais chiffres, sans rien à écrire.
-        </p>
-        <button type="button" className="btn btn--primary simu-intro__bouton" onClick={onStart}>
-          Calculer mon potentiel
-          <Fleche />
-        </button>
-        <p className="simu-confiance">Gratuit · 1 minute · Résultat immédiat</p>
-        <ul className="simu-intro__points">
-          {cfg.points.map((p) => (
-            <li key={p}>
-              <Coche /> {p}
-            </li>
-          ))}
-        </ul>
-      </div>
-    )
-  }
+function Intro({ onChoisir, embarque }) {
+  const Titre = embarque ? 'h2' : 'h1'
   return (
     <div className="simu-intro">
-      <span className="eyebrow">Simulateur gratuit</span>
-      <h1 className="simu-intro__titre">
-        Calculez combien votre organisme de formation pourrait gagner{' '}
-        <span className="simu-intro__italique">avec une formation en ligne.</span>
-      </h1>
-      <p className="simu-intro__texte">
-        13 questions en un clic, basées sur vos vrais chiffres : élèves, abonnés, prix de vos
-        formations. Vous obtenez une estimation de votre potentiel, sans rien à écrire.
-      </p>
-      <button type="button" className="btn btn--primary simu-intro__bouton" onClick={onStart}>
-        Commencer la simulation
-        <Fleche />
-      </button>
-      <p className="simu-confiance">Gratuit · 1 minute · Résultat immédiat</p>
-      <ul className="simu-intro__points">
-        <li>
-          <Coche /> Ce que vous pouvez vendre dès le lancement, à votre base actuelle
-        </li>
-        <li>
-          <Coche /> Ce que ça peut vous rapporter chaque mois ensuite
-        </li>
-        <li>
-          <Coche /> En combien de temps votre investissement est remboursé
-        </li>
-      </ul>
+      {!embarque && <span className="eyebrow">Simulateur gratuit</span>}
+      {embarque ? (
+        <Titre className="simu-intro__titre">Que voulez-vous simuler ?</Titre>
+      ) : (
+        <>
+          <Titre className="simu-intro__titre">
+            Combien pourriez-vous gagner{' '}
+            <span className="simu-intro__italique">de plus ?</span>
+          </Titre>
+          <p className="simu-intro__texte">
+            Choisissez ce que vous voulez simuler. Questions en un clic, calcul basé sur vos chiffres et sur
+            nos campagnes réelles.
+          </p>
+        </>
+      )}
+      <div className="simu-modes">
+        <button type="button" className="simu-mode" onClick={() => onChoisir('formation')}>
+          <span className="simu-mode__titre">Créer ma formation en ligne</span>
+          <span className="simu-mode__texte">
+            Ce que vos formations pourraient rapporter une fois filmées et vendues en ligne, en France et à l’étranger.
+          </span>
+          <span className="simu-mode__cta">
+            Simuler <Fleche />
+          </span>
+        </button>
+        <button type="button" className="simu-mode" onClick={() => onChoisir('pub')}>
+          <span className="simu-mode__titre">Remplir mes formations avec la publicité</span>
+          <span className="simu-mode__texte">
+            Le chiffre d’affaires que votre budget pub pourrait générer, d’après les coûts réels de nos campagnes.
+          </span>
+          <span className="simu-mode__cta">
+            Simuler <Fleche />
+          </span>
+        </button>
+      </div>
+      <p className="simu-confiance">Gratuit · 1 à 2 minutes · Résultat immédiat</p>
     </div>
   )
 }
 
-function Question({ question, index, total, reponses, onRepondre, onRetour }) {
+function valeurInitialeSlider(question, reponses, valeur) {
+  if (typeof valeur === 'number') return valeur
+  return question.defaut ? question.defaut(reponses) : question.min
+}
+
+function Question({ mode, question, index, total, reponses, onRepondre, onRetour }) {
   const valeur = reponses[question.id]
   const [multi, setMulti] = useState(() => (Array.isArray(valeur) ? valeur : []))
-  const [prix, setPrix] = useState(() => (typeof valeur === 'number' ? valeur : question.defaut || 900))
+  const [num, setNum] = useState(() => valeurInitialeSlider(question, reponses, valeur))
   const titreRef = useRef(null)
+  const etapes = mode === 'pub' ? ETAPES_PUB : ETAPES
 
   useEffect(() => {
     titreRef.current?.focus({ preventScroll: true })
   }, [question.id])
 
   const progression = Math.round((index / total) * 100)
+  const paliers = question.paliers
+  const indexPalier = paliers ? Math.max(0, paliers.findIndex((p) => p >= num)) : 0
+  const min = paliers ? 0 : question.min
+  const max = paliers ? paliers.length - 1 : question.max
+  const position = paliers ? indexPalier : num
 
   return (
     <div className="simu-question" key={question.id}>
@@ -255,7 +258,7 @@ function Question({ question, index, total, reponses, onRepondre, onRetour }) {
           ← Retour
         </button>
         <span className="simu-etape">
-          Étape {question.etape + 1}/3 · {ETAPES[question.etape]}
+          Étape {question.etape + 1}/3 · {etapes[question.etape]}
         </span>
       </div>
       <div className="simu-progression" role="progressbar" aria-valuenow={index} aria-valuemin={0} aria-valuemax={total}>
@@ -265,37 +268,39 @@ function Question({ question, index, total, reponses, onRepondre, onRetour }) {
         Question {index + 1} sur {total}
       </p>
       <h2 className="simu-question__titre" tabIndex={-1} ref={titreRef}>
-        {question.titre}
+        {titreQuestion(question, reponses)}
       </h2>
       {question.aide && <p className="simu-question__aide">{question.aide}</p>}
 
       {question.type === 'slider' && (
         <div className="simu-slider">
           <div className="simu-slider__valeur">
-            {nombre(prix)} <span>€</span>
+            {nombre(num)} <span>€</span>
           </div>
           <input
             type="range"
-            min={question.min}
-            max={question.max}
-            step={question.step}
-            value={prix}
-            onChange={(e) => setPrix(Number(e.target.value))}
-            aria-label={question.titre}
-            style={{ '--progress': `${((prix - question.min) / (question.max - question.min)) * 100}%` }}
+            min={min}
+            max={max}
+            step={paliers ? 1 : question.step}
+            value={position}
+            onChange={(e) => setNum(paliers ? paliers[Number(e.target.value)] : Number(e.target.value))}
+            aria-label={titreQuestion(question, reponses)}
+            style={{ '--progress': `${((position - min) / (max - min)) * 100}%` }}
           />
           <div className="simu-slider__bornes" aria-hidden="true">
-            <span>{nombre(question.min)} €</span>
-            <span>{nombre(question.max)} € et +</span>
+            <span>{nombre(paliers ? paliers[0] : question.min)} €</span>
+            <span>{nombre(paliers ? paliers[paliers.length - 1] : question.max)} € et +</span>
           </div>
           <div className="simu-actions">
-            <button type="button" className="btn btn--primary" onClick={() => onRepondre(question.id, prix)}>
+            <button type="button" className="btn btn--primary" onClick={() => onRepondre(question.id, num)}>
               Continuer
               <Fleche />
             </button>
-            <button type="button" className="simu-lien" onClick={() => onRepondre(question.id, null)}>
-              {question.inconnu}
-            </button>
+            {question.inconnu && (
+              <button type="button" className="simu-lien" onClick={() => onRepondre(question.id, null)}>
+                {question.inconnu}
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -325,7 +330,7 @@ function Question({ question, index, total, reponses, onRepondre, onRetour }) {
           </div>
           <div className="simu-actions">
             <button type="button" className="btn btn--primary" onClick={() => onRepondre(question.id, multi)}>
-              {multi.length ? 'Continuer' : 'Aucun de ces freins'}
+              {multi.length ? 'Continuer' : question.vide || 'Continuer'}
               <Fleche />
             </button>
           </div>
@@ -340,23 +345,26 @@ function Question({ question, index, total, reponses, onRepondre, onRetour }) {
               <button
                 key={`${o.value}-${o.label}`}
                 type="button"
-                className={`simu-option${actif ? ' is-actif' : ''}${o.inconnu ? ' simu-option--inconnu' : ''}`}
+                className={`simu-option${actif ? ' is-actif' : ''}${o.inconnu ? ' simu-option--inconnu' : ''}${o.detail ? ' simu-option--detail' : ''}`}
                 onClick={() => onRepondre(question.id, o.value)}
               >
-                {o.label}
+                <span className="simu-option__texte">
+                  {o.label}
+                  {o.detail && <small>{o.detail}</small>}
+                </span>
               </button>
             )
           })}
         </div>
       )}
 
-      {index >= 3 && <Jauge reponses={reponses} />}
+      {index >= 3 && <Jauge mode={mode} reponses={reponses} />}
     </div>
   )
 }
 
-function Contact({ reponses, onEnvoyer, onRetour, envoiEnCours }) {
-  const [champs, setChamps] = useState({ prenom: '', centre: '', ville: '', email: '', telephone: '', instagram: '' })
+function Contact({ mode, reponses, onEnvoyer, onRetour, envoiEnCours }) {
+  const [champs, setChamps] = useState({ prenom: '', centre: '', ville: '', email: '', telephone: '', instagram: '', role: '' })
   const [consentement, setConsentement] = useState(false)
   const [pot, setPot] = useState('')
   const [erreurs, setErreurs] = useState({})
@@ -369,6 +377,7 @@ function Contact({ reponses, onEnvoyer, onRetour, envoiEnCours }) {
     if (!champs.prenom.trim()) err.prenom = 'Indiquez votre prénom'
     if (!champs.centre.trim()) err.centre = 'Indiquez le nom de votre centre'
     if (!champs.ville.trim()) err.ville = 'Indiquez votre ville'
+    if (!champs.role) err.role = 'Choisissez une réponse'
     const email = normaliserEmail(champs.email)
     if (!email) err.email = 'Adresse email invalide'
     const telephone = normaliserTelephone(champs.telephone)
@@ -380,6 +389,7 @@ function Contact({ reponses, onEnvoyer, onRetour, envoiEnCours }) {
       prenom: champs.prenom.trim(),
       centre: champs.centre.trim(),
       ville: champs.ville.trim(),
+      role: champs.role,
       email,
       telephone,
       instagram: champs.instagram.trim().replace(/^@/, ''),
@@ -398,12 +408,12 @@ function Contact({ reponses, onEnvoyer, onRetour, envoiEnCours }) {
       <div className="simu-progression">
         <span style={{ width: '100%' }} />
       </div>
-      <h2 className="simu-question__titre">Votre analyse est prête.</h2>
+      <h2 className="simu-question__titre">Votre simulation est prête.</h2>
       <p className="simu-question__aide">
         Où vous envoyer votre récap ? Votre résultat s’affiche juste après, et vous le recevez aussi
         par email.
       </p>
-      <Jauge reponses={reponses} compacte />
+      <Jauge mode={mode} reponses={reponses} compacte />
 
       <div className="simu-champs">
         {[
@@ -419,6 +429,18 @@ function Contact({ reponses, onEnvoyer, onRetour, envoiEnCours }) {
             {erreurs[cle] && <em>{erreurs[cle]}</em>}
           </label>
         ))}
+        <label className={`simu-champ${erreurs.role ? ' has-erreur' : ''}`}>
+          <span>Vous êtes</span>
+          <select value={champs.role} onChange={maj('role')}>
+            <option value="">Choisir…</option>
+            {ROLES.map((r) => (
+              <option key={r.value} value={r.value}>
+                {r.label}
+              </option>
+            ))}
+          </select>
+          {erreurs.role && <em>{erreurs.role}</em>}
+        </label>
         <label className="simu-champ">
           <span>
             Instagram <small>(facultatif)</small>
@@ -442,7 +464,7 @@ function Contact({ reponses, onEnvoyer, onRetour, envoiEnCours }) {
 
       <div className="simu-actions">
         <button type="submit" className="btn btn--primary" disabled={envoiEnCours}>
-          Voir mon potentiel
+          Voir mon résultat
           <Fleche />
         </button>
       </div>
@@ -452,87 +474,201 @@ function Contact({ reponses, onEnvoyer, onRetour, envoiEnCours }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Résultat                                                             */
+/* Fin de parcours : rendez-vous ou vidéo                               */
 /* ------------------------------------------------------------------ */
 
-function Resultat({ reponses, contact, partage, onRecommencer, cfg, chemin }) {
-  const conseille = prixEnLigneConseille(reponses)
-  const [prixEnLigne, setPrixEnLigne] = useState(conseille)
-  const [copie, setCopie] = useState(false)
-  const res = useMemo(() => calculer(reponses, { prixEnLigne }), [reponses, prixEnLigne])
-  const { chaleur } = scoreLead(reponses)
-  const n = res.n
-  const freins = (reponses.freins || []).filter((f) => REPONSES_FREINS[f])
-  const premiereVideo = freins.find((f) => REPONSES_FREINS[f].youtubeId)
-
-  const scenarios = []
-  if (!reponses.pub) {
-    const avecPub = calculer(reponses, { prixEnLigne, pub: 500 })
-    scenarios.push(['Avec 500 € de publicité par mois', fourchette(avecPub.annee1), 'sur 12 mois, budget pub déduit'])
-  }
-  if (n > 1) {
-    const une = calculer(reponses, { prixEnLigne: undefined, formations: 1 })
-    scenarios.push(['Avec une seule formation', fourchette(une.annee1), 'sur 12 mois'])
-  }
-  if (reponses.coaching !== 'oui') {
-    const avecCoaching = calculer(reponses, { coaching: 'oui', prixEnLigne: undefined })
-    scenarios.push([
-      `${cfg ? 'Avec un accompagnement à l’installation' : 'Avec un coaching business'} (prix conseillé ${nombre(avecCoaching.prix)} €)`,
-      fourchette(avecCoaching.annee1),
-      'sur 12 mois',
-    ])
-  }
-
-  const indexPrix = Math.max(0, PRIX_EN_LIGNE.findIndex((p) => p >= prixEnLigne))
-  const lienPartage = `${window.location.origin}${chemin}?r=${encoderReponses(reponses)}`
-
-  const copier = async () => {
-    try {
-      await navigator.clipboard.writeText(lienPartage)
-      setCopie(true)
-      setTimeout(() => setCopie(false), 2500)
-    } catch {
-      window.prompt('Copiez ce lien :', lienPartage)
-    }
-  }
-
-  let rentabilite
-  if (res.moisRentable === 0) rentabilite = 'dès le lancement'
-  else if (res.moisRentable !== null && res.moisRentable <= 12) rentabilite = `en ${res.moisRentable} mois environ`
-  else rentabilite = 'en plus de 12 mois'
-
-  const partRemb = Math.round(res.partRemboursee[0] * 100)
-
+function FinParcours({ contact, chaleur, onDemanderVideo, videoDemandee, mode }) {
+  const [choix, setChoix] = useState(null)
   return (
-    <div className="simu-resultat">
+    <section className="simu-bloc simu-reserver" id="reserver">
+      <h2 className="simu-bloc__titre">
+        {chaleur === 'chaud' ? 'Votre potentiel est élevé : la suite ?' : 'Et maintenant ?'}
+      </h2>
+      <p className="simu-bloc__texte">Deux façons d’aller plus loin, gratuitement et sans engagement.</p>
+      <div className="simu-fin">
+        <button
+          type="button"
+          className={`simu-fin__choix${choix === 'rdv' ? ' is-actif' : ''}`}
+          onClick={() => setChoix('rdv')}
+        >
+          <strong>Réserver un appel de 30 minutes</strong>
+          <span>On reprend votre simulation ensemble et on vous dit comment l’atteindre.</span>
+        </button>
+        <button
+          type="button"
+          className={`simu-fin__choix${choix === 'video' || videoDemandee ? ' is-actif' : ''}`}
+          onClick={() => {
+            setChoix('video')
+            if (!videoDemandee) onDemanderVideo()
+          }}
+        >
+          <strong>Recevoir une vidéo explicative sur mon secteur</strong>
+          <span>
+            {mode === 'pub'
+              ? 'Votre marché, les coûts de publicité et le fonctionnement, expliqués en vidéo.'
+              : 'Votre marché, le fonctionnement et le prix, expliqués en vidéo.'}
+          </span>
+        </button>
+      </div>
+      {choix === 'rdv' && <Calendly prenom={contact?.prenom} email={contact?.email} />}
+      {(choix === 'video' || videoDemandee) && choix !== 'rdv' && (
+        <div className="simu-video-ok" role="status">
+          <strong>C’est noté{contact?.prenom ? `, ${contact.prenom}` : ''} !</strong>
+          <p>
+            Vous recevez votre vidéo par email{contact?.email ? ` (${contact.email})` : ''} sous 48 h ouvrées. À la fin,
+            un lien vous permet de réserver un appel si vous voulez passer à la mise en place.
+          </p>
+          <button type="button" className="simu-lien" onClick={() => setChoix('rdv')}>
+            Finalement, je préfère réserver un appel maintenant
+          </button>
+        </div>
+      )}
+    </section>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* Résultat — formation en ligne                                        */
+/* ------------------------------------------------------------------ */
+
+const LANGUES = { anglais: 'anglais', espagnol: 'espagnol', arabe: 'arabe', portugais: 'portugais', italien: 'italien', allemand: 'allemand' }
+
+function listeLangues(l) {
+  const noms = l.map((x) => LANGUES[x] || x)
+  if (noms.length <= 1) return noms.join('')
+  return `${noms.slice(0, -1).join(', ')} et ${noms[noms.length - 1]}`
+}
+
+function ResultatCfa({ reponses, res, contact, partage }) {
+  const plein = res.contrats[0] >= res.capacite
+  return (
+    <>
       <header className="simu-resultat__entete">
         <span className="eyebrow">{partage ? 'Simulation partagée' : 'Votre potentiel estimé'}</span>
         <h1 className="simu-resultat__titre">
-          {contact?.prenom ? `${contact.prenom}, voici` : 'Voici'} ce que votre formation en ligne pourrait vous rapporter
+          {contact?.prenom ? `${contact.prenom}, voici` : 'Voici'} ce que votre diplôme à distance pourrait vous rapporter
         </h1>
         <div className="simu-resultat__chiffre">
           <span className="simu-resultat__montant">
             {fourchette(res.annee1)}
             <sup>*</sup>
           </span>
-          <span className="simu-resultat__periode">Potentiel sur 12 mois</span>
+          <span className="simu-resultat__periode">de prise en charge OPCO par an</span>
+        </div>
+        <p className="simu-resultat__sous">
+          Soit {Math.round(res.contrats[0])} à {Math.round(res.contrats[1])} contrats sur les {res.capacite} places que
+          vous pourriez ouvrir à distance, à {nombre(res.npec)} € par contrat et par an.
+        </p>
+        <p className="simu-resultat__asterisque">
+          * Potentiel estimé, pas un résultat garanti. Le détail du calcul est en bas de page.
+        </p>
+      </header>
+      <section className="simu-cartes">
+        <article className="simu-carte">
+          <h3>Prise en charge retenue</h3>
+          <p className="simu-carte__valeur">{nombre(res.npec)} €</p>
+          <p>
+            Par contrat et par an
+            {reponses.distance === 'plus80' ? ', après la baisse de 20 % pour une formation à 80 % à distance (plancher 4 000 €)' : ''}.
+          </p>
+        </article>
+        <article className="simu-carte">
+          <h3>Candidats par mois*</h3>
+          <p className="simu-carte__valeur">{res.budget ? `${Math.round(res.candidatsMois[0])} à ${Math.round(res.candidatsMois[1])}` : '—'}</p>
+          <p>{res.budget ? `Avec ${nombre(res.budget)} € de publicité par mois.` : 'Sans publicité : uniquement le bouche-à-oreille et votre site.'}</p>
+        </article>
+        <article className="simu-carte">
+          <h3>Places remplies*</h3>
+          <p className="simu-carte__valeur">{plein ? 'Toutes' : `${Math.round((res.contrats[0] / res.capacite) * 100)} à ${Math.round((res.contrats[1] / res.capacite) * 100)} %`}</p>
+          <p>{plein ? 'Votre budget suffit à remplir vos places. On peut même l’ajuster à la baisse.' : 'Plus de budget ou un meilleur suivi des candidats remplirait davantage.'}</p>
+        </article>
+      </section>
+      <section className="simu-bloc">
+        <h2 className="simu-bloc__titre">À savoir pour un CFA à distance</h2>
+        <ul className="simu-sources">
+          <li>
+            <span>Un diplôme sur 2 ans est financé chaque année du contrat</span>
+            <strong>× 2 ans</strong>
+          </li>
+          <li>
+            <span>Formation à 80 % ou plus à distance</span>
+            <strong>−20 % de prise en charge</strong>
+          </li>
+          <li>
+            <span>Plancher de prise en charge</span>
+            <strong>4 000 € par contrat</strong>
+          </li>
+        </ul>
+        <p className="simu-bloc__texte simu-bloc__texte--note">
+          Chaque contrat suppose aussi une entreprise d’accueil : on peut vous amener les deux avec la publicité
+          (candidats et employeurs).
+        </p>
+      </section>
+    </>
+  )
+}
+
+function ResultatFormation({ reponses, contact, partage }) {
+  const typeCpf = reponses.type === 'cpf'
+  const conseille = prixEnLigneConseille(reponses)
+  const [prixForce, setPrixForce] = useState(null)
+  const res = useMemo(() => calculer(reponses, prixForce ? { prixForce } : {}), [reponses, prixForce])
+  if (res.cfa) return <ResultatCfa reponses={reponses} res={res} contact={contact} partage={partage} />
+  const prixAffiche = res.prix
+  const n = res.n
+  const freins = (reponses.freins || []).filter((f) => REPONSES_FREINS[f])
+  const premiereVideo = freins.find((f) => REPONSES_FREINS[f].youtubeId)
+
+  const scenarios = []
+  if (!reponses.pub) {
+    const avecPub = calculer(reponses, { prixForce: prixAffiche, pub: 500 })
+    scenarios.push(['Avec 500 € de publicité par mois', fourchette(avecPub.annee1), 'sur 12 mois, budget pub déduit'])
+  }
+  if (n > 1) {
+    const une = calculer(reponses, { prixForce: prixAffiche, formations: 1 })
+    scenarios.push(['Avec une seule formation', fourchette(une.annee1), 'sur 12 mois'])
+  }
+  if (reponses.type === 'fondspropres' && reponses.coaching !== 'oui') {
+    const avecCoaching = calculer(reponses, { coaching: 'oui' })
+    scenarios.push([
+      `Avec un coaching business (prix conseillé ${nombre(avecCoaching.prix)} €)`,
+      fourchette(avecCoaching.annee1),
+      'sur 12 mois',
+    ])
+  }
+
+  let rentabilite
+  if (res.moisRentable === 0) rentabilite = 'dès le lancement'
+  else if (res.moisRentable !== null && res.moisRentable <= 12) rentabilite = `en ${res.moisRentable} mois environ`
+  else rentabilite = 'en plus de 12 mois'
+  const partRemb = Math.round(res.partRemboursee[0] * 100)
+
+  const paliers = typeCpf ? null : PRIX_EN_LIGNE
+  const indexPrix = paliers ? Math.max(0, paliers.findIndex((p) => p >= prixAffiche)) : 0
+
+  return (
+    <>
+      <header className="simu-resultat__entete">
+        <span className="eyebrow">{partage ? 'Simulation partagée' : 'Votre potentiel estimé'}</span>
+        <h1 className="simu-resultat__titre">
+          {contact?.prenom ? `${contact.prenom}, voici` : 'Voici'} ce que {n > 1 ? `vos ${n} formations` : 'votre formation'} en ligne pourrai{n > 1 ? 'en' : ''}t vous rapporter
+        </h1>
+        <div className="simu-resultat__chiffre">
+          <span className="simu-resultat__montant">
+            {fourchette(res.annee1)}
+            <sup>*</sup>
+          </span>
+          <span className="simu-resultat__periode">Potentiel sur 12 mois en France</span>
         </div>
         <p className="simu-resultat__sous">
           Dont {fourchette(res.caLancement)}* potentiellement dès le lancement, en proposant votre formation à
           votre base actuelle.
+          {res.langues.length > 0 && ` Et jusqu’à ${fourchette(res.etranger12)} de plus avec la version ${listeLangues(res.langues)}.`}
         </p>
         <p className="simu-resultat__asterisque">
           * Il s’agit d’un potentiel, pas d’un résultat garanti : une estimation calculée à partir de vos
           réponses et d’hypothèses prudentes. Le détail du calcul est en bas de page.
         </p>
-        <a href="#reserver" className="btn btn--primary">
-          {cfg
-            ? 'Appel ou vidéo d’analyse gratuite'
-            : chaleur === 'chaud'
-              ? 'Valider ce potentiel en 30 minutes'
-              : 'En parler gratuitement'}
-          <Fleche />
-        </a>
       </header>
 
       <section className="simu-cartes">
@@ -571,26 +707,40 @@ function Resultat({ reponses, contact, partage, onRecommencer, cfg, chemin }) {
       </section>
 
       <section className="simu-bloc">
-        <h2 className="simu-bloc__titre">Le prix de votre formation en ligne</h2>
+        <h2 className="simu-bloc__titre">{typeCpf ? 'Le prix de votre formation' : 'Le prix de votre formation en ligne'}</h2>
         <p className="simu-bloc__texte">
-          Prix conseillé : {nombre(conseille)} €
-          {reponses.coaching === 'oui' ? (cfg ? ' (avec accompagnement à l’installation)' : ' (avec coaching business)') : ''}. Déplacez le curseur pour tester un
-          autre prix : tous les chiffres se mettent à jour.
+          {typeCpf
+            ? 'L’élève paie seulement le reste à charge de 150 €, le CPF finance le reste.'
+            : `Prix conseillé pour votre domaine : ${nombre(conseille)} €${reponses.coaching === 'oui' ? ' (avec coaching business)' : ''}.`}{' '}
+          Déplacez le curseur pour tester un autre prix : tous les chiffres se mettent à jour.
         </p>
         <div className="simu-slider simu-slider--resultat">
           <div className="simu-slider__valeur">
-            {nombre(prixEnLigne)} <span>€</span>
+            {nombre(prixAffiche)} <span>€</span>
           </div>
-          <input
-            type="range"
-            min={0}
-            max={PRIX_EN_LIGNE.length - 1}
-            step={1}
-            value={indexPrix}
-            onChange={(e) => setPrixEnLigne(PRIX_EN_LIGNE[Number(e.target.value)])}
-            aria-label="Prix de votre formation en ligne"
-            style={{ '--progress': `${(indexPrix / (PRIX_EN_LIGNE.length - 1)) * 100}%` }}
-          />
+          {paliers ? (
+            <input
+              type="range"
+              min={0}
+              max={paliers.length - 1}
+              step={1}
+              value={indexPrix}
+              onChange={(e) => setPrixForce(paliers[Number(e.target.value)])}
+              aria-label="Prix de votre formation en ligne"
+              style={{ '--progress': `${(indexPrix / (paliers.length - 1)) * 100}%` }}
+            />
+          ) : (
+            <input
+              type="range"
+              min={500}
+              max={5000}
+              step={50}
+              value={prixAffiche}
+              onChange={(e) => setPrixForce(Number(e.target.value))}
+              aria-label="Prix de votre formation"
+              style={{ '--progress': `${((prixAffiche - 500) / 4500) * 100}%` }}
+            />
+          )}
         </div>
       </section>
 
@@ -613,18 +763,31 @@ function Resultat({ reponses, contact, partage, onRecommencer, cfg, chemin }) {
             <span>Votre communauté, par mois</span>
             <strong>{ventes(res.vCommunaute)}</strong>
           </li>
-          {res.refus > 0 && (
-            <li>
-              <span>Les élèves que vous devez refuser aujourd’hui, par mois</span>
-              <strong>{ventes(res.vRefus)}</strong>
-            </li>
-          )}
           <li>
             <span>La publicité, par mois</span>
             <strong>{res.budget ? `${fourchette(res.caPub)} de ventes` : 'pas de budget pub'}</strong>
           </li>
         </ul>
       </section>
+
+      {res.langues.length > 0 && (
+        <section className="simu-bloc">
+          <h2 className="simu-bloc__titre">Vendre à l’étranger</h2>
+          <div className="simu-scenarios">
+            <div className="simu-scenario">
+              <span>Version {listeLangues(res.langues)}</span>
+              <strong>{fourchette(res.etranger12)}</strong>
+              <small>sur 12 mois, budget pub déduit</small>
+            </div>
+          </div>
+          <p className="simu-bloc__texte simu-bloc__texte--note">
+            À l’étranger, vous n’avez pas encore d’audience : ces ventes viennent de la publicité. Calcul fait
+            avec {nombre(res.budgetEtranger)} € de pub par mois et par langue
+            {reponses.pub ? '' : ' (vous n’avez pas indiqué de budget, on a pris 500 €)'}, avec des ventes
+            un peu plus faibles qu’en France. La traduction n’est pas comptée dans le coût.
+          </p>
+        </section>
+      )}
 
       {scenarios.length > 0 && (
         <section className="simu-bloc">
@@ -638,12 +801,6 @@ function Resultat({ reponses, contact, partage, onRecommencer, cfg, chemin }) {
               </div>
             ))}
           </div>
-          {(reponses.etranger === 'oui' || reponses.etranger === 'peutetre') && (
-            <p className="simu-bloc__texte simu-bloc__texte--note">
-              Vous voulez aussi vendre à l’étranger : nous pouvons traduire votre formation pour d’autres
-              marchés. Ce potentiel n’est pas compté ici, on l’étudie ensemble pendant l’appel.
-            </p>
-          )}
         </section>
       )}
 
@@ -672,9 +829,6 @@ function Resultat({ reponses, contact, partage, onRecommencer, cfg, chemin }) {
             </span>
           </li>
         </ol>
-        <p className="simu-bloc__texte simu-bloc__texte--note">
-          Votre formation est prête à vendre environ 30 jours après le tournage.
-        </p>
       </section>
 
       <section className="simu-bloc">
@@ -685,10 +839,6 @@ function Resultat({ reponses, contact, partage, onRecommencer, cfg, chemin }) {
       {freins.length > 0 && (
         <section className="simu-bloc">
           <h2 className="simu-bloc__titre">Vos freins, nos réponses</h2>
-          <p className="simu-bloc__texte">
-            Dans le questionnaire, vous avez indiqué ce qui vous freinait jusqu’ici. Voici ce qu’on vous
-            répond{premiereVideo ? ', en vidéo et par écrit' : ''}.
-          </p>
           {premiereVideo && (
             <div className="simu-frein-video">
               <p className="simu-frein-video__question">
@@ -707,6 +857,156 @@ function Resultat({ reponses, contact, partage, onRecommencer, cfg, chemin }) {
           </div>
         </section>
       )}
+    </>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* Résultat — publicité                                                 */
+/* ------------------------------------------------------------------ */
+
+const LIBELLE_OFFRE = {
+  fondspropres: 'votre formation',
+  cpf: 'votre formation CPF',
+  cfa_eleves: 'votre CFA (apprentis)',
+  cfa_employeurs: 'votre CFA (entreprises)',
+}
+
+function ResultatPub({ reponses, contact, partage }) {
+  const [budget, setBudget] = useState(Number(reponses.budgetPub) || 1500)
+  const res = useMemo(() => calculerPub(reponses, { budgetPub: budget }), [reponses, budget])
+  const unite = res.cfa ? 'contrats' : 'ventes'
+  const conv = CONVERSION_PUB[res.offre]
+  const fmtNb = ([a, b]) => {
+    const x = Math.round(a)
+    const y = Math.round(b)
+    return x === y ? `${x}` : `${x} à ${y}`
+  }
+  return (
+    <>
+      <header className="simu-resultat__entete">
+        <span className="eyebrow">{partage ? 'Simulation partagée' : 'Votre potentiel estimé'}</span>
+        <h1 className="simu-resultat__titre">
+          {contact?.prenom ? `${contact.prenom}, voici` : 'Voici'} ce que la publicité pourrait rapporter à {LIBELLE_OFFRE[res.offre]}
+        </h1>
+        <div className="simu-resultat__chiffre">
+          <span className="simu-resultat__montant">
+            {fourchette(res.ca12)}
+            <sup>*</sup>
+          </span>
+          <span className="simu-resultat__periode">
+            {res.cfa ? 'de prise en charge OPCO sur 12 mois' : 'de chiffre d’affaires sur 12 mois'}
+          </span>
+        </div>
+        <p className="simu-resultat__sous">
+          Avec {nombre(budget)} € de publicité par mois : {fmtNb(res.leads)} personnes intéressées par mois et{' '}
+          {fmtNb(res.cfa ? res.ventes12 : res.ventes12)} {unite} sur l’année
+          {res.cfa ? `, à ${nombre(res.valeur)} € par contrat` : `, à ${nombre(res.valeur)} € la formation`}.
+        </p>
+        <p className="simu-resultat__asterisque">
+          * Chiffre d’affaires brut, avant le budget publicitaire et les autres charges. Potentiel estimé, pas
+          un résultat garanti.
+        </p>
+      </header>
+
+      <section className="simu-bloc">
+        <h2 className="simu-bloc__titre">Testez un autre budget</h2>
+        <div className="simu-slider simu-slider--resultat">
+          <div className="simu-slider__valeur">
+            {nombre(budget)} <span>€ / mois</span>
+          </div>
+          <input
+            type="range"
+            min={300}
+            max={10000}
+            step={100}
+            value={budget}
+            onChange={(e) => setBudget(Number(e.target.value))}
+            aria-label="Budget publicitaire par mois"
+            style={{ '--progress': `${((budget - 300) / 9700) * 100}%` }}
+          />
+          <div className="simu-slider__bornes" aria-hidden="true">
+            <span>300 €</span>
+            <span>10 000 €</span>
+          </div>
+        </div>
+      </section>
+
+      <section className="simu-cartes">
+        <article className="simu-carte">
+          <h3>Personnes intéressées par mois</h3>
+          <p className="simu-carte__valeur">{fmtNb(res.leads)}</p>
+          <p>
+            À {nombre(res.cpl[0])} – {nombre(res.cpl[1])} € par contact.{' '}
+            <strong>{res.source}</strong>
+          </p>
+        </article>
+        <article className="simu-carte">
+          <h3>{res.cfa ? 'Contrats signés sur l’année*' : 'Ventes par mois*'}</h3>
+          <p className="simu-carte__valeur">{res.cfa ? fmtNb(res.ventes12) : fmtNb(res.ventesMois)}</p>
+          <p>
+            {res.cfa
+              ? `Limité à vos ${res.places} places. Environ ${Math.round(conv[0] * 100)} à ${Math.round(conv[1] * 100)} % des contacts signent.`
+              : `Environ ${Math.round(conv[0] * 100)} à ${Math.round(conv[1] * 100)} % des contacts achètent quand ils sont rappelés vite.`}
+          </p>
+        </article>
+        <article className="simu-carte">
+          <h3>Chiffre d’affaires par mois*</h3>
+          <p className="simu-carte__valeur">{fourchette(res.caMois)}</p>
+          <p>Brut, une fois les campagnes lancées (les 2 premiers mois servent à les régler).</p>
+        </article>
+      </section>
+
+      <section className="simu-bloc">
+        <h2 className="simu-bloc__titre">Ce qui n’est pas compté ici</h2>
+        <p className="simu-bloc__texte">
+          Le budget publicitaire, notre rémunération et vos éventuels closers. On calcule votre bénéfice réel
+          ensemble pendant l’appel, avec vos vrais chiffres.
+        </p>
+        {reponses.rappel !== 'equipe' && (
+          <p className="simu-bloc__texte simu-bloc__texte--note">
+            Vous n’avez pas encore quelqu’un pour rappeler les contacts dans la journée : c’est ce qui fait le plus
+            varier les ventes. Le calcul en tient compte (ventes réduites). On peut aussi s’en charger.
+          </p>
+        )}
+        {res.offre === 'cpf' && (
+          <p className="simu-bloc__texte simu-bloc__texte--note">
+            CPF : la publicité est autorisée, le démarchage (appels, SMS ou messages non sollicités) est
+            interdit. On ne rappelle que les personnes qui ont demandé à être contactées.
+          </p>
+        )}
+      </section>
+
+    </>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* Écran résultat (commun)                                              */
+/* ------------------------------------------------------------------ */
+
+function Resultat({ mode, reponses, contact, partage, onRecommencer, onDemanderVideo, videoDemandee }) {
+  const [copie, setCopie] = useState(false)
+  const { chaleur } = scoreLead(mode, reponses, contact?.role)
+  const lienPartage = `${window.location.origin}/simulateur?r=${encoderReponses({ ...reponses, mode })}`
+
+  const copier = async () => {
+    try {
+      await navigator.clipboard.writeText(lienPartage)
+      setCopie(true)
+      setTimeout(() => setCopie(false), 2500)
+    } catch {
+      window.prompt('Copiez ce lien :', lienPartage)
+    }
+  }
+
+  return (
+    <div className="simu-resultat">
+      {mode === 'pub' ? (
+        <ResultatPub reponses={reponses} contact={contact} partage={partage} />
+      ) : (
+        <ResultatFormation reponses={reponses} contact={contact} partage={partage} />
+      )}
 
       <section className="simu-bloc">
         <h2 className="simu-bloc__titre">Ils l’ont fait : résultats réels de nos clients</h2>
@@ -716,55 +1016,60 @@ function Resultat({ reponses, contact, partage, onRecommencer, cfg, chemin }) {
             <span>de chiffre d’affaires pour l’un de nos clients après la digitalisation de ses formations</span>
           </div>
           <div className="simu-cas__item">
-            <strong>10 formations</strong>
-            <span>en ligne vendues en 3 mois par un autre client</span>
+            <strong>15 000 €</strong>
+            <span>générés le premier mois de publicité pour un autre client</span>
           </div>
         </div>
       </section>
 
-      <section className="simu-bloc simu-reserver" id="reserver">
-        <h2 className="simu-bloc__titre">
-          {chaleur === 'chaud'
-            ? 'Votre potentiel est élevé : validons-le ensemble'
-            : 'Parlons de votre projet'}
-        </h2>
-        <p className="simu-bloc__texte">
-          {cfg
-            ? 'Deux façons d’aller plus loin, gratuites et sans engagement. Choisissez celle qui vous convient.'
-            : '30 minutes, gratuit et sans engagement. On reprend votre simulation et on vous dit concrètement comment l’atteindre.'}
-        </p>
-        {cfg ? (
-          <DeuxChoix reponses={reponses} contact={contact} cfg={cfg} chemin={chemin} />
-        ) : (
-          <Calendly prenom={contact?.prenom} email={contact?.email} />
-        )}
-      </section>
+      {partage ? (
+        <section className="simu-bloc simu-reserver" id="reserver">
+          <h2 className="simu-bloc__titre">Parlons de ce projet</h2>
+          <Calendly />
+        </section>
+      ) : (
+        <FinParcours
+          contact={contact}
+          chaleur={chaleur}
+          mode={mode}
+          onDemanderVideo={onDemanderVideo}
+          videoDemandee={videoDemandee}
+        />
+      )}
 
       <section className="simu-bloc simu-bloc--discret">
         <p className="simu-mention">
           * Simulation indicative basée sur vos réponses et sur des hypothèses prudentes. Ce n’est pas une
-          promesse de résultat : vos ventes dépendront de votre offre, de votre audience et de votre
-          implication.
+          promesse de résultat : vos ventes dépendront de votre offre, de votre audience et de votre suivi
+          commercial.
         </p>
         <details className="simu-hypotheses">
           <summary>Comment c’est calculé</summary>
-          <ul>
-            <li>Prix en ligne conseillé : environ {Math.round(HYPOTHESES.ratioPrixEnLigne * 100)} % du prix en présentiel, +70 % avec un coaching business.</li>
-            <li>Au lancement : de 0,5 à 5 % de vos anciens élèves rachètent selon votre métier, et 0,05 à 0,1 % de vos abonnés.</li>
-            <li>Chaque mois : 10 à 18 % de vos nouveaux élèves prennent aussi la version en ligne, et 0,01 à 0,02 % de vos abonnés achètent.</li>
-            {cfg && (
-              <li>Demandes refusées faute de place : 25 à 40 % achètent la version en ligne.</li>
-            )}
-            <li>Publicité : 1 € investi rapporte 1,5 à 2,3 € de ventes, budget déduit du résultat.</li>
-            <li>Plus le prix est élevé, moins il y a d’acheteurs. Chaque formation supplémentaire rapporte moins que la précédente.</li>
-          </ul>
+          {mode === 'pub' ? (
+            <ul>
+              <li>Coût par contact : relevé sur nos propres campagnes Meta quand nous avons déjà diffusé dans votre domaine, sinon estimation prudente.</li>
+              <li>Environ 1 contact sur 2 prend rendez-vous, puis 10 à 15 % signent. Moins si personne ne rappelle vite.</li>
+              <li>Plus la formation est chère, moins les contacts achètent.</li>
+              <li>Montée en charge : les campagnes tournent à 50 % le 1er mois et 80 % le 2e, le temps de les régler.</li>
+              <li>CFA : 2 à 5 % des candidats et 4 à 8 % des entreprises intéressées aboutissent à un contrat, dans la limite de vos places.</li>
+            </ul>
+          ) : (
+            <ul>
+              <li>Au lancement : de 0,5 à 5 % de vos anciens élèves rachètent selon votre métier, et 0,05 à 0,1 % de vos abonnés.</li>
+              <li>Chaque mois : 10 à 18 % de vos nouveaux élèves prennent aussi la version en ligne, et 0,01 à 0,02 % de vos abonnés achètent.</li>
+              <li>Publicité : 1 € investi rapporte {String(HYPOTHESES.retourPub[0]).replace('.', ',')} à {String(HYPOTHESES.retourPub[1]).replace('.', ',')} € de ventes, budget déduit.</li>
+              <li>Plus le prix est élevé, moins il y a d’acheteurs. Chaque formation supplémentaire rapporte moins que la précédente.</li>
+              <li>Étranger : une langue traduite rapporte environ 70 % de ce que rapporte la publicité en France, à budget égal, budget déduit.</li>
+              <li>CFA : prise en charge saisie, −20 % au-delà de 80 % à distance (plancher 4 000 €), 2 à 5 % des candidats signent.</li>
+            </ul>
+          )}
         </details>
         <div className="simu-pied">
           <button type="button" className="simu-lien" onClick={copier}>
             {copie ? 'Lien copié ✓' : 'Partager ma simulation (utile si vous décidez à plusieurs)'}
           </button>
           <button type="button" className="simu-lien" onClick={onRecommencer}>
-            Refaire la simulation
+            Faire une autre simulation
           </button>
         </div>
       </section>
@@ -773,134 +1078,128 @@ function Resultat({ reponses, contact, partage, onRecommencer, cfg, chemin }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Pages métier : deux façons d'aller plus loin                         */
+/* Envoi                                                                */
 /* ------------------------------------------------------------------ */
 
-function DeuxChoix({ reponses, contact, cfg, chemin }) {
-  const [choix, setChoix] = useState(null)
-  const [lien, setLien] = useState(contact?.instagram ? `@${contact.instagram}` : '')
-  const [email, setEmail] = useState(contact?.email || '')
-  const [telephone, setTelephone] = useState(contact?.telephone || '')
-  const [erreur, setErreur] = useState('')
-  const [etat, setEtat] = useState('attente') // attente | envoi | envoye
-
-  const demanderVideo = async (e) => {
-    e.preventDefault()
-    const mail = normaliserEmail(email)
-    if (!mail) return setErreur('Indiquez une adresse email valide')
-    if (!lien.trim()) return setErreur('Indiquez votre site, votre page Google ou votre Instagram')
-    setErreur('')
-    setEtat('envoi')
-    const res = calculer(reponses)
-    const donnees = {
-      date: new Date().toISOString(),
-      demande: 'Vidéo d’analyse gratuite',
-      metier: cfg.libelleDomaine,
-      prenom: contact?.prenom || '',
-      centre: contact?.centre || '',
-      ville: contact?.ville || '',
-      email: mail,
-      telephone: normaliserTelephone(telephone) || telephone.trim(),
-      lien_centre: lien.trim(),
-      annee1_min: Math.round(res.annee1[0]),
-      annee1_max: Math.round(res.annee1[1]),
-      lien_resultat: `${window.location.origin}${chemin}?r=${encoderReponses(reponses)}`,
-      source_trafic: lireSource()?.libelle || '',
-    }
-    const corps = new URLSearchParams(Object.entries(donnees).map(([k, v]) => [k, String(v)]))
-    try {
-      await fetch(WEBHOOK_VIDEO_URL, { method: 'POST', mode: 'no-cors', keepalive: true, body: corps })
-    } catch {
-      try {
-        navigator.sendBeacon?.(WEBHOOK_VIDEO_URL, corps)
-      } catch {
-        /* ignore */
-      }
-    }
-    trackCustom('DemandeVideoAnalyse', { metier: cfg.slug })
-    evenementGA('demande_video_analyse', { metier: cfg.slug })
-    setEtat('envoye')
+function lireUtm() {
+  try {
+    return JSON.parse(window.sessionStorage.getItem('expansion-utm')) || {}
+  } catch {
+    return {}
   }
+}
 
-  return (
-    <div className="simu-choix">
-      <div className="simu-choix__cartes">
-        <article className={`simu-choix__carte${choix === 'appel' ? ' is-actif' : ''}`}>
-          <span className="simu-choix__num">Option 1</span>
-          <h3>Réserver un appel de 30 minutes</h3>
-          <p>On reprend votre simulation ensemble et on vous dit concrètement comment atteindre ce potentiel.</p>
-          <button type="button" className="btn btn--primary" onClick={() => setChoix('appel')}>
-            Choisir un créneau
-            <Fleche />
-          </button>
-        </article>
-        <article className={`simu-choix__carte${choix === 'video' ? ' is-actif' : ''}`}>
-          <span className="simu-choix__num">Option 2</span>
-          <h3>Recevoir une vidéo d’analyse gratuite de votre centre</h3>
-          <p>
-            Pas le temps pour un appel ? On regarde votre centre et votre simulation, puis on vous envoie
-            une vidéo personnalisée : comment mettre votre formation en ligne et par où commencer.
-          </p>
-          <button type="button" className="btn btn--secondary" onClick={() => setChoix('video')}>
-            Recevoir ma vidéo gratuite
-            <Fleche />
-          </button>
-        </article>
-      </div>
+function libelleReponse(liste, id, reponses) {
+  const q = liste.find((x) => x.id === id)
+  const v = reponses[id]
+  if (!q) return ''
+  if (Array.isArray(v)) return v.map((x) => q.options.find((o) => o.value === x)?.label || x).join(', ')
+  if (v === null) return 'Je ne sais pas'
+  if (v === undefined) return ''
+  return q.options?.find((o) => o.value === v)?.label ?? String(v)
+}
 
-      {choix === 'appel' && <Calendly prenom={contact?.prenom} email={contact?.email} />}
+async function posterWebhook(donnees) {
+  if (!WEBHOOK_URL) return
+  const corps = new URLSearchParams(Object.entries(donnees).map(([k, v]) => [k, String(v ?? '')]))
+  try {
+    await fetch(WEBHOOK_URL, { method: 'POST', mode: 'no-cors', keepalive: true, body: corps })
+  } catch {
+    try {
+      navigator.sendBeacon?.(WEBHOOK_URL, corps)
+    } catch {
+      /* le résultat s'affiche quand même */
+    }
+  }
+}
 
-      {choix === 'video' &&
-        (etat === 'envoye' ? (
-          <div className="simu-choix__merci" role="status">
-            <strong>C’est noté{contact?.prenom ? `, ${contact.prenom}` : ''} !</strong>
-            <span>
-              On analyse votre centre et on vous envoie votre vidéo par email. Si vous préférez en parler de vive
-              voix, vous pouvez aussi réserver un appel ci-dessus.
-            </span>
-          </div>
-        ) : (
-          <form className="simu-choix__form" onSubmit={demanderVideo} noValidate>
-            <label className="simu-champ">
-              <span>Votre site, votre page Google ou votre Instagram</span>
-              <input type="text" value={lien} onChange={(e) => setLien(e.target.value)} placeholder="www.votre-centre.fr ou @votrecompte" />
-            </label>
-            <label className="simu-champ">
-              <span>Email où recevoir la vidéo</span>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
-            </label>
-            <label className="simu-champ">
-              <span>
-                Téléphone <small>(facultatif)</small>
-              </span>
-              <input type="tel" value={telephone} onChange={(e) => setTelephone(e.target.value)} autoComplete="tel" inputMode="tel" />
-            </label>
-            {erreur && <em className="simu-erreur">{erreur}</em>}
-            <div className="simu-actions">
-              <button type="submit" className="btn btn--primary" disabled={etat === 'envoi'}>
-                Envoyer ma demande
-                <Fleche />
-              </button>
-            </div>
-          </form>
-        ))}
-    </div>
-  )
+function construireDonnees(mode, reponses, infos) {
+  const { score, chaleur } = scoreLead(mode, reponses, infos.role)
+  const utm = lireUtm()
+  const liste = mode === 'pub' ? QUESTIONS_PUB : QUESTIONS
+  const lib = (id) => libelleReponse(liste, id, reponses)
+  const commun = {
+    date: new Date().toISOString(),
+    mode: mode === 'pub' ? 'Publicité' : 'Formation en ligne',
+    prenom: infos.prenom,
+    centre: infos.centre,
+    ville: infos.ville,
+    email: infos.email,
+    telephone: infos.telephone,
+    instagram: infos.instagram,
+    role: ROLES.find((r) => r.value === infos.role)?.label || '',
+    chaleur,
+    score,
+    domaine: lib('domaine'),
+    delai: lib('delai'),
+    lien_resultat: `${window.location.origin}/simulateur?r=${encoderReponses({ ...reponses, mode })}`,
+    utm_source: utm.utm_source || '',
+    utm_medium: utm.utm_medium || '',
+    utm_campaign: utm.utm_campaign || '',
+    utm_content: utm.utm_content || '',
+    utm_term: utm.utm_term || '',
+    fbclid: utm.fbclid || '',
+    source_trafic: lireSource()?.libelle || '',
+    canal_trafic: lireSource()?.canal || '',
+    consentement: 'oui',
+  }
+  if (mode === 'pub') {
+    const res = calculerPub(reponses)
+    return {
+      ...commun,
+      type_offre: lib('offre'),
+      prix_en_ligne: res.valeur,
+      budget_pub: `${res.budget} € / mois`,
+      budget_pub_mensuel: res.budget,
+      leads_mois: `${Math.round(res.leads[0])} à ${Math.round(res.leads[1])}`,
+      cpl: `${res.cpl[0]} à ${res.cpl[1]} €`,
+      nb_formations: res.cfa ? `${res.places} places` : '',
+      freins: lib('rappel') ? `Rappel des contacts : ${lib('rappel')}` : '',
+      mensuel_min: Math.round(res.caMois[0]),
+      mensuel_max: Math.round(res.caMois[1]),
+      annee1_min: Math.round(res.ca12[0]),
+      annee1_max: Math.round(res.ca12[1]),
+      _valeur: Math.round(res.ca12[0]),
+    }
+  }
+  const res = calculer(reponses)
+  return {
+    ...commun,
+    type_offre: lib('type'),
+    prix_presentiel: reponses.type === 'cfa' ? `NPEC ${Math.round(res.npec)} €` : '',
+    eleves_par_an: reponses.type === 'cfa' ? `${lib('capacite')} places à distance` : lib('eleves'),
+    anciens_eleves: lib('anciens'),
+    abonnes: lib('abonnes'),
+    existant: lib('existant'),
+    nb_formations: lib('formations'),
+    coaching: lib('coaching'),
+    budget_pub: lib('pub'),
+    budget_pub_mensuel: Number(reponses.pub ?? 0),
+    langues: lib('langues'),
+    etranger: (reponses.langues || []).length ? 'Oui' : 'Non',
+    freins: lib('freins'),
+    prix_en_ligne: Math.round(res.prix),
+    lancement_min: Math.round(res.caLancement[0]),
+    lancement_max: Math.round(res.caLancement[1]),
+    mensuel_min: Math.round(res.netMensuel[0]),
+    mensuel_max: Math.round(res.netMensuel[1]),
+    annee1_min: Math.round(res.annee1[0]),
+    annee1_max: Math.round(res.annee1[1]),
+    _valeur: Math.round(res.annee1[0]),
+  }
 }
 
 /* ------------------------------------------------------------------ */
-/* Page                                                                 */
+/* Application (page dédiée ou intégrée à l'accueil)                    */
 /* ------------------------------------------------------------------ */
 
-function Simulateur({ niche }) {
-  const cfg = niche ? NICHES[niche] : null
-  const QUESTIONS_PAGE = cfg ? cfg.questions : QUESTIONS
-  const STOCKAGE = cfg ? cfg.stockage : STOCKAGE_DEFAUT
-  const chemin = cfg ? cfg.path : '/simulateur'
-  const depart = cfg ? { domaine: cfg.domaine } : {}
+const ETAT_VIDE = { mode: null, ecran: 'intro', reponses: {}, contact: null, envoye: false, video: false }
+
+export function SimulateurApp({ embarque = false }) {
+  const navigate = useNavigate()
   const params = useMemo(
-    () => new URLSearchParams(typeof window !== 'undefined' ? window.location.search : ''),
-    [],
+    () => new URLSearchParams(!embarque && typeof window !== 'undefined' ? window.location.search : ''),
+    [embarque],
   )
   const partage = useMemo(() => {
     const code = params.get('r')
@@ -908,32 +1207,36 @@ function Simulateur({ niche }) {
   }, [params])
 
   const initial = useMemo(() => {
-    const sauve = lireStockage(STOCKAGE)
-    const domaineUrl = cfg ? null : params.get('d')
-    if (domaineUrl && QUESTIONS[0].options.some((o) => o.value === domaineUrl)) {
-      return { ecran: 1, reponses: { domaine: domaineUrl }, contact: null, envoye: false }
-    }
-    return sauve || { ecran: 'intro', reponses: depart, contact: null, envoye: false }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params])
+    if (embarque) return ETAT_VIDE
+    if (partage) return { ...ETAT_VIDE, mode: partage.mode || 'formation', ecran: 'resultat', reponses: partage, envoye: true }
+    const modeUrl = params.get('mode')
+    const domaineUrl = params.get('d')
+    if (modeUrl === 'pub' || modeUrl === 'formation') return { ...ETAT_VIDE, mode: modeUrl, ecran: 0 }
+    if (domaineUrl) return { ...ETAT_VIDE, mode: 'formation', ecran: 0, reponses: { domaine: domaineUrl } }
+    return lireStockage() || ETAT_VIDE
+  }, [params, partage, embarque])
 
-  const [ecran, setEcran] = useState(partage ? 'resultat' : initial.ecran)
-  const [reponses, setReponses] = useState(partage || initial.reponses)
-  const [contact, setContact] = useState(partage ? null : initial.contact)
-  const [envoye, setEnvoye] = useState(partage ? true : initial.envoye)
+  const [etat, setEtat] = useState(initial)
+  const { mode, ecran, reponses, contact, envoye, video } = etat
+  const maj = (patch) => setEtat((e) => ({ ...e, ...patch }))
   const [envoiEnCours, setEnvoiEnCours] = useState(false)
   const haut = useRef(null)
+  const premierRendu = useRef(true)
+
+  const liste = useMemo(() => (mode ? questionsActives(mode, reponses) : []), [mode, reponses])
 
   useEffect(() => {
-    if (!cfg && params.has('d')) {
+    if (embarque) return
+    if (params.has('d') || params.has('mode')) {
       const propre = new URLSearchParams(params)
       propre.delete('d')
+      propre.delete('mode')
       const q = propre.toString()
       window.history.replaceState(null, '', `/simulateur${q ? `?${q}` : ''}`)
     }
     try {
       const utm = {}
-      UTM_CLES.forEach((k) => {
+      ;['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'].forEach((k) => {
         const v = params.get(k)
         if (v) utm[k] = v
       })
@@ -941,196 +1244,182 @@ function Simulateur({ niche }) {
     } catch {
       /* ignore */
     }
-  }, [params, cfg])
+  }, [params, embarque])
 
   useEffect(() => {
     if (partage) return
-    ecrireStockage(STOCKAGE, { ecran, reponses, contact, envoye })
-  }, [ecran, reponses, contact, envoye, partage, STOCKAGE])
+    if (embarque && etat.ecran === 'intro') return
+    ecrireStockage(etat)
+  }, [etat, partage, embarque])
 
   useEffect(() => {
-    haut.current?.scrollIntoView({ behavior: 'instant', block: 'start' })
-  }, [ecran])
+    if (premierRendu.current) {
+      premierRendu.current = false
+      return
+    }
+    const el = haut.current
+    if (!el) return
+    if (embarque) {
+      const top = el.getBoundingClientRect().top
+      if (top < 0 || top > window.innerHeight * 0.4) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else {
+      el.scrollIntoView({ behavior: 'instant', block: 'start' })
+    }
+  }, [ecran, embarque])
 
   useEffect(() => {
     const surMessage = (e) => {
       if (e.origin === 'https://calendly.com' && e.data?.event === 'calendly.event_scheduled') {
         track('Schedule')
-        rdvReserve(cfg ? `simulateur-${cfg.slug}` : 'simulateur')
+        rdvReserve('simulateur')
       }
     }
     window.addEventListener('message', surMessage)
     return () => window.removeEventListener('message', surMessage)
-  }, [cfg])
+  }, [])
 
-  const demarrer = () => {
-    trackCustom('SimulateurDebut')
-    evenementGA('simulateur_debut')
-    setEcran(0)
+  const choisirMode = (m) => {
+    trackCustom('SimulateurDebut', { mode: m })
+    evenementGA('simulateur_debut', { mode: m, emplacement: embarque ? 'accueil' : 'page' })
+    setEtat({ ...ETAT_VIDE, mode: m, ecran: 0 })
   }
 
   const repondre = useCallback(
     (id, valeur) => {
-      setReponses((r) => ({ ...r, [id]: valeur }))
-      const index = QUESTIONS_PAGE.findIndex((q) => q.id === id)
-      trackCustom('SimulateurQuestion', { question: index + 1 })
-      evenementGA('simulateur_question', { numero: index + 1, question: id })
-      const suivant = () => setEcran(index + 1 < QUESTIONS_PAGE.length ? index + 1 : 'contact')
-      const q = QUESTIONS_PAGE[index]
-      if (!q.type) setTimeout(suivant, 220)
-      else suivant()
+      setEtat((e) => {
+        const nouvelles = { ...e.reponses, [id]: valeur }
+        const actives = questionsActives(e.mode, nouvelles)
+        const index = actives.findIndex((q) => q.id === id)
+        trackCustom('SimulateurQuestion', { question: index + 1, mode: e.mode })
+        evenementGA('simulateur_question', { numero: index + 1, question: id, mode: e.mode })
+        return { ...e, reponses: nouvelles, suivant: index + 1 < actives.length ? index + 1 : 'contact' }
+      })
     },
-    [QUESTIONS_PAGE],
+    [],
   )
 
+  // Passage à l'écran suivant, avec un petit délai pour voir le choix sélectionné.
+  useEffect(() => {
+    if (etat.suivant === undefined) return
+    const t = setTimeout(() => setEtat((e) => ({ ...e, ecran: e.suivant, suivant: undefined })), 200)
+    return () => clearTimeout(t)
+  }, [etat.suivant])
+
   const retour = () => {
-    if (ecran === 'contact') setEcran(QUESTIONS_PAGE.length - 1)
-    else if (ecran === 0) setEcran('intro')
-    else if (typeof ecran === 'number') setEcran(ecran - 1)
+    if (ecran === 'contact') maj({ ecran: liste.length - 1 })
+    else if (ecran === 0) maj({ ecran: 'intro', mode: null })
+    else if (typeof ecran === 'number') maj({ ecran: ecran - 1 })
   }
 
   const envoyer = async (infos) => {
-    if (infos.robot) {
-      setContact(infos)
-      setEcran('resultat')
+    const { robot, ...propre } = infos
+    if (robot) {
+      maj({ contact: propre, ecran: 'resultat' })
       return
     }
     setEnvoiEnCours(true)
-    const res = calculer(reponses)
-    const { score, chaleur } = scoreLead(reponses)
-    let utm = {}
-    try {
-      utm = JSON.parse(window.sessionStorage.getItem('expansion-utm')) || {}
-    } catch {
-      utm = {}
-    }
-    const libelle = (id) => {
-      const q = QUESTIONS_PAGE.find((x) => x.id === id)
-      const v = reponses[id]
-      if (!q) return v === undefined ? '' : String(v)
-      if (Array.isArray(v)) return v.map((x) => q.options.find((o) => o.value === x)?.label || x).join(', ')
-      if (v === null || v === undefined) return 'Je ne sais pas'
-      return q.options?.find((o) => o.value === v)?.label ?? String(v)
-    }
-    const donnees = {
-      date: new Date().toISOString(),
-      prenom: infos.prenom,
-      centre: infos.centre,
-      ville: infos.ville,
-      email: infos.email,
-      telephone: infos.telephone,
-      instagram: infos.instagram,
-      chaleur,
-      score,
-      domaine: cfg
-        ? `${cfg.libelleDomaine} – ${libelle('specialite')} · refusés/mois : ${libelle('refus')}`
-        : libelle('domaine'),
-      role: libelle('role'),
-      prix_presentiel: reponses.prix ?? 'Je ne sais pas',
-      eleves_par_an: libelle('eleves'),
-      anciens_eleves: libelle('anciens'),
-      abonnes: libelle('abonnes'),
-      existant: libelle('existant'),
-      nb_formations: libelle('formations'),
-      coaching: libelle('coaching'),
-      budget_pub: libelle('pub'),
-      etranger: libelle('etranger'),
-      freins: libelle('freins'),
-      delai: libelle('delai'),
-      prix_en_ligne: res.prix,
-      lancement_min: Math.round(res.caLancement[0]),
-      lancement_max: Math.round(res.caLancement[1]),
-      mensuel_min: Math.round(res.netMensuel[0]),
-      mensuel_max: Math.round(res.netMensuel[1]),
-      annee1_min: Math.round(res.annee1[0]),
-      annee1_max: Math.round(res.annee1[1]),
-      lien_resultat: `${window.location.origin}${chemin}?r=${encoderReponses(reponses)}`,
-      utm_source: utm.utm_source || '',
-      utm_medium: utm.utm_medium || '',
-      utm_campaign: utm.utm_campaign || '',
-      utm_content: utm.utm_content || '',
-      utm_term: utm.utm_term || '',
-      fbclid: utm.fbclid || '',
-      source_trafic: lireSource()?.libelle || '',
-      canal_trafic: lireSource()?.canal || '',
-      consentement: 'oui',
-    }
-    if (WEBHOOK_URL && !envoye) {
-      const corps = new URLSearchParams(Object.entries(donnees).map(([k, v]) => [k, String(v)]))
-      try {
-        await fetch(WEBHOOK_URL, { method: 'POST', mode: 'no-cors', keepalive: true, body: corps })
-      } catch {
-        try {
-          navigator.sendBeacon?.(WEBHOOK_URL, corps)
-        } catch {
-          /* le résultat s'affiche quand même */
-        }
-      }
-    }
-    track('Lead', { value: Math.round(res.annee1[0]), currency: 'EUR' })
+    const donnees = construireDonnees(mode, reponses, propre)
+    const { _valeur, ...corps } = donnees
+    if (!envoye) await posterWebhook(corps)
+    track('Lead', { value: _valeur, currency: 'EUR' })
     evenementGA('generate_lead', {
-      lead_source: cfg ? `simulateur-${cfg.slug}` : 'simulateur',
+      lead_source: 'simulateur',
+      simulateur_mode: mode,
       canal_source: lireSource()?.canal || '',
       outil_source: lireSource()?.outil || '',
-      value: Math.round(res.annee1[0]),
+      value: _valeur,
       currency: 'EUR',
-      domaine: reponses.domaine || '',
-      chaleur,
-      score,
+      domaine: reponses.domaine || reponses.offre || '',
+      chaleur: corps.chaleur,
+      score: corps.score,
     })
-    setContact({ prenom: infos.prenom, email: infos.email, centre: infos.centre, ville: infos.ville, telephone: infos.telephone, instagram: infos.instagram })
-    setEnvoye(true)
+    const suivant = { ...etat, contact: propre, envoye: true, ecran: 'resultat', suivant: undefined }
     setEnvoiEnCours(false)
-    setEcran('resultat')
+    if (embarque) {
+      ecrireStockage(suivant)
+      navigate('/simulateur')
+      return
+    }
+    setEtat(suivant)
+  }
+
+  const demanderVideo = async () => {
+    maj({ video: true })
+    evenementGA('simulateur_video_demandee', { mode })
+    trackCustom('SimulateurVideo', { mode })
+    if (!contact?.email) return
+    const res = resultat(mode, reponses)
+    await posterWebhook({
+      evenement: 'video',
+      date: new Date().toISOString(),
+      mode: mode === 'pub' ? 'Publicité' : 'Formation en ligne',
+      prenom: contact.prenom,
+      centre: contact.centre,
+      ville: contact.ville,
+      instagram: contact.instagram,
+      email: contact.email,
+      telephone: contact.telephone,
+      domaine: libelleReponse(mode === 'pub' ? QUESTIONS_PUB : QUESTIONS, mode === 'pub' && !reponses.domaine ? 'offre' : 'domaine', reponses),
+      annee1_min: Math.round(res.annee1[0]),
+      annee1_max: Math.round(res.annee1[1]),
+      lien_resultat: `${window.location.origin}/simulateur?r=${encoderReponses({ ...reponses, mode })}`,
+    })
   }
 
   const recommencer = () => {
-    setReponses(depart)
-    setContact(null)
-    setEnvoye(false)
-    setEcran('intro')
-    if (partage) window.history.replaceState(null, '', chemin)
+    setEtat(ETAT_VIDE)
+    if (partage) window.history.replaceState(null, '', '/simulateur')
   }
 
-  const question = typeof ecran === 'number' ? QUESTIONS_PAGE[ecran] : null
+  const question = typeof ecran === 'number' ? liste[ecran] : null
 
   return (
-    <div className="simu-page">
-      <header className="simu-header" ref={haut}>
-        <Link to="/" className="navbar__brand simu-header__marque">
-          <span className="navbar__brand-dot" aria-hidden="true" />
-          Expansion
-        </Link>
-      </header>
+    <div className={embarque ? 'simu-embarque' : undefined} ref={haut}>
       <main
         className={`simu-main${ecran === 'resultat' ? ' simu-main--large' : ''}${ecran === 'intro' ? ' simu-main--intro' : ''}`}
       >
-        {ecran === 'intro' && <Intro onStart={demarrer} cfg={cfg} total={QUESTIONS_PAGE.length} />}
+        {ecran === 'intro' && <Intro onChoisir={choisirMode} embarque={embarque} />}
         {question && (
           <Question
-            key={question.id}
+            key={`${mode}-${question.id}`}
+            mode={mode}
             question={question}
             index={ecran}
-            total={QUESTIONS_PAGE.length}
+            total={liste.length}
             reponses={reponses}
             onRepondre={repondre}
             onRetour={retour}
           />
         )}
         {ecran === 'contact' && (
-          <Contact reponses={reponses} onEnvoyer={envoyer} onRetour={retour} envoiEnCours={envoiEnCours} />
+          <Contact mode={mode} reponses={reponses} onEnvoyer={envoyer} onRetour={retour} envoiEnCours={envoiEnCours} />
         )}
-        {ecran === 'resultat' && (
+        {ecran === 'resultat' && !embarque && (
           <Resultat
+            mode={mode}
             reponses={reponses}
             contact={contact}
             partage={Boolean(partage)}
             onRecommencer={recommencer}
-            cfg={cfg}
-            chemin={chemin}
+            onDemanderVideo={demanderVideo}
+            videoDemandee={video}
           />
         )}
       </main>
+    </div>
+  )
+}
+
+function Simulateur() {
+  return (
+    <div className="simu-page">
+      <header className="simu-header">
+        <Link to="/" className="navbar__brand simu-header__marque">
+          <span className="navbar__brand-dot" aria-hidden="true" />
+          Expansion
+        </Link>
+      </header>
+      <SimulateurApp />
     </div>
   )
 }

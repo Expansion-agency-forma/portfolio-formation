@@ -1136,6 +1136,159 @@
     color: var(--color-gold);
 }
 
+/* ---- Simulateur v2 : choix du mode, options détaillées, fin de parcours ---- */
+.simu-modes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-6) 0 var(--space-4);
+    text-align: left;
+}
+
+.simu-mode {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: 1.5rem;
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    text-align: left;
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition:
+        border-color var(--dur-fast) var(--ease-out),
+        transform var(--dur-fast) var(--ease-out),
+        background var(--dur-fast) var(--ease-out);
+}
+
+.simu-mode:hover {
+    border-color: var(--color-gold);
+    background: var(--color-bg-muted);
+    transform: translateY(-2px);
+}
+
+.simu-mode__titre {
+    font-family: var(--font-serif, 'Playfair Display', Georgia, serif);
+    font-size: 1.25rem;
+    line-height: 1.25;
+}
+
+.simu-mode__texte {
+    font-size: var(--fs-sm, 0.9rem);
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    flex: 1;
+}
+
+.simu-mode__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: var(--space-2);
+    font-weight: 600;
+    color: var(--color-gold);
+}
+
+.simu-mode__cta svg {
+    width: 18px;
+    height: 18px;
+}
+
+.simu-option__texte {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.simu-option__texte small {
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+}
+
+.simu-champ select {
+    width: 100%;
+    min-height: 50px;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color: var(--color-text);
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    outline: none;
+}
+
+.simu-champ select:focus {
+    border-color: var(--color-gold);
+}
+
+.simu-champ.has-erreur select {
+    border-color: #e5484d;
+}
+
+.simu-fin {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-5, 1.5rem) 0;
+}
+
+.simu-fin__choix {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1.25rem 1.375rem;
+    font-family: var(--font-sans);
+    text-align: left;
+    color: var(--color-text);
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+
+.simu-fin__choix strong {
+    font-size: 1.05rem;
+}
+
+.simu-fin__choix span {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+}
+
+.simu-fin__choix:hover,
+.simu-fin__choix.is-actif {
+    border-color: var(--color-gold);
+    background: var(--color-gold-soft);
+}
+
+.simu-video-ok {
+    padding: 1.25rem 1.375rem;
+    border: 1px solid var(--color-gold-border);
+    border-radius: var(--radius-md);
+    background: var(--color-gold-soft);
+}
+
+.simu-video-ok p {
+    margin: 0.4rem 0 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+}
+
+.simu-embarque .simu-main {
+    padding: 0;
+    min-height: 0;
+}
+
+.simu-embarque .simu-intro__titre {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
 /* Pages métier : deux choix en fin de simulation */
 .simu-choix {
     display: flex;

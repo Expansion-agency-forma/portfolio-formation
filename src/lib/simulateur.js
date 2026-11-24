@@ -7,58 +7,137 @@ export const CALENDLY_URL =
 // Adresse de réception des contacts (webhook Make). Vide = aucun envoi.
 export const WEBHOOK_URL = 'https://hook.eu2.make.com/3u5g75qrb8f93xjnb5ujnkkplilz16ob'
 
-// Demandes de vidéo d'analyse gratuite (pages métier) : webhook Make → onglet « Demandes vidéo » + Telegram.
-export const WEBHOOK_VIDEO_URL = 'https://hook.eu2.make.com/4zxmrg9fwuqecxb7d64d5nd718uryt1u'
-
 export const INVESTISSEMENT_PAR_FORMATION = 2500
 export const VIDEO_OFFRE_ID = 'fRIjNmgk0hE'
 
 /* ------------------------------------------------------------------ */
-/* Questions                                                           */
+/* Questions — mode « formation en ligne »                             */
 /* ------------------------------------------------------------------ */
+// `si` : la question n'apparaît que si la condition est vraie.
 
-export const ETAPES = ['Votre centre', 'Votre audience', 'Votre projet']
+export const ETAPES = ['Votre projet', 'Votre audience', 'Votre lancement']
+
+const pasCfa = (r) => r.type !== 'cfa'
+
+export const PRIX_EN_LIGNE = [47, 97, 147, 197, 247, 297, 347, 397, 497, 597, 697, 797, 997, 1297, 1497, 1997]
+
+const DOMAINES = [
+  { value: 'beaute', label: 'Beauté, esthétique, ongles, cils' },
+  { value: 'coiffure', label: 'Coiffure, barbier' },
+  { value: 'sante', label: 'Santé, bien-être, massage' },
+  { value: 'vtc', label: 'VTC, taxi, transport, sécurité' },
+  { value: 'technique', label: 'Technique, BTP, artisanat' },
+  { value: 'autre', label: 'Autre domaine' },
+]
 
 export const QUESTIONS = [
   {
-    id: 'domaine',
+    id: 'type',
     etape: 0,
-    titre: 'Dans quel domaine formez-vous ?',
+    titre: 'Quel type de formation voulez-vous mettre en ligne ?',
     options: [
-      { value: 'beaute', label: 'Beauté, esthétique, ongles, cils' },
-      { value: 'coiffure', label: 'Coiffure, barbier' },
-      { value: 'sante', label: 'Santé, bien-être, massage' },
-      { value: 'vtc', label: 'VTC, taxi, transport, sécurité' },
-      { value: 'technique', label: 'Technique, BTP, artisanat' },
-      { value: 'autre', label: 'Autre domaine' },
+      { value: 'fondspropres', label: 'Une formation courte que je vends moi-même', detail: 'Prix libre, payée par l’élève' },
+      { value: 'cpf', label: 'Une formation certifiante éligible au CPF', detail: 'Financée par le compte formation' },
+      { value: 'cfa', label: 'Un diplôme ou un titre en apprentissage', detail: 'CFA, financé par l’OPCO' },
+    ],
+  },
+  { id: 'domaine', etape: 0, titre: 'Dans quel domaine formez-vous ?', options: DOMAINES },
+  {
+    id: 'formations',
+    etape: 0,
+    titre: (r) => (r.type === 'cfa' ? 'Combien de diplômes ou titres voulez-vous proposer à distance ?' : 'Combien de formations voulez-vous digitaliser ?'),
+    aide: 'Chaque formation en plus rapporte, mais un peu moins que la précédente : ce sont souvent les mêmes élèves qui les achètent.',
+    options: [
+      { value: 1, label: '1' },
+      { value: 2, label: '2' },
+      { value: 3, label: '3' },
+      { value: 4, label: '4 ou 5' },
+      { value: 6, label: '6 ou plus' },
     ],
   },
   {
-    id: 'role',
+    id: 'prixEnLigne',
     etape: 0,
-    titre: 'Vous êtes…',
-    options: [
-      { value: 'dirigeant', label: "Dirigeant(e) d'un centre de formation" },
-      { value: 'independant', label: 'Formateur ou formatrice indépendant(e)' },
-      { value: 'salarie', label: "Salarié(e) d'un centre de formation" },
-      { value: 'autre', label: 'Autre' },
-    ],
-  },
-  {
-    id: 'prix',
-    etape: 0,
+    si: (r) => r.type === 'fondspropres',
     type: 'slider',
-    titre: 'Combien coûte votre formation en présentiel ?',
-    aide: 'Prix moyen payé par un élève',
-    min: 100,
-    max: 4000,
+    paliers: PRIX_EN_LIGNE,
+    titre: 'À quel prix aimeriez-vous vendre votre formation en ligne ?',
+    aide: 'Prix moyen d’une formation. Le prix conseillé pour votre domaine est déjà placé.',
+    defaut: (r) => prixConseilleDomaine(r),
+    inconnu: 'Je ne sais pas, conseillez-moi',
+  },
+  {
+    id: 'prixCpf',
+    etape: 0,
+    si: (r) => r.type === 'cpf',
+    type: 'slider',
+    min: 500,
+    max: 5000,
     step: 50,
-    defaut: 900,
-    inconnu: 'Je ne sais pas, ça dépend',
+    titre: 'À quel prix votre formation est-elle (ou sera-t-elle) sur Mon Compte Formation ?',
+    aide: 'Prix public de la formation. L’élève paie seulement le reste à charge de 150 €, le CPF finance le reste.',
+    defaut: (r) => prixConseilleDomaine(r),
+    inconnu: 'Je ne sais pas encore',
+  },
+  {
+    id: 'npec',
+    etape: 0,
+    si: (r) => r.type === 'cfa',
+    type: 'slider',
+    min: 4000,
+    max: 12000,
+    step: 250,
+    titre: 'Quel est le niveau de prise en charge (NPEC) de votre diplôme ?',
+    aide: 'Montant versé par l’OPCO par contrat et par an. Il figure dans le référentiel de France compétences.',
+    defaut: () => 6500,
+    inconnu: 'Je ne sais pas',
+  },
+  {
+    id: 'distance',
+    etape: 0,
+    si: (r) => r.type === 'cfa',
+    titre: 'Quelle part de la formation serait suivie à distance ?',
+    aide: 'Depuis juillet 2025, la prise en charge baisse de 20 % quand au moins 80 % de la formation est à distance (plancher : 4 000 €).',
+    options: [
+      { value: 'hybride', label: 'Moins de 80 % (formation hybride)' },
+      { value: 'plus80', label: '80 % ou plus' },
+      { value: 'nsp', label: 'Je ne sais pas encore', inconnu: true },
+    ],
+  },
+  {
+    id: 'capacite',
+    etape: 1,
+    si: (r) => r.type === 'cfa',
+    titre: 'Combien d’apprentis en plus pourriez-vous accueillir par an grâce au distanciel ?',
+    options: [
+      { value: 5, label: 'Moins de 10' },
+      { value: 15, label: '10 à 20' },
+      { value: 35, label: '20 à 50' },
+      { value: 75, label: '50 à 100' },
+      { value: 150, label: 'Plus de 100' },
+    ],
+  },
+  {
+    id: 'langues',
+    etape: 0,
+    si: pasCfa,
+    type: 'multi',
+    titre: 'Aimeriez-vous traduire votre formation pour vendre à l’étranger ?',
+    aide: 'Choisissez les langues qui vous intéressent',
+    vide: 'Pas de traduction pour l’instant',
+    options: [
+      { value: 'anglais', label: 'Anglais' },
+      { value: 'espagnol', label: 'Espagnol' },
+      { value: 'arabe', label: 'Arabe' },
+      { value: 'portugais', label: 'Portugais' },
+      { value: 'italien', label: 'Italien' },
+      { value: 'allemand', label: 'Allemand' },
+    ],
   },
   {
     id: 'eleves',
-    etape: 0,
+    etape: 1,
+    si: pasCfa,
     titre: 'Combien d’élèves formez-vous par an en présentiel ?',
     options: [
       { value: 10, label: 'Moins de 20' },
@@ -72,6 +151,7 @@ export const QUESTIONS = [
   {
     id: 'anciens',
     etape: 1,
+    si: pasCfa,
     titre: 'Combien d’anciens élèves pouvez-vous recontacter ?',
     aide: 'Par email, WhatsApp, SMS ou Instagram',
     options: [
@@ -86,6 +166,7 @@ export const QUESTIONS = [
   {
     id: 'abonnes',
     etape: 1,
+    si: pasCfa,
     titre: 'Combien d’abonnés avez-vous sur votre réseau principal ?',
     aide: 'Instagram, TikTok, Facebook ou YouTube',
     options: [
@@ -100,6 +181,7 @@ export const QUESTIONS = [
   {
     id: 'existant',
     etape: 1,
+    si: pasCfa,
     titre: 'Aujourd’hui, vous avez déjà…',
     options: [
       { value: 'rien', label: 'Rien en ligne pour l’instant' },
@@ -109,20 +191,9 @@ export const QUESTIONS = [
     ],
   },
   {
-    id: 'formations',
-    etape: 2,
-    titre: 'Combien de formations souhaitez-vous digitaliser ?',
-    options: [
-      { value: 1, label: '1 formation' },
-      { value: 2, label: '2 formations' },
-      { value: 3, label: '3 formations' },
-      { value: 4, label: '4 à 5 formations' },
-      { value: 6, label: '6 ou plus' },
-    ],
-  },
-  {
     id: 'coaching',
     etape: 2,
+    si: (r) => r.type === 'fondspropres',
     titre: 'Souhaitez-vous ajouter un coaching business pour vos élèves ?',
     aide: 'Les aider à trouver leurs clients, fixer leurs prix, lancer leur activité',
     options: [
@@ -134,8 +205,11 @@ export const QUESTIONS = [
   {
     id: 'pub',
     etape: 2,
-    titre: 'Quel budget publicitaire pourriez-vous investir par mois ?',
-    aide: 'Pour faire connaître votre formation en ligne',
+    titre: (r) =>
+      r.type === 'cfa'
+        ? 'Quel budget publicitaire pourriez-vous investir par mois pour recruter vos apprentis ?'
+        : 'Quel budget publicitaire pourriez-vous investir par mois ?',
+    aide: 'Payé directement aux plateformes (Meta, TikTok, Google…)',
     options: [
       { value: 0, label: 'Aucun pour l’instant' },
       { value: 300, label: '300 €' },
@@ -146,21 +220,13 @@ export const QUESTIONS = [
     ],
   },
   {
-    id: 'etranger',
-    etape: 2,
-    titre: 'Aimeriez-vous vendre aussi à l’étranger, avec une version traduite ?',
-    options: [
-      { value: 'oui', label: 'Oui' },
-      { value: 'peutetre', label: 'Peut-être' },
-      { value: 'non', label: 'Non' },
-    ],
-  },
-  {
     id: 'freins',
     etape: 2,
+    si: pasCfa,
     type: 'multi',
     titre: 'Qu’est-ce qui vous a freiné jusqu’ici ?',
     aide: 'Plusieurs réponses possibles',
+    vide: 'Aucun de ces freins',
     options: [
       { value: 'temps', label: 'Pas le temps' },
       { value: 'camera', label: 'Pas à l’aise face caméra' },
@@ -186,25 +252,130 @@ export const QUESTIONS = [
   },
 ]
 
+export const ROLES = [
+  { value: 'dirigeant', label: "Dirigeant(e) d'un centre de formation" },
+  { value: 'independant', label: 'Formateur ou formatrice indépendant(e)' },
+  { value: 'salarie', label: "Salarié(e) d'un centre de formation" },
+  { value: 'autre', label: 'Autre' },
+]
+
 /* ------------------------------------------------------------------ */
-/* Hypothèses de calcul (prudentes)                                    */
+/* Questions — mode « publicité »                                      */
 /* ------------------------------------------------------------------ */
 
-const PRIX_DEFAUT_DOMAINE = {
-  toilettage: 2500,
-  animalier: 2000,
-  beaute: 900,
-  coiffure: 800,
-  sante: 700,
-  vtc: 1200,
-  technique: 1000,
-  autre: 800,
+export const ETAPES_PUB = ['Votre offre', 'Votre budget', 'Votre suivi']
+
+const offreFormation = (r) => r.offre === 'fondspropres' || r.offre === 'cpf'
+const offreCfa = (r) => r.offre === 'cfa_eleves' || r.offre === 'cfa_employeurs'
+
+export const QUESTIONS_PUB = [
+  {
+    id: 'offre',
+    etape: 0,
+    titre: 'Que voulez-vous remplir grâce à la publicité ?',
+    options: [
+      { value: 'fondspropres', label: 'Une formation que je vends moi-même', detail: 'Prix libre, payée par l’élève' },
+      { value: 'cpf', label: 'Une formation éligible au CPF', detail: 'Financée par le compte formation' },
+      { value: 'cfa_eleves', label: 'Mon CFA : trouver des apprentis', detail: 'Candidats pour vos rentrées' },
+      { value: 'cfa_employeurs', label: 'Mon CFA : trouver des entreprises', detail: 'Employeurs prêts à signer un contrat' },
+    ],
+  },
+  { id: 'domaine', etape: 0, si: offreFormation, titre: 'Dans quel domaine formez-vous ?', options: DOMAINES },
+  {
+    id: 'prixPub',
+    etape: 0,
+    si: offreFormation,
+    type: 'slider',
+    min: 100,
+    max: 5000,
+    step: 50,
+    titre: 'Quel est le prix moyen de votre formation ?',
+    aide: 'Ce que vous encaissez pour une inscription',
+    defaut: (r) => (r.offre === 'cpf' ? 1500 : 900),
+  },
+  {
+    id: 'npec',
+    etape: 0,
+    si: offreCfa,
+    type: 'slider',
+    min: 4000,
+    max: 12000,
+    step: 250,
+    titre: 'Quel est le niveau de prise en charge (NPEC) de vos diplômes ?',
+    aide: 'Montant moyen versé par l’OPCO par contrat et par an',
+    defaut: () => 6500,
+    inconnu: 'Je ne sais pas',
+  },
+  {
+    id: 'places',
+    etape: 0,
+    si: offreCfa,
+    titre: 'Combien de contrats aimeriez-vous signer sur l’année ?',
+    aide: 'Le nombre de places que vous pouvez accueillir',
+    options: [
+      { value: 10, label: 'Moins de 15' },
+      { value: 25, label: '15 à 35' },
+      { value: 50, label: '35 à 75' },
+      { value: 100, label: '75 à 150' },
+      { value: 200, label: 'Plus de 150' },
+    ],
+  },
+  {
+    id: 'budgetPub',
+    etape: 1,
+    type: 'slider',
+    min: 300,
+    max: 10000,
+    step: 100,
+    titre: 'Quel budget publicitaire pourriez-vous investir par mois ?',
+    aide: 'Payé directement aux plateformes (Meta, TikTok, Google…)',
+    defaut: () => 1500,
+  },
+  {
+    id: 'rappel',
+    etape: 2,
+    titre: 'Qui rappelle les personnes intéressées ?',
+    aide: 'C’est souvent ce qui fait la plus grande différence sur les ventes',
+    options: [
+      { value: 'equipe', label: 'Quelqu’un de mon équipe, dans la journée' },
+      { value: 'lent', label: 'Moi, quand j’ai le temps' },
+      { value: 'personne', label: 'Personne pour l’instant' },
+    ],
+  },
+  {
+    id: 'delai',
+    etape: 2,
+    titre: 'Quand aimeriez-vous lancer vos campagnes ?',
+    options: [
+      { value: 'vite', label: 'Dès que possible' },
+      { value: '3mois', label: 'D’ici 3 mois' },
+      { value: '6mois', label: 'D’ici 6 mois' },
+      { value: 'renseigne', label: 'Je me renseigne pour l’instant' },
+    ],
+  },
+]
+
+export function questionsActives(mode, reponses) {
+  const liste = mode === 'pub' ? QUESTIONS_PUB : QUESTIONS
+  return liste.filter((q) => !q.si || q.si(reponses))
+}
+
+export function titreQuestion(q, reponses) {
+  return typeof q.titre === 'function' ? q.titre(reponses) : q.titre
+}
+
+/* ------------------------------------------------------------------ */
+/* Hypothèses — formation en ligne                                     */
+/* ------------------------------------------------------------------ */
+
+// Prix en ligne conseillés selon le domaine.
+const PRIX_CONSEILLE = {
+  fondspropres: { beaute: 297, coiffure: 297, sante: 197, vtc: 147, technique: 247, autre: 197 },
+  cpf: { beaute: 1500, coiffure: 1500, sante: 1300, vtc: 1500, technique: 1700, autre: 1300 },
 }
 
 // Part des anciens élèves joignables qui achètent au lancement, selon le métier.
 const RACHAT_ANCIENS = {
-  toilettage: [0.04, 0.07],
-  animalier: [0.03, 0.05],
   beaute: [0.03, 0.05],
   coiffure: [0.03, 0.05],
   sante: [0.02, 0.04],
@@ -214,40 +385,75 @@ const RACHAT_ANCIENS = {
 }
 
 export const HYPOTHESES = {
-  ratioPrixEnLigne: 0.35, // prix en ligne ≈ 35 % du présentiel
   coachingPrix: 1.7, // le coaching augmente le prix d'environ 70 %
   lancementAbonnes: [0.0005, 0.001], // abonnés qui achètent à l'annonce
   upsellNouveaux: [0.1, 0.18], // nouveaux élèves présentiel qui prennent aussi la version en ligne
   abonnesParMois: [0.0001, 0.0002], // abonnés qui achètent chaque mois
-  retourPub: [1.5, 2.3], // chiffre d'affaires pour 1 € de pub
+  retourPub: [1.5, 2.3], // chiffre d'affaires pour 1 € de pub (formation en ligne)
+  partEtranger: 0.7, // une langue traduite rapporte ~70 % de la pub en France, à budget égal
+  cfaOrganique: [0.1, 0.25], // part des places remplies sans publicité
+  cfaConversion: [0.03, 0.08], // candidat → contrat signé
 }
-
-// Hypothèses propres à certains métiers (complètent HYPOTHESES).
-const HYPOTHESES_DOMAINE = {
-  // La théorie (races, coupes, hygiène, comportement) se vend bien en complément du présentiel.
-  toilettage: { upsellNouveaux: [0.15, 0.25] },
-  animalier: { upsellNouveaux: [0.12, 0.2] },
-}
-
-// Part des demandes refusées faute de place (postes, chiens modèles, distance) qui achètent la version en ligne.
-export const CONVERSION_REFUS = [0.25, 0.4]
 
 // Rendement décroissant quand on digitalise plusieurs formations.
 const MULT_ORGANIQUE = [1, 1.5, 1.8, 2.0, 2.15, 2.25]
 const MULT_PANIER = [1, 1.15, 1.3, 1.4, 1.5, 1.55]
-
-const PALIERS = [47, 97, 147, 197, 247, 297, 347, 397, 497, 597, 697, 797, 997, 1297, 1497, 1997]
+// Montée en charge des campagnes : mois 1 à 50 %, mois 2 à 80 %, puis 100 %.
+const MOIS_EFFECTIFS = 0.5 + 0.8 + 10
 
 function palier(x) {
-  return PALIERS.reduce((best, v) => (Math.abs(v - x) < Math.abs(best - x) ? v : best), PALIERS[0])
+  return PRIX_EN_LIGNE.reduce((best, v) => (Math.abs(v - x) < Math.abs(best - x) ? v : best), PRIX_EN_LIGNE[0])
+}
+
+export function prixConseilleDomaine(r) {
+  const type = r.type === 'cpf' ? 'cpf' : 'fondspropres'
+  return PRIX_CONSEILLE[type][r.domaine] ?? PRIX_CONSEILLE[type].autre
 }
 
 export function prixEnLigneConseille(r) {
-  const prix = r.prix ?? PRIX_DEFAUT_DOMAINE[r.domaine] ?? 800
+  if (r.type === 'cpf') return r.prixCpf || prixConseilleDomaine(r)
+  // Anciennes simulations : prix calculé à partir du présentiel.
+  const base = r.prix && !r.type ? palier(r.prix * 0.35) : prixConseilleDomaine(r)
   const coaching = r.coaching === 'oui'
-  const brut = palier(prix * HYPOTHESES.ratioPrixEnLigne * (coaching ? HYPOTHESES.coachingPrix : 1))
-  // Plafond : au-delà, une formation en ligne devient difficile à vendre sans appel.
-  return Math.min(brut, coaching ? 1497 : 997)
+  return Math.min(palier(base * (coaching ? HYPOTHESES.coachingPrix : 1)), coaching ? 1497 : 997)
+}
+
+function prixRetenu(r) {
+  if (r.type === 'cpf') return r.prixCpf || prixConseilleDomaine(r)
+  if (r.prixEnLigne) return r.coaching === 'oui' ? Math.min(palier(r.prixEnLigne * HYPOTHESES.coachingPrix), 1997) : r.prixEnLigne
+  return prixEnLigneConseille(r)
+}
+
+export function npecRetenu(r) {
+  const npec = Number(r.npec) || 6500
+  return r.distance === 'plus80' ? Math.max(4000, npec * 0.8) : npec
+}
+
+function calculerCfa(r) {
+  const n = Math.min(Math.max(Number(r.formations) || 1, 1), 6)
+  const budget = Number(r.pub ?? 0)
+  const capacite = Number(r.capacite ?? 15)
+  const npec = npecRetenu(r)
+  const [cplLo, cplHi] = CPL.cfa_eleves.cpl
+  const H = HYPOTHESES
+  const candidatsMois = [budget / cplHi, budget / cplLo]
+  const contratsPub = [candidatsMois[0] * 12 * H.cfaConversion[0], candidatsMois[1] * 12 * H.cfaConversion[1]]
+  const contrats = [0, 1].map((i) => Math.min(capacite, capacite * H.cfaOrganique[i] + contratsPub[i]))
+  const annee1 = contrats.map((c) => c * npec)
+  return {
+    cfa: true,
+    n,
+    budget,
+    capacite,
+    npec,
+    candidatsMois,
+    contrats,
+    annee1,
+    caLancement: [0, 0],
+    netMensuel: annee1.map((v) => v / 12),
+    ventesMensuelles: contrats.map((c) => c / 12),
+    prix: npec,
+  }
 }
 
 /**
@@ -256,20 +462,22 @@ export function prixEnLigneConseille(r) {
  */
 export function calculer(reponses, override = {}) {
   const r = { ...reponses, ...override }
+  if (r.type === 'cfa') return calculerCfa(r)
   const domaine = r.domaine || 'autre'
   const n = Math.min(Math.max(Number(r.formations) || 1, 1), 6)
   const k = n - 1
   const coaching = r.coaching === 'oui'
-  const prix = r.prixEnLigne || prixEnLigneConseille(r)
-  // Plus le prix est élevé, moins il y a d'acheteurs (référence : 297 €).
-  const conv = Math.min(1.15, Math.sqrt(297 / prix))
+  const prix = r.prixForce || prixRetenu(r)
+  // Plus le prix est élevé, moins il y a d'acheteurs. Le CPF a sa propre référence de prix.
+  const ref = r.type === 'cpf' ? 1500 : 297
+  const conv = Math.min(1.15, Math.sqrt(ref / prix))
   const anciens = Number(r.anciens ?? 20)
   const abonnes = Number(r.abonnes ?? 300)
   const eleves = Number(r.eleves ?? 15)
   const budget = Number(r.pub ?? 0)
   const [rLo, rHi] = RACHAT_ANCIENS[domaine] || RACHAT_ANCIENS.autre
-  const H = { ...HYPOTHESES, ...(HYPOTHESES_DOMAINE[domaine] || {}) }
-  const refus = Number(r.refus ?? 0)
+  const H = HYPOTHESES
+  const valeurPub = r.type === 'cpf' ? prix / 1500 : 1
 
   // 1. Lancement : on propose la formation à la base existante (une fois).
   const lancAnciens = [anciens * rLo, anciens * rHi].map((v) => v * conv * MULT_PANIER[k])
@@ -286,15 +494,20 @@ export function calculer(reponses, override = {}) {
   const vCommunaute = [abonnes * H.abonnesParMois[0], abonnes * H.abonnesParMois[1]].map(
     (v) => v * conv * MULT_ORGANIQUE[k],
   )
-  // Demandes refusées aujourd'hui faute de place : la version en ligne les sert.
-  const vRefus = [refus * CONVERSION_REFUS[0], refus * CONVERSION_REFUS[1]].map((v) => v * conv * MULT_PANIER[k])
-  const caPub = [budget * H.retourPub[0], budget * H.retourPub[1]].map((v) => v * MULT_PANIER[k])
-  const caMensuel = [0, 1].map((i) => (vNouveaux[i] + vCommunaute[i] + vRefus[i]) * prix + caPub[i])
+  const caPub = [budget * H.retourPub[0], budget * H.retourPub[1]].map((v) => v * MULT_PANIER[k] * valeurPub)
+  const caMensuel = [0, 1].map((i) => (vNouveaux[i] + vCommunaute[i]) * prix + caPub[i])
   const netMensuel = caMensuel.map((v) => v - budget)
-  const ventesMensuelles = [0, 1].map((i) => vNouveaux[i] + vCommunaute[i] + vRefus[i] + caPub[i] / prix)
+  const ventesMensuelles = [0, 1].map((i) => vNouveaux[i] + vCommunaute[i] + caPub[i] / prix)
 
   // 3. Sur 12 mois.
   const annee1 = [0, 1].map((i) => caLancement[i] + 12 * netMensuel[i])
+
+  // 4. Marchés étrangers (versions traduites), à budget pub égal par langue.
+  const langues = Array.isArray(r.langues) ? r.langues : []
+  const budgetEtranger = budget || 500
+  const caPubRef = [budgetEtranger * H.retourPub[0], budgetEtranger * H.retourPub[1]].map((v) => v * MULT_PANIER[k] * valeurPub)
+  const etrangerMensuel = caPubRef.map((v) => Math.max(0, v * H.partEtranger - budgetEtranger) * langues.length)
+  const etranger12 = etrangerMensuel.map((v) => v * MOIS_EFFECTIFS)
 
   // Rentabilité (estimation basse, plein tarif).
   const investissement = INVESTISSEMENT_PAR_FORMATION * n
@@ -314,12 +527,14 @@ export function calculer(reponses, override = {}) {
     lancAbonnes,
     vNouveaux,
     vCommunaute,
-    vRefus,
-    refus,
     caPub,
     ventesMensuelles,
     netMensuel,
     annee1,
+    langues,
+    budgetEtranger,
+    etrangerMensuel,
+    etranger12,
     investissement,
     partRemboursee,
     moisRentable,
@@ -327,11 +542,75 @@ export function calculer(reponses, override = {}) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Hypothèses — publicité                                              */
+/* ------------------------------------------------------------------ */
+// Coûts par lead relevés sur nos propres campagnes Meta (hors TVA).
+// Pour les marchés où nous n'avons pas encore de campagne : estimation prudente.
+
+export const CPL = {
+  beaute: { cpl: [5, 10], source: 'Nos campagnes beauté et coiffure : 5,50 € à 8 € par contact.', reel: true },
+  coiffure: { cpl: [5, 10], source: 'Nos campagnes beauté et coiffure : 5,50 € à 8 € par contact.', reel: true },
+  vtc: { cpl: [4, 8], source: 'Nos campagnes VTC et taxi : 3,70 € à 7,60 € par contact, sur plus de 35 000 contacts.', reel: true },
+  sante: { cpl: [8, 18], source: 'Estimation : nous n’avons pas encore diffusé dans ce domaine.', reel: false },
+  technique: { cpl: [8, 18], source: 'Estimation : nous n’avons pas encore diffusé dans ce domaine.', reel: false },
+  autre: { cpl: [8, 20], source: 'Estimation : dépend beaucoup du métier, à affiner ensemble.', reel: false },
+  cfa_eleves: { cpl: [3, 11], source: 'Nos campagnes CFA : 2 € à 11 € par candidat.', reel: true },
+  cfa_employeurs: { cpl: [9, 15], source: 'Nos campagnes CFA : 9 € par entreprise intéressée.', reel: true },
+}
+
+// Part des contacts qui deviennent une vente (ou un contrat signé).
+// Hypothèse prudente : environ 1 contact sur 2 prend rendez-vous, puis 10 à 15 % signent.
+export const CONVERSION_PUB = {
+  fondspropres: [0.03, 0.06],
+  cpf: [0.02, 0.05],
+  cfa_eleves: [0.02, 0.05],
+  cfa_employeurs: [0.04, 0.08],
+}
+const PRIX_REF_PUB = { fondspropres: 900, cpf: 1500 }
+
+const EFFET_RAPPEL = { equipe: 1, lent: 0.7, personne: 0.5 }
+
+export function cplPub(r) {
+  if (r.offre === 'cfa_eleves' || r.offre === 'cfa_employeurs') return CPL[r.offre]
+  return CPL[r.domaine] || CPL.autre
+}
+
+export function calculerPub(reponses, override = {}) {
+  const r = { ...reponses, ...override }
+  const offre = r.offre || 'fondspropres'
+  const cfa = offre.startsWith('cfa')
+  const budget = Number(r.budgetPub) || 1500
+  const { cpl, source, reel } = cplPub(r)
+  const conversion = CONVERSION_PUB[offre] || CONVERSION_PUB.fondspropres
+  const effet = EFFET_RAPPEL[r.rappel] ?? 0.7
+  const valeur = cfa ? Number(r.npec) || 6500 : Number(r.prixPub) || PRIX_REF_PUB[offre]
+  // Plus la formation est chère, moins les contacts achètent.
+  const elasticite = cfa ? 1 : Math.min(1.3, Math.max(0.5, Math.sqrt(PRIX_REF_PUB[offre] / valeur)))
+  const leads = [budget / cpl[1], budget / cpl[0]]
+  // Estimation centrale, puis une fourchette de ±30 % pour rester lisible.
+  const cplMilieu = (cpl[0] + cpl[1]) / 2
+  const convMilieu = ((conversion[0] + conversion[1]) / 2) * effet * elasticite
+  const centralMois = (budget / cplMilieu) * convMilieu
+  let ventesMois = [centralMois * 0.7, centralMois * 1.3]
+  let ventes12 = ventesMois.map((v) => v * MOIS_EFFECTIFS)
+  const places = cfa ? Number(r.places) || 20 : null
+  if (cfa) ventes12 = ventes12.map((v) => Math.min(v, places))
+  if (cfa) ventesMois = ventes12.map((v) => v / 12)
+  const caMois = ventesMois.map((v) => v * valeur)
+  const ca12 = ventes12.map((v) => v * valeur)
+  return { offre, cfa, budget, cpl, source, reel, conversion, effet, valeur, places, leads, ventesMois, ventes12, caMois, ca12, annee1: ca12 }
+}
+
+/* ------------------------------------------------------------------ */
 /* Jauge (pendant le quiz) et score de chaleur                         */
 /* ------------------------------------------------------------------ */
 
-export function niveauPotentiel(reponses) {
-  const res = calculer(reponses)
+export function resultat(mode, reponses) {
+  return mode === 'pub' ? calculerPub(reponses) : calculer(reponses)
+}
+
+export function niveauPotentiel(mode, reponses) {
+  const res = resultat(mode, reponses)
   const milieu = (res.annee1[0] + res.annee1[1]) / 2
   if (milieu >= 60000) return { niveau: 4, label: 'Très élevé' }
   if (milieu >= 20000) return { niveau: 3, label: 'Élevé' }
@@ -339,16 +618,22 @@ export function niveauPotentiel(reponses) {
   return { niveau: 1, label: 'À construire' }
 }
 
-export function scoreLead(reponses) {
-  const res = calculer(reponses)
+export function scoreLead(mode, reponses, role) {
+  const res = resultat(mode, reponses)
   let s = 0
-  s += { dirigeant: 25, independant: 20, salarie: 5 }[reponses.role] || 0
+  s += { dirigeant: 25, independant: 20, salarie: 5 }[role] || 0
   s += { vite: 30, '3mois': 20, '6mois': 10 }[reponses.delai] || 0
   const bas = res.annee1[0]
   s += bas >= 30000 ? 20 : bas >= 10000 ? 15 : bas >= 3000 ? 8 : 0
-  if ((reponses.anciens ?? 0) >= 100 || (reponses.abonnes ?? 0) >= 5000) s += 10
-  s += (reponses.pub ?? 0) >= 500 ? 10 : (reponses.pub ?? 0) >= 300 ? 5 : 0
-  if (reponses.existant === 'peu' || reponses.existant === 'supports') s += 5
+  if (mode === 'pub') {
+    const b = Number(reponses.budgetPub) || 0
+    s += b >= 2000 ? 15 : b >= 1000 ? 10 : 5
+    if (reponses.rappel === 'equipe') s += 10
+  } else {
+    if ((reponses.anciens ?? 0) >= 100 || (reponses.abonnes ?? 0) >= 5000 || (reponses.capacite ?? 0) >= 35) s += 10
+    s += (reponses.pub ?? 0) >= 500 ? 10 : (reponses.pub ?? 0) >= 300 ? 5 : 0
+    if (reponses.existant === 'peu' || reponses.existant === 'supports') s += 5
+  }
   const chaleur = s >= 65 ? 'chaud' : s >= 40 ? 'tiede' : 'froid'
   return { score: Math.min(s, 100), chaleur }
 }
@@ -469,7 +754,7 @@ export function normaliserEmail(brut) {
 }
 
 /* Lien de résultat partageable (sans données personnelles) */
-const CLES_PARTAGE = ['domaine', 'specialite', 'refus', 'role', 'prix', 'eleves', 'anciens', 'abonnes', 'existant', 'formations', 'coaching', 'pub', 'etranger', 'freins', 'delai']
+const CLES_PARTAGE = ['mode', 'type', 'domaine', 'prix', 'prixEnLigne', 'prixCpf', 'npec', 'distance', 'capacite', 'langues', 'eleves', 'anciens', 'abonnes', 'existant', 'formations', 'coaching', 'pub', 'freins', 'delai', 'offre', 'prixPub', 'places', 'budgetPub', 'rappel']
 
 export function encoderReponses(r) {
   const obj = {}

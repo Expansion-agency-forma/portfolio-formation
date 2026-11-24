@@ -1,7 +1,7 @@
 // Déclinaisons du simulateur par métier (pages dédiées utilisées en prospection).
 // Chaque niche reprend les questions du simulateur général, avec un vocabulaire et des
 // valeurs adaptés au métier. Le calcul reste celui de lib/simulateur.js.
-import { QUESTIONS } from './simulateur'
+import { QUESTIONS } from './simulateurNiche'
 
 const base = (id) => QUESTIONS.find((q) => q.id === id)
 
