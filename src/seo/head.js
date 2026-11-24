@@ -5,6 +5,7 @@ import { SITE_URL, SITE_NAME, OG_IMAGE, LOGO_URL, CONTACT_EMAIL, RESEAUX } from 
 import { FAQS as FAQ_ACCUEIL } from '../components/Faq.jsx'
 import { FAQS as FAQ_PUB } from '../components/pub/FaqPub.jsx'
 import { SECTEURS } from '../data/secteurs.js'
+import { FAQ_SIMULATION } from '../data/simulation.js'
 import { ARTICLES, AUTEUR, BASE_RESSOURCES } from '../data/ressources.js'
 import { texteBrut } from '../lib/article.js'
 
@@ -188,6 +189,8 @@ export function donneesStructurees(page) {
       faqPage(url, FAQ_PUB),
     )
   }
+
+  if (page.path === '/simulation') graph.push(faqPage(url, FAQ_SIMULATION))
 
   if (page.secteur) {
     const s = SECTEURS.find((x) => x.slug === page.secteur)

@@ -16,6 +16,7 @@ import Footer from '../components/Footer'
 const NAV_ITEMS = [
   { href: '/realisations', label: 'Nos réalisations' },
   { href: '#services', label: 'Comment ça marche' },
+  { href: '/simulation', label: 'Calculer mon potentiel', className: 'navbar__simu' },
   { href: '#temoignages', label: 'Avis' },
   { href: '#faq', label: 'FAQ' },
   { href: 'https://expansion-formation.com', label: 'Entreprises' },

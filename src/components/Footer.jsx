@@ -15,7 +15,7 @@ function Footer() {
             </Link>
           ))}
           <Link to="/realisations">Nos réalisations</Link>
-          <Link to="/simulateur">Simulateur de potentiel</Link>
+          <Link to="/simulation">Calculer mon potentiel</Link>
           <Link to="/publicite">Publicité au résultat</Link>
           <Link to="/ressources">Ressources et conseils</Link>
         </nav>

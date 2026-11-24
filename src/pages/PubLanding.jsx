@@ -14,6 +14,7 @@ import Footer from '../components/Footer'
 const NAV_ITEMS = [
   { href: '#creations', label: 'Nos campagnes' },
   { href: '#services', label: 'Comment ça marche' },
+  { href: '/simulation', label: 'Calculer mon potentiel', className: 'navbar__simu' },
   { href: '#offres', label: 'Offres' },
   { href: '#temoignages', label: 'Avis' },
   { href: '#faq', label: 'FAQ' },

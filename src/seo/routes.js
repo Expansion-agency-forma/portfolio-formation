@@ -13,6 +13,15 @@ export const PAGES = [
     changefreq: 'weekly',
   },
   {
+    path: '/simulation',
+    title: 'Simulation de chiffre d’affaires pour centres de formation | Expansion',
+    description:
+      'Calculez en 2 minutes ce que votre centre de formation ou votre CFA pourrait gagner : formation en ligne, publicité, CPF ou contrats d’apprentissage. Gratuit, avec nos coûts réels par contact.',
+    priority: 0.9,
+    changefreq: 'monthly',
+    fil: 'Simulation',
+  },
+  {
     path: '/simulateur',
     title: 'Simulateur gratuit : formation en ligne et publicité pour organismes de formation',
     description:

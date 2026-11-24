@@ -1479,3 +1479,32 @@
     font-weight: 600;
     color: var(--color-text);
 }
+
+/* ---- Page /simulation ---- */
+.cfa-leviers.simu-page-cas {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.simu-cas.simu-page-chiffres {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+.simu-page-note {
+    max-width: 720px;
+    margin: var(--space-6, 2rem) auto 0;
+    text-align: center;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+}
+
+.simu-page-note a {
+    color: var(--color-gold);
+}
+
+.navbar__links a.navbar__simu,
+.navbar-mobile__link.navbar__simu {
+    color: var(--color-gold);
+    font-weight: 600;
+}

@@ -110,6 +110,7 @@ function Cfa() {
     { href: '#leviers', label: 'Ce qu’on apporte' },
     { href: '#methode', label: 'Méthode' },
     { href: '#faq', label: 'FAQ' },
+    { href: '/simulation', label: 'Calculer mon potentiel', className: 'navbar__simu' },
   ]
 
   return (

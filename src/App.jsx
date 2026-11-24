@@ -8,6 +8,7 @@ import Confidentialite from './pages/Confidentialite'
 import Thanks from './pages/Thanks'
 import Simulateur from './pages/Simulateur'
 import SimulateurNiche from './pages/SimulateurNiche'
+import Simulation from './pages/Simulation'
 import Realisations from './pages/Realisations'
 import Cfa from './pages/Cfa'
 import Secteur from './pages/Secteur'
@@ -82,6 +83,7 @@ export function AppShell() {
         <Route path="/confidentialite" element={<Confidentialite />} />
         <Route path="/merci" element={<Thanks />} />
         <Route path="/simulateur" element={<Simulateur />} />
+        <Route path="/simulation" element={<Simulation />} />
         <Route path="/simulateur-toilettage" element={<SimulateurNiche key="toilettage" niche="toilettage" />} />
         <Route path="/simulateur-metiers-animaliers" element={<SimulateurNiche key="animalier" niche="animalier" />} />
         <Route path="/realisations" element={<Realisations />} />

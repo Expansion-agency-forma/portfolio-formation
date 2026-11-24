@@ -42,7 +42,7 @@ function Navbar({ items = [], crossLink, cta }) {
 
           <nav className="navbar__links" aria-label="Navigation principale">
             {items.map((item) => (
-              <a key={item.href} href={item.href}>
+              <a key={item.href} href={item.href} className={item.className}>
                 {item.label}
               </a>
             ))}
@@ -86,7 +86,12 @@ function Navbar({ items = [], crossLink, cta }) {
       >
         <nav className="navbar-mobile__nav" aria-label="Menu mobile">
           {items.map((item) => (
-            <a key={item.href} href={item.href} onClick={close} className="navbar-mobile__link">
+            <a
+              key={item.href}
+              href={item.href}
+              onClick={close}
+              className={`navbar-mobile__link${item.className ? ` ${item.className}` : ''}`}
+            >
               {item.label}
             </a>
           ))}
