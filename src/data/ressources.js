@@ -627,6 +627,188 @@ Les vidéos vous appartiennent à 100 % : nous vous remettons les rushes et les 
     ],
     liees: ['combien-de-temps-creer-formation-en-ligne', 'formation-en-ligne-efficace-pedagogie', 'formation-en-ligne-rentable'],
   },
+  /* ------------------------------------------------------------------ */
+  {
+    slug: 'cout-publicite-organisme-formation',
+    titre: 'Publicité pour un organisme de formation : combien coûte un contact, et combien d’élèves en attendre ?',
+    seoTitle: 'Publicité organisme de formation : coût par contact réel',
+    fil: 'Coût de la publicité',
+    description:
+      'Nos coûts par contact réels sur Meta : 3,70 à 7,60 € en VTC, 5,50 à 8 € en beauté et coiffure, 2 à 11 € pour un CFA. Et combien de contacts deviennent des élèves.',
+    categorie: 'Publicité',
+    publie: '2026-11-24',
+    resume: [
+      'Sur nos campagnes Meta, un contact coûte 3,70 à 7,60 € en VTC, 5,50 à 8 € en beauté et coiffure, et 2 à 11 € pour un CFA selon qu’il cherche des candidats ou des entreprises.',
+      'Un contact n’est pas un élève : selon le prix et la rapidité du rappel, 2 à 8 % des contacts s’inscrivent.',
+      'Le premier facteur de réussite n’est pas la pub, c’est le rappel du contact dans l’heure.',
+    ],
+    contenu: `
+« Combien je vais payer pour avoir un élève ? » C’est la question que se pose tout dirigeant d’organisme de formation avant de lancer de la publicité. Les chiffres qui circulent sont souvent des moyennes tous secteurs confondus, qui ne veulent pas dire grand-chose pour un centre de formation. Voici les nôtres, relevés sur nos propres campagnes Meta (Facebook et Instagram), et la façon de passer d’un coût par contact à un coût par élève.
+
+## Ce que coûte un contact, secteur par secteur
+
+Un contact, c’est une personne qui a rempli le formulaire de la publicité avec son nom, son téléphone et son projet. Voici le coût moyen d’un contact sur les campagnes que nous avons gérées pour des organismes de formation :
+
+- **VTC et taxi** : de 3,70 € à 7,60 € par contact, mesuré sur plus de 35 000 contacts.
+- **Esthétique et beauté** (cils, browlift, soins) : de 5,50 € à 8 € par contact.
+- **Coiffure** (extensions, lissage) : autour de 5,50 € par contact.
+- **Création d’entreprise** : autour de 5,80 € par contact.
+- **CFA, candidats à l’alternance** : de 2 € à 11 € par contact selon le diplôme et la ville.
+- **CFA, entreprises qui recrutent un alternant** : autour de 9 € par contact.
+
+> Ces chiffres sont des moyennes sur toute la durée des campagnes, réglages du début compris. Ils varient selon la ville, la saison, le prix de la formation et la qualité de la vidéo publicitaire. Pour les secteurs où nous n’avons pas encore diffusé (santé, métiers techniques), nous ne donnons que des estimations.
+
+## Pourquoi ces écarts entre secteurs ?
+
+Trois choses font varier le coût d’un contact :
+
+- **La taille du public** : beaucoup de personnes veulent devenir chauffeur VTC, le public est large et le contact coûte moins cher. Une formation très spécialisée vise moins de monde.
+- **Le formulaire** : plus il pose de questions (financement, date de démarrage, ville), plus le contact coûte cher, mais plus il est qualifié. Nous préférons un contact un peu plus cher qui décroche le téléphone.
+- **La vidéo** : une publicité tournée dans votre centre, avec votre formateur, obtient presque toujours un meilleur coût qu’une image de banque d’images.
+
+## D’un contact à un élève inscrit
+
+Un contact n’est pas un élève. Entre les deux, il y a un appel, souvent un rendez-vous, puis l’inscription. Sur nos campagnes, on observe en moyenne :
+
+1. environ un contact sur deux qui accepte un échange ou un rendez-vous quand il est rappelé vite ;
+2. puis 10 à 15 % de ces rendez-vous qui se transforment en inscription.
+
+Au total, **2 à 8 % des contacts deviennent des élèves** selon le prix de la formation et le type de financement. Une formation à quelques centaines d’euros convertit mieux qu’un parcours à plusieurs milliers d’euros. Une entreprise qui cherche un alternant signe plus souvent qu’un particulier qui se renseigne.
+
+### Un exemple de calcul
+
+Avec 1 500 € de publicité par mois et un contact à 6 € :
+
+- 1 500 ÷ 6 = **250 contacts** par mois ;
+- avec 4 % qui s’inscrivent, cela fait **10 élèves** par mois ;
+- soit un coût de **150 € de publicité par élève**.
+
+Si votre formation coûte 900 €, un seul élève rembourse déjà une grande partie du budget du mois. Pour faire ce calcul avec vos propres chiffres, utilisez [notre simulateur en mode publicité](/simulateur?mode=pub).
+
+## Le facteur numéro un : rappeler dans l’heure
+
+C’est le point que les organismes de formation sous-estiment le plus. Un contact rappelé dans l’heure se souvient de la publicité et de son projet. Rappelé le lendemain, il a souvent oublié, ou il a déjà appelé un autre centre. Dans notre simulateur, nous comptons environ 30 % de ventes en moins pour un centre qui rappelle lentement, et deux fois moins quand personne ne rappelle : c’est ce que nous constatons chez nos clients.
+
+Avant de lancer une campagne, la vraie question n’est donc pas « combien de contacts ? » mais « qui rappelle, et en combien de temps ? ».
+
+## Le cas du CPF
+
+La publicité pour une formation éligible au CPF est autorisée. Ce qui est interdit depuis la loi du 19 décembre 2022, c’est de démarcher les titulaires d’un compte CPF (appels, SMS, emails ou messages non sollicités). En pratique, on ne rappelle que les personnes qui ont elles-mêmes rempli le formulaire et demandé à être contactées. Pensez aussi au reste à charge de 150 € pour l’élève, en vigueur depuis avril 2026 : il doit apparaître clairement dans votre publicité.
+
+## Le cas des CFA
+
+Un CFA a deux publics à trouver : des candidats et des entreprises. Les candidats coûtent souvent moins cher, mais c’est l’entreprise qui déclenche le contrat. Nous menons en général les deux campagnes en parallèle. Le nombre de contrats reste limité par vos places : inutile d’augmenter le budget au-delà de ce qu’il faut pour remplir vos rentrées. Nous détaillons cette approche sur [notre page dédiée aux CFA](/cfa).
+
+[[simulateur]]
+`,
+    faq: [
+      {
+        q: 'Quel budget publicitaire prévoir pour un organisme de formation ?',
+        a: 'La plupart de nos clients démarrent entre 500 et 1 500 € par mois. En dessous, il y a trop peu de contacts pour tirer des conclusions. Le budget est payé directement à Meta, TikTok ou Google.',
+      },
+      {
+        q: 'Combien de temps avant d’avoir des inscriptions ?',
+        a: 'Les premiers contacts arrivent dans les jours qui suivent le lancement. Les deux premiers mois servent à régler les campagnes : le coût par contact baisse ensuite.',
+      },
+      {
+        q: 'Faut-il une vidéo pour faire de la publicité ?',
+        a: 'Ce n’est pas obligatoire, mais une vidéo tournée dans votre centre, avec votre formateur, donne presque toujours de meilleurs résultats qu’une image. Nous la tournons pour nos clients.',
+      },
+      {
+        q: 'Peut-on faire de la publicité pour une formation CPF ?',
+        a: 'Oui. La publicité est autorisée ; le démarchage des titulaires d’un compte CPF est interdit. On ne contacte que les personnes qui ont rempli le formulaire et demandé à être rappelées.',
+      },
+    ],
+    liees: ['vendre-formation-en-ligne-strategies', 'formation-en-ligne-qualiopi-cpf-financement-direct', 'formation-en-ligne-rentable'],
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    slug: 'choisir-agence-formation-en-ligne',
+    titre: 'Comment choisir une agence pour créer votre formation en ligne : 7 critères',
+    seoTitle: 'Choisir une agence pour créer sa formation en ligne',
+    fil: 'Choisir une agence',
+    description:
+      'Tournage sur place, propriété des vidéos, système de vente, publicité, preuves : les 7 critères pour choisir l’agence qui digitalisera votre formation, et les questions à lui poser.',
+    categorie: 'Lancer son projet',
+    publie: '2026-11-24',
+    resume: [
+      'Une bonne agence filme dans votre centre, avec votre matériel, et vous laisse propriétaire de tous les fichiers.',
+      'Elle ne s’arrête pas au montage : elle construit le système de vente et sait trouver des élèves.',
+      'Demandez des extraits de formations tournées pour des centres comme le vôtre, et un calendrier écrit.',
+    ],
+    contenu: `
+Vous avez décidé de mettre votre formation en ligne et vous comparez des prestataires : agences vidéo, studios e-learning, freelances, plateformes. Leurs offres se ressemblent sur le papier et leurs prix vont du simple au décuple. Voici les sept critères que nous conseillons de vérifier, y compris si vous ne travaillez pas avec nous.
+
+## 1. Le tournage se fait-il dans votre centre ?
+
+Pour une formation pratique (beauté, coiffure, conduite, métiers techniques), vos élèves doivent voir les gestes dans un vrai contexte : votre poste de travail, vos produits, votre matériel. Un tournage en studio loué coûte souvent plus cher et montre un décor que vos élèves ne retrouveront pas. Vérifiez aussi combien de caméras sont prévues : une seule caméra oblige à refaire chaque geste plusieurs fois.
+
+## 2. Qui prépare le programme ?
+
+Une formation en ligne ne se filme pas au fil de l’eau. L’agence doit vous aider à découper la formation en modules courts, à décider de ce qui se filme en gros plan et à écrire les passages face caméra. Sans ce travail, le tournage s’éternise et le montage devient un puzzle.
+
+## 3. À qui appartiennent les vidéos ?
+
+C’est le point le plus souvent oublié. Vous devez être propriétaire des vidéos montées et des rushes, et pouvoir les héberger où vous voulez. Méfiez-vous d’une offre où la formation n’existe que sur la plateforme du prestataire, avec un abonnement à vie pour y accéder.
+
+## 4. L’agence s’arrête-t-elle au montage ?
+
+Une formation montée qui n’est pas vendue ne rapporte rien. Demandez qui construit la page de vente, le paiement en ligne, l’accès des élèves et les emails automatiques. Demandez ensuite comment les premiers élèves vont arriver : vos anciens élèves, votre communauté, puis la publicité. Une agence qui sait aussi faire de la publicité pour les organismes de formation vous évite de chercher un deuxième prestataire. Nous avons publié [nos coûts réels par contact](/ressources/cout-publicite-organisme-formation) pour que vous puissiez comparer.
+
+## 5. Connaît-elle votre secteur ?
+
+Former à la pose de cils, à l’examen VTC ou à un métier du bâtiment ne se filme pas de la même façon, et ne se vend pas au même public. Demandez à voir des extraits de formations tournées pour des centres comme le vôtre, pas seulement des vidéos d’entreprise. Vous pouvez voir les nôtres sur [notre page réalisations](/realisations).
+
+## 6. Le calendrier est-il écrit ?
+
+Demandez un déroulé daté : préparation, jours de tournage, délai de montage, date de livraison. Chez nous, le tournage dure 2 à 3 jours en moyenne et la formation est prête à vendre environ 30 jours après, mais méfiez-vous de toute promesse de délai fixe qui ne dépend pas aussi de vous. Le détail est dans [notre article sur les délais](/ressources/combien-de-temps-creer-formation-en-ligne).
+
+## 7. Le prix est-il lisible ?
+
+Un devis sérieux sépare la création de la formation (préparation, tournage, montage, mise en ligne) de la publicité, qui est un budget à part. Il précise le nombre de modules, de jours de tournage et d’allers-retours de corrections. Comparez des devis à périmètre égal.
+
+## Les questions à poser lors du premier appel
+
+- Où se fait le tournage, avec combien de caméras ?
+- Qui écrit le programme et le texte des passages face caméra ?
+- Est-ce que je récupère les rushes et les vidéos montées ?
+- Qui construit la page de vente et le paiement ?
+- Comment trouvez-vous les premiers élèves ? Avec quel budget ?
+- Pouvez-vous me montrer une formation tournée dans mon secteur ?
+- Quel est le calendrier, étape par étape ?
+
+## Agence, freelance ou plateforme ?
+
+- **Une plateforme e-learning** vous donne l’outil, pas le contenu : vous filmez et montez vous-même.
+- **Un vidéaste freelance** filme bien, mais la préparation pédagogique, la vente et la publicité restent à votre charge.
+- **Une agence spécialisée dans les organismes de formation** prend en charge tout le parcours, du programme jusqu’aux premières ventes.
+
+Le bon choix dépend du temps que vous voulez y consacrer. Si vous faites déjà tourner un centre, c’est souvent le temps, pas le budget, qui manque.
+
+[[simulateur]]
+`,
+    faq: [
+      {
+        q: 'Combien coûte une agence pour créer une formation en ligne ?',
+        a: 'Le prix dépend du nombre de modules et de jours de tournage. Chez Expansion, le devis est fait sur mesure après un appel gratuit. La publicité, si vous la souhaitez, est un budget séparé.',
+      },
+      {
+        q: 'L’agence doit-elle être certifiée Qualiopi ?',
+        a: 'Non. Qualiopi concerne l’organisme de formation qui vend la formation, pas le prestataire qui la filme. En revanche, une agence qui connaît les règles du CPF et de Qualiopi vous évitera des erreurs.',
+      },
+      {
+        q: 'Peut-on filmer plusieurs formations en une seule fois ?',
+        a: 'Oui. On regroupe les tournages pour limiter le temps passé hors de vos sessions. Le tournage et le montage durent alors plus longtemps, en proportion.',
+      },
+      {
+        q: 'Expansion intervient-elle partout en France ?',
+        a: 'Oui. L’équipe se déplace dans votre centre partout en France, et a déjà tourné en Belgique.',
+      },
+    ],
+    liees: ['combien-de-temps-creer-formation-en-ligne', 'tournage-formation-video-centre', 'cout-publicite-organisme-formation'],
+  },
+
 ]
 
 export const ARTICLES = ARTICLES_SOURCE.map((a) => {

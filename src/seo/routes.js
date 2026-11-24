@@ -14,9 +14,9 @@ export const PAGES = [
   },
   {
     path: '/simulateur',
-    title: 'Simulateur : combien rapporterait votre formation en ligne ?',
+    title: 'Simulateur gratuit : formation en ligne et publicité pour organismes de formation',
     description:
-      'Estimez en 1 minute ce que votre organisme de formation pourrait gagner en vendant ses formations en ligne, à partir de vos élèves, abonnés et prix. Gratuit.',
+      'Estimez en 2 minutes ce que votre organisme de formation pourrait gagner : formation en ligne (France et étranger) ou publicité (CPF, CFA, formation courte), avec nos coûts réels par contact.',
     priority: 0.9,
     changefreq: 'monthly',
     fil: 'Simulateur de potentiel',
