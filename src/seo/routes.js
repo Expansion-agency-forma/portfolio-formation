@@ -23,6 +23,26 @@ export const PAGES = [
     hydrate: false,
   },
   {
+    path: '/simulateur-toilettage',
+    title: 'Toilettage : combien rapporterait votre formation en ligne ?',
+    description:
+      'Écoles et formatrices en toilettage canin et félin : estimez en 1 minute ce que votre formation pourrait rapporter en ligne, sans limite de postes ni de chiens modèles.',
+    priority: 0.6,
+    changefreq: 'monthly',
+    fil: 'Simulateur toilettage',
+    hydrate: false,
+  },
+  {
+    path: '/simulateur-metiers-animaliers',
+    title: 'Métiers animaliers : combien rapporterait votre formation en ligne ?',
+    description:
+      'Éducateurs canins, comportementalistes, centres de formation ASV : estimez en 1 minute ce que votre formation pourrait rapporter en ligne. Gratuit.',
+    priority: 0.6,
+    changefreq: 'monthly',
+    fil: 'Simulateur métiers animaliers',
+    hydrate: false,
+  },
+  {
     path: '/realisations',
     title: 'Nos réalisations : extraits de formations filmées | Expansion',
     description:

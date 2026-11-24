@@ -10,6 +10,7 @@ import {
   REPONSES_FREINS,
   VIDEO_OFFRE_ID,
   WEBHOOK_URL,
+  WEBHOOK_VIDEO_URL,
   calculer,
   decoderReponses,
   encoderReponses,
@@ -25,12 +26,13 @@ import {
 import { track, trackCustom } from '../lib/pixel'
 import { evenementGA, rdvReserve } from '../lib/analytics'
 import { lireSource, ajouterSourceCalendly } from '../lib/attribution'
+import { NICHES } from '../lib/niches'
 
-const STOCKAGE = 'expansion-simulateur-v1'
+const STOCKAGE_DEFAUT = 'expansion-simulateur-v1'
 const PRIX_EN_LIGNE = [47, 97, 147, 197, 247, 297, 347, 397, 497, 597, 697, 797, 997, 1297, 1497]
 const UTM_CLES = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid']
 
-function lireStockage() {
+function lireStockage(STOCKAGE) {
   try {
     return JSON.parse(window.localStorage.getItem(STOCKAGE)) || null
   } catch {
@@ -38,7 +40,7 @@ function lireStockage() {
   }
 }
 
-function ecrireStockage(valeur) {
+function ecrireStockage(STOCKAGE, valeur) {
   try {
     window.localStorage.setItem(STOCKAGE, JSON.stringify(valeur))
   } catch {
@@ -177,7 +179,32 @@ function Calendly({ prenom, email }) {
 /* Écrans du quiz                                                       */
 /* ------------------------------------------------------------------ */
 
-function Intro({ onStart }) {
+function Intro({ onStart, cfg, total }) {
+  if (cfg) {
+    return (
+      <div className="simu-intro">
+        <span className="eyebrow">{cfg.eyebrow}</span>
+        <h1 className="simu-intro__titre">
+          {cfg.titre} <span className="simu-intro__italique">{cfg.titreItalique}</span>
+        </h1>
+        <p className="simu-intro__texte">
+          {cfg.texte} {total} questions en un clic, basées sur vos vrais chiffres, sans rien à écrire.
+        </p>
+        <button type="button" className="btn btn--primary simu-intro__bouton" onClick={onStart}>
+          Calculer mon potentiel
+          <Fleche />
+        </button>
+        <p className="simu-confiance">Gratuit · 1 minute · Résultat immédiat</p>
+        <ul className="simu-intro__points">
+          {cfg.points.map((p) => (
+            <li key={p}>
+              <Coche /> {p}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
   return (
     <div className="simu-intro">
       <span className="eyebrow">Simulateur gratuit</span>
@@ -428,7 +455,7 @@ function Contact({ reponses, onEnvoyer, onRetour, envoiEnCours }) {
 /* Résultat                                                             */
 /* ------------------------------------------------------------------ */
 
-function Resultat({ reponses, contact, partage, onRecommencer }) {
+function Resultat({ reponses, contact, partage, onRecommencer, cfg, chemin }) {
   const conseille = prixEnLigneConseille(reponses)
   const [prixEnLigne, setPrixEnLigne] = useState(conseille)
   const [copie, setCopie] = useState(false)
@@ -450,14 +477,14 @@ function Resultat({ reponses, contact, partage, onRecommencer }) {
   if (reponses.coaching !== 'oui') {
     const avecCoaching = calculer(reponses, { coaching: 'oui', prixEnLigne: undefined })
     scenarios.push([
-      `Avec un coaching business (prix conseillé ${nombre(avecCoaching.prix)} €)`,
+      `${cfg ? 'Avec un accompagnement à l’installation' : 'Avec un coaching business'} (prix conseillé ${nombre(avecCoaching.prix)} €)`,
       fourchette(avecCoaching.annee1),
       'sur 12 mois',
     ])
   }
 
   const indexPrix = Math.max(0, PRIX_EN_LIGNE.findIndex((p) => p >= prixEnLigne))
-  const lienPartage = `${window.location.origin}/simulateur?r=${encoderReponses(reponses)}`
+  const lienPartage = `${window.location.origin}${chemin}?r=${encoderReponses(reponses)}`
 
   const copier = async () => {
     try {
@@ -499,7 +526,11 @@ function Resultat({ reponses, contact, partage, onRecommencer }) {
           réponses et d’hypothèses prudentes. Le détail du calcul est en bas de page.
         </p>
         <a href="#reserver" className="btn btn--primary">
-          {chaleur === 'chaud' ? 'Valider ce potentiel en 30 minutes' : 'En parler gratuitement'}
+          {cfg
+            ? 'Appel ou vidéo d’analyse gratuite'
+            : chaleur === 'chaud'
+              ? 'Valider ce potentiel en 30 minutes'
+              : 'En parler gratuitement'}
           <Fleche />
         </a>
       </header>
@@ -543,7 +574,7 @@ function Resultat({ reponses, contact, partage, onRecommencer }) {
         <h2 className="simu-bloc__titre">Le prix de votre formation en ligne</h2>
         <p className="simu-bloc__texte">
           Prix conseillé : {nombre(conseille)} €
-          {reponses.coaching === 'oui' ? ' (avec coaching business)' : ''}. Déplacez le curseur pour tester un
+          {reponses.coaching === 'oui' ? (cfg ? ' (avec accompagnement à l’installation)' : ' (avec coaching business)') : ''}. Déplacez le curseur pour tester un
           autre prix : tous les chiffres se mettent à jour.
         </p>
         <div className="simu-slider simu-slider--resultat">
@@ -582,6 +613,12 @@ function Resultat({ reponses, contact, partage, onRecommencer }) {
             <span>Votre communauté, par mois</span>
             <strong>{ventes(res.vCommunaute)}</strong>
           </li>
+          {res.refus > 0 && (
+            <li>
+              <span>Les élèves que vous devez refuser aujourd’hui, par mois</span>
+              <strong>{ventes(res.vRefus)}</strong>
+            </li>
+          )}
           <li>
             <span>La publicité, par mois</span>
             <strong>{res.budget ? `${fourchette(res.caPub)} de ventes` : 'pas de budget pub'}</strong>
@@ -692,10 +729,15 @@ function Resultat({ reponses, contact, partage, onRecommencer }) {
             : 'Parlons de votre projet'}
         </h2>
         <p className="simu-bloc__texte">
-          30 minutes, gratuit et sans engagement. On reprend votre simulation et on vous dit concrètement
-          comment l’atteindre.
+          {cfg
+            ? 'Deux façons d’aller plus loin, gratuites et sans engagement. Choisissez celle qui vous convient.'
+            : '30 minutes, gratuit et sans engagement. On reprend votre simulation et on vous dit concrètement comment l’atteindre.'}
         </p>
-        <Calendly prenom={contact?.prenom} email={contact?.email} />
+        {cfg ? (
+          <DeuxChoix reponses={reponses} contact={contact} cfg={cfg} chemin={chemin} />
+        ) : (
+          <Calendly prenom={contact?.prenom} email={contact?.email} />
+        )}
       </section>
 
       <section className="simu-bloc simu-bloc--discret">
@@ -710,6 +752,9 @@ function Resultat({ reponses, contact, partage, onRecommencer }) {
             <li>Prix en ligne conseillé : environ {Math.round(HYPOTHESES.ratioPrixEnLigne * 100)} % du prix en présentiel, +70 % avec un coaching business.</li>
             <li>Au lancement : de 0,5 à 5 % de vos anciens élèves rachètent selon votre métier, et 0,05 à 0,1 % de vos abonnés.</li>
             <li>Chaque mois : 10 à 18 % de vos nouveaux élèves prennent aussi la version en ligne, et 0,01 à 0,02 % de vos abonnés achètent.</li>
+            {cfg && (
+              <li>Demandes refusées faute de place : 25 à 40 % achètent la version en ligne.</li>
+            )}
             <li>Publicité : 1 € investi rapporte 1,5 à 2,3 € de ventes, budget déduit du résultat.</li>
             <li>Plus le prix est élevé, moins il y a d’acheteurs. Chaque formation supplémentaire rapporte moins que la précédente.</li>
           </ul>
@@ -728,10 +773,131 @@ function Resultat({ reponses, contact, partage, onRecommencer }) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Pages métier : deux façons d'aller plus loin                         */
+/* ------------------------------------------------------------------ */
+
+function DeuxChoix({ reponses, contact, cfg, chemin }) {
+  const [choix, setChoix] = useState(null)
+  const [lien, setLien] = useState(contact?.instagram ? `@${contact.instagram}` : '')
+  const [email, setEmail] = useState(contact?.email || '')
+  const [telephone, setTelephone] = useState(contact?.telephone || '')
+  const [erreur, setErreur] = useState('')
+  const [etat, setEtat] = useState('attente') // attente | envoi | envoye
+
+  const demanderVideo = async (e) => {
+    e.preventDefault()
+    const mail = normaliserEmail(email)
+    if (!mail) return setErreur('Indiquez une adresse email valide')
+    if (!lien.trim()) return setErreur('Indiquez votre site, votre page Google ou votre Instagram')
+    setErreur('')
+    setEtat('envoi')
+    const res = calculer(reponses)
+    const donnees = {
+      date: new Date().toISOString(),
+      demande: 'Vidéo d’analyse gratuite',
+      metier: cfg.libelleDomaine,
+      prenom: contact?.prenom || '',
+      centre: contact?.centre || '',
+      ville: contact?.ville || '',
+      email: mail,
+      telephone: normaliserTelephone(telephone) || telephone.trim(),
+      lien_centre: lien.trim(),
+      annee1_min: Math.round(res.annee1[0]),
+      annee1_max: Math.round(res.annee1[1]),
+      lien_resultat: `${window.location.origin}${chemin}?r=${encoderReponses(reponses)}`,
+      source_trafic: lireSource()?.libelle || '',
+    }
+    const corps = new URLSearchParams(Object.entries(donnees).map(([k, v]) => [k, String(v)]))
+    try {
+      await fetch(WEBHOOK_VIDEO_URL, { method: 'POST', mode: 'no-cors', keepalive: true, body: corps })
+    } catch {
+      try {
+        navigator.sendBeacon?.(WEBHOOK_VIDEO_URL, corps)
+      } catch {
+        /* ignore */
+      }
+    }
+    trackCustom('DemandeVideoAnalyse', { metier: cfg.slug })
+    evenementGA('demande_video_analyse', { metier: cfg.slug })
+    setEtat('envoye')
+  }
+
+  return (
+    <div className="simu-choix">
+      <div className="simu-choix__cartes">
+        <article className={`simu-choix__carte${choix === 'appel' ? ' is-actif' : ''}`}>
+          <span className="simu-choix__num">Option 1</span>
+          <h3>Réserver un appel de 30 minutes</h3>
+          <p>On reprend votre simulation ensemble et on vous dit concrètement comment atteindre ce potentiel.</p>
+          <button type="button" className="btn btn--primary" onClick={() => setChoix('appel')}>
+            Choisir un créneau
+            <Fleche />
+          </button>
+        </article>
+        <article className={`simu-choix__carte${choix === 'video' ? ' is-actif' : ''}`}>
+          <span className="simu-choix__num">Option 2</span>
+          <h3>Recevoir une vidéo d’analyse gratuite de votre centre</h3>
+          <p>
+            Pas le temps pour un appel ? On regarde votre centre et votre simulation, puis on vous envoie
+            une vidéo personnalisée : comment mettre votre formation en ligne et par où commencer.
+          </p>
+          <button type="button" className="btn btn--secondary" onClick={() => setChoix('video')}>
+            Recevoir ma vidéo gratuite
+            <Fleche />
+          </button>
+        </article>
+      </div>
+
+      {choix === 'appel' && <Calendly prenom={contact?.prenom} email={contact?.email} />}
+
+      {choix === 'video' &&
+        (etat === 'envoye' ? (
+          <div className="simu-choix__merci" role="status">
+            <strong>C’est noté{contact?.prenom ? `, ${contact.prenom}` : ''} !</strong>
+            <span>
+              On analyse votre centre et on vous envoie votre vidéo par email. Si vous préférez en parler de vive
+              voix, vous pouvez aussi réserver un appel ci-dessus.
+            </span>
+          </div>
+        ) : (
+          <form className="simu-choix__form" onSubmit={demanderVideo} noValidate>
+            <label className="simu-champ">
+              <span>Votre site, votre page Google ou votre Instagram</span>
+              <input type="text" value={lien} onChange={(e) => setLien(e.target.value)} placeholder="www.votre-centre.fr ou @votrecompte" />
+            </label>
+            <label className="simu-champ">
+              <span>Email où recevoir la vidéo</span>
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
+            </label>
+            <label className="simu-champ">
+              <span>
+                Téléphone <small>(facultatif)</small>
+              </span>
+              <input type="tel" value={telephone} onChange={(e) => setTelephone(e.target.value)} autoComplete="tel" inputMode="tel" />
+            </label>
+            {erreur && <em className="simu-erreur">{erreur}</em>}
+            <div className="simu-actions">
+              <button type="submit" className="btn btn--primary" disabled={etat === 'envoi'}>
+                Envoyer ma demande
+                <Fleche />
+              </button>
+            </div>
+          </form>
+        ))}
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
 /* Page                                                                 */
 /* ------------------------------------------------------------------ */
 
-function Simulateur() {
+function Simulateur({ niche }) {
+  const cfg = niche ? NICHES[niche] : null
+  const QUESTIONS_PAGE = cfg ? cfg.questions : QUESTIONS
+  const STOCKAGE = cfg ? cfg.stockage : STOCKAGE_DEFAUT
+  const chemin = cfg ? cfg.path : '/simulateur'
+  const depart = cfg ? { domaine: cfg.domaine } : {}
   const params = useMemo(
     () => new URLSearchParams(typeof window !== 'undefined' ? window.location.search : ''),
     [],
@@ -742,12 +908,13 @@ function Simulateur() {
   }, [params])
 
   const initial = useMemo(() => {
-    const sauve = lireStockage()
-    const domaineUrl = params.get('d')
+    const sauve = lireStockage(STOCKAGE)
+    const domaineUrl = cfg ? null : params.get('d')
     if (domaineUrl && QUESTIONS[0].options.some((o) => o.value === domaineUrl)) {
       return { ecran: 1, reponses: { domaine: domaineUrl }, contact: null, envoye: false }
     }
-    return sauve || { ecran: 'intro', reponses: {}, contact: null, envoye: false }
+    return sauve || { ecran: 'intro', reponses: depart, contact: null, envoye: false }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params])
 
   const [ecran, setEcran] = useState(partage ? 'resultat' : initial.ecran)
@@ -758,7 +925,7 @@ function Simulateur() {
   const haut = useRef(null)
 
   useEffect(() => {
-    if (params.has('d')) {
+    if (!cfg && params.has('d')) {
       const propre = new URLSearchParams(params)
       propre.delete('d')
       const q = propre.toString()
@@ -774,12 +941,12 @@ function Simulateur() {
     } catch {
       /* ignore */
     }
-  }, [params])
+  }, [params, cfg])
 
   useEffect(() => {
     if (partage) return
-    ecrireStockage({ ecran, reponses, contact, envoye })
-  }, [ecran, reponses, contact, envoye, partage])
+    ecrireStockage(STOCKAGE, { ecran, reponses, contact, envoye })
+  }, [ecran, reponses, contact, envoye, partage, STOCKAGE])
 
   useEffect(() => {
     haut.current?.scrollIntoView({ behavior: 'instant', block: 'start' })
@@ -789,12 +956,12 @@ function Simulateur() {
     const surMessage = (e) => {
       if (e.origin === 'https://calendly.com' && e.data?.event === 'calendly.event_scheduled') {
         track('Schedule')
-        rdvReserve('simulateur')
+        rdvReserve(cfg ? `simulateur-${cfg.slug}` : 'simulateur')
       }
     }
     window.addEventListener('message', surMessage)
     return () => window.removeEventListener('message', surMessage)
-  }, [])
+  }, [cfg])
 
   const demarrer = () => {
     trackCustom('SimulateurDebut')
@@ -805,19 +972,19 @@ function Simulateur() {
   const repondre = useCallback(
     (id, valeur) => {
       setReponses((r) => ({ ...r, [id]: valeur }))
-      const index = QUESTIONS.findIndex((q) => q.id === id)
+      const index = QUESTIONS_PAGE.findIndex((q) => q.id === id)
       trackCustom('SimulateurQuestion', { question: index + 1 })
       evenementGA('simulateur_question', { numero: index + 1, question: id })
-      const suivant = () => setEcran(index + 1 < QUESTIONS.length ? index + 1 : 'contact')
-      const q = QUESTIONS[index]
+      const suivant = () => setEcran(index + 1 < QUESTIONS_PAGE.length ? index + 1 : 'contact')
+      const q = QUESTIONS_PAGE[index]
       if (!q.type) setTimeout(suivant, 220)
       else suivant()
     },
-    [],
+    [QUESTIONS_PAGE],
   )
 
   const retour = () => {
-    if (ecran === 'contact') setEcran(QUESTIONS.length - 1)
+    if (ecran === 'contact') setEcran(QUESTIONS_PAGE.length - 1)
     else if (ecran === 0) setEcran('intro')
     else if (typeof ecran === 'number') setEcran(ecran - 1)
   }
@@ -838,8 +1005,9 @@ function Simulateur() {
       utm = {}
     }
     const libelle = (id) => {
-      const q = QUESTIONS.find((x) => x.id === id)
+      const q = QUESTIONS_PAGE.find((x) => x.id === id)
       const v = reponses[id]
+      if (!q) return v === undefined ? '' : String(v)
       if (Array.isArray(v)) return v.map((x) => q.options.find((o) => o.value === x)?.label || x).join(', ')
       if (v === null || v === undefined) return 'Je ne sais pas'
       return q.options?.find((o) => o.value === v)?.label ?? String(v)
@@ -854,7 +1022,9 @@ function Simulateur() {
       instagram: infos.instagram,
       chaleur,
       score,
-      domaine: libelle('domaine'),
+      domaine: cfg
+        ? `${cfg.libelleDomaine} – ${libelle('specialite')} · refusés/mois : ${libelle('refus')}`
+        : libelle('domaine'),
       role: libelle('role'),
       prix_presentiel: reponses.prix ?? 'Je ne sais pas',
       eleves_par_an: libelle('eleves'),
@@ -874,7 +1044,7 @@ function Simulateur() {
       mensuel_max: Math.round(res.netMensuel[1]),
       annee1_min: Math.round(res.annee1[0]),
       annee1_max: Math.round(res.annee1[1]),
-      lien_resultat: `${window.location.origin}/simulateur?r=${encoderReponses(reponses)}`,
+      lien_resultat: `${window.location.origin}${chemin}?r=${encoderReponses(reponses)}`,
       utm_source: utm.utm_source || '',
       utm_medium: utm.utm_medium || '',
       utm_campaign: utm.utm_campaign || '',
@@ -899,7 +1069,7 @@ function Simulateur() {
     }
     track('Lead', { value: Math.round(res.annee1[0]), currency: 'EUR' })
     evenementGA('generate_lead', {
-      lead_source: 'simulateur',
+      lead_source: cfg ? `simulateur-${cfg.slug}` : 'simulateur',
       canal_source: lireSource()?.canal || '',
       outil_source: lireSource()?.outil || '',
       value: Math.round(res.annee1[0]),
@@ -908,21 +1078,21 @@ function Simulateur() {
       chaleur,
       score,
     })
-    setContact({ prenom: infos.prenom, email: infos.email })
+    setContact({ prenom: infos.prenom, email: infos.email, centre: infos.centre, ville: infos.ville, telephone: infos.telephone, instagram: infos.instagram })
     setEnvoye(true)
     setEnvoiEnCours(false)
     setEcran('resultat')
   }
 
   const recommencer = () => {
-    setReponses({})
+    setReponses(depart)
     setContact(null)
     setEnvoye(false)
     setEcran('intro')
-    if (partage) window.history.replaceState(null, '', '/simulateur')
+    if (partage) window.history.replaceState(null, '', chemin)
   }
 
-  const question = typeof ecran === 'number' ? QUESTIONS[ecran] : null
+  const question = typeof ecran === 'number' ? QUESTIONS_PAGE[ecran] : null
 
   return (
     <div className="simu-page">
@@ -935,13 +1105,13 @@ function Simulateur() {
       <main
         className={`simu-main${ecran === 'resultat' ? ' simu-main--large' : ''}${ecran === 'intro' ? ' simu-main--intro' : ''}`}
       >
-        {ecran === 'intro' && <Intro onStart={demarrer} />}
+        {ecran === 'intro' && <Intro onStart={demarrer} cfg={cfg} total={QUESTIONS_PAGE.length} />}
         {question && (
           <Question
             key={question.id}
             question={question}
             index={ecran}
-            total={QUESTIONS.length}
+            total={QUESTIONS_PAGE.length}
             reponses={reponses}
             onRepondre={repondre}
             onRetour={retour}
@@ -951,7 +1121,14 @@ function Simulateur() {
           <Contact reponses={reponses} onEnvoyer={envoyer} onRetour={retour} envoiEnCours={envoiEnCours} />
         )}
         {ecran === 'resultat' && (
-          <Resultat reponses={reponses} contact={contact} partage={Boolean(partage)} onRecommencer={recommencer} />
+          <Resultat
+            reponses={reponses}
+            contact={contact}
+            partage={Boolean(partage)}
+            onRecommencer={recommencer}
+            cfg={cfg}
+            chemin={chemin}
+          />
         )}
       </main>
     </div>

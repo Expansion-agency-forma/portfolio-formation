@@ -7,6 +7,9 @@ export const CALENDLY_URL =
 // Adresse de réception des contacts (webhook Make). Vide = aucun envoi.
 export const WEBHOOK_URL = 'https://hook.eu2.make.com/3u5g75qrb8f93xjnb5ujnkkplilz16ob'
 
+// Demandes de vidéo d'analyse gratuite (pages métier) : webhook Make → onglet « Demandes vidéo » + Telegram.
+export const WEBHOOK_VIDEO_URL = 'https://hook.eu2.make.com/4zxmrg9fwuqecxb7d64d5nd718uryt1u'
+
 export const INVESTISSEMENT_PAR_FORMATION = 2500
 export const VIDEO_OFFRE_ID = 'fRIjNmgk0hE'
 
@@ -188,6 +191,8 @@ export const QUESTIONS = [
 /* ------------------------------------------------------------------ */
 
 const PRIX_DEFAUT_DOMAINE = {
+  toilettage: 2500,
+  animalier: 2000,
   beaute: 900,
   coiffure: 800,
   sante: 700,
@@ -198,6 +203,8 @@ const PRIX_DEFAUT_DOMAINE = {
 
 // Part des anciens élèves joignables qui achètent au lancement, selon le métier.
 const RACHAT_ANCIENS = {
+  toilettage: [0.04, 0.07],
+  animalier: [0.03, 0.05],
   beaute: [0.03, 0.05],
   coiffure: [0.03, 0.05],
   sante: [0.02, 0.04],
@@ -214,6 +221,16 @@ export const HYPOTHESES = {
   abonnesParMois: [0.0001, 0.0002], // abonnés qui achètent chaque mois
   retourPub: [1.5, 2.3], // chiffre d'affaires pour 1 € de pub
 }
+
+// Hypothèses propres à certains métiers (complètent HYPOTHESES).
+const HYPOTHESES_DOMAINE = {
+  // La théorie (races, coupes, hygiène, comportement) se vend bien en complément du présentiel.
+  toilettage: { upsellNouveaux: [0.15, 0.25] },
+  animalier: { upsellNouveaux: [0.12, 0.2] },
+}
+
+// Part des demandes refusées faute de place (postes, chiens modèles, distance) qui achètent la version en ligne.
+export const CONVERSION_REFUS = [0.25, 0.4]
 
 // Rendement décroissant quand on digitalise plusieurs formations.
 const MULT_ORGANIQUE = [1, 1.5, 1.8, 2.0, 2.15, 2.25]
@@ -251,7 +268,8 @@ export function calculer(reponses, override = {}) {
   const eleves = Number(r.eleves ?? 15)
   const budget = Number(r.pub ?? 0)
   const [rLo, rHi] = RACHAT_ANCIENS[domaine] || RACHAT_ANCIENS.autre
-  const H = HYPOTHESES
+  const H = { ...HYPOTHESES, ...(HYPOTHESES_DOMAINE[domaine] || {}) }
+  const refus = Number(r.refus ?? 0)
 
   // 1. Lancement : on propose la formation à la base existante (une fois).
   const lancAnciens = [anciens * rLo, anciens * rHi].map((v) => v * conv * MULT_PANIER[k])
@@ -268,10 +286,12 @@ export function calculer(reponses, override = {}) {
   const vCommunaute = [abonnes * H.abonnesParMois[0], abonnes * H.abonnesParMois[1]].map(
     (v) => v * conv * MULT_ORGANIQUE[k],
   )
+  // Demandes refusées aujourd'hui faute de place : la version en ligne les sert.
+  const vRefus = [refus * CONVERSION_REFUS[0], refus * CONVERSION_REFUS[1]].map((v) => v * conv * MULT_PANIER[k])
   const caPub = [budget * H.retourPub[0], budget * H.retourPub[1]].map((v) => v * MULT_PANIER[k])
-  const caMensuel = [0, 1].map((i) => (vNouveaux[i] + vCommunaute[i]) * prix + caPub[i])
+  const caMensuel = [0, 1].map((i) => (vNouveaux[i] + vCommunaute[i] + vRefus[i]) * prix + caPub[i])
   const netMensuel = caMensuel.map((v) => v - budget)
-  const ventesMensuelles = [0, 1].map((i) => vNouveaux[i] + vCommunaute[i] + caPub[i] / prix)
+  const ventesMensuelles = [0, 1].map((i) => vNouveaux[i] + vCommunaute[i] + vRefus[i] + caPub[i] / prix)
 
   // 3. Sur 12 mois.
   const annee1 = [0, 1].map((i) => caLancement[i] + 12 * netMensuel[i])
@@ -294,6 +314,8 @@ export function calculer(reponses, override = {}) {
     lancAbonnes,
     vNouveaux,
     vCommunaute,
+    vRefus,
+    refus,
     caPub,
     ventesMensuelles,
     netMensuel,
@@ -447,7 +469,7 @@ export function normaliserEmail(brut) {
 }
 
 /* Lien de résultat partageable (sans données personnelles) */
-const CLES_PARTAGE = ['domaine', 'role', 'prix', 'eleves', 'anciens', 'abonnes', 'existant', 'formations', 'coaching', 'pub', 'etranger', 'freins', 'delai']
+const CLES_PARTAGE = ['domaine', 'specialite', 'refus', 'role', 'prix', 'eleves', 'anciens', 'abonnes', 'existant', 'formations', 'coaching', 'pub', 'etranger', 'freins', 'delai']
 
 export function encoderReponses(r) {
   const obj = {}

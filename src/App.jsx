@@ -81,6 +81,8 @@ export function AppShell() {
         <Route path="/confidentialite" element={<Confidentialite />} />
         <Route path="/merci" element={<Thanks />} />
         <Route path="/simulateur" element={<Simulateur />} />
+        <Route path="/simulateur-toilettage" element={<Simulateur key="toilettage" niche="toilettage" />} />
+        <Route path="/simulateur-metiers-animaliers" element={<Simulateur key="animalier" niche="animalier" />} />
         <Route path="/realisations" element={<Realisations />} />
         <Route path="/cfa" element={<Cfa />} />
         {SECTEURS.map((s) => (
