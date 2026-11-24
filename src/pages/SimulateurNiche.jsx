@@ -892,6 +892,17 @@ function DeuxChoix({ reponses, contact, cfg, chemin }) {
 /* Page                                                                 */
 /* ------------------------------------------------------------------ */
 
+function signalerRdv(email) {
+  if (!email) return
+  const corps = new URLSearchParams({ evenement: 'rdv', email })
+  try {
+    navigator.sendBeacon?.('https://hook.eu2.make.com/3u5g75qrb8f93xjnb5ujnkkplilz16ob', corps) ||
+      fetch('https://hook.eu2.make.com/3u5g75qrb8f93xjnb5ujnkkplilz16ob', { method: 'POST', mode: 'no-cors', keepalive: true, body: corps })
+  } catch {
+    /* le RDV reste dans Calendly */
+  }
+}
+
 function SimulateurNiche({ niche }) {
   const cfg = niche ? NICHES[niche] : null
   const QUESTIONS_PAGE = cfg ? cfg.questions : QUESTIONS
@@ -952,11 +963,15 @@ function SimulateurNiche({ niche }) {
     haut.current?.scrollIntoView({ behavior: 'instant', block: 'start' })
   }, [ecran])
 
+  const emailRef = useRef(null)
+  emailRef.current = contact?.email || null
+
   useEffect(() => {
     const surMessage = (e) => {
       if (e.origin === 'https://calendly.com' && e.data?.event === 'calendly.event_scheduled') {
         track('Schedule')
         rdvReserve(cfg ? `simulateur-${cfg.slug}` : 'simulateur')
+        signalerRdv(emailRef.current)
       }
     }
     window.addEventListener('message', surMessage)

@@ -1320,6 +1320,17 @@ function construireDonnees(mode, reponses, infos) {
 /* Application (page dédiée ou intégrée à l'accueil)                    */
 /* ------------------------------------------------------------------ */
 
+function signalerRdv(email) {
+  if (!email) return
+  const corps = new URLSearchParams({ evenement: 'rdv', email })
+  try {
+    navigator.sendBeacon?.('https://hook.eu2.make.com/3u5g75qrb8f93xjnb5ujnkkplilz16ob', corps) ||
+      fetch('https://hook.eu2.make.com/3u5g75qrb8f93xjnb5ujnkkplilz16ob', { method: 'POST', mode: 'no-cors', keepalive: true, body: corps })
+  } catch {
+    /* le RDV reste dans Calendly */
+  }
+}
+
 const ETAT_VIDE = { mode: null, ecran: 'intro', reponses: {}, contact: null, envoye: false, video: false }
 
 export function SimulateurApp({ embarque = false }) {
@@ -1394,11 +1405,15 @@ export function SimulateurApp({ embarque = false }) {
     }
   }, [ecran, embarque])
 
+  const emailRef = useRef(null)
+  emailRef.current = contact?.email || null
+
   useEffect(() => {
     const surMessage = (e) => {
       if (e.origin === 'https://calendly.com' && e.data?.event === 'calendly.event_scheduled') {
         track('Schedule')
         rdvReserve('simulateur')
+        signalerRdv(emailRef.current)
       }
     }
     window.addEventListener('message', surMessage)
