@@ -477,6 +477,135 @@ function Contact({ mode, reponses, onEnvoyer, onRetour, envoiEnCours }) {
 /* Fin de parcours : rendez-vous ou vidéo                               */
 /* ------------------------------------------------------------------ */
 
+// Questions posées à ceux qui demandent la vidéo : de quoi préparer une vidéo vraiment personnalisée.
+const QUESTIONS_VIDEO = {
+  formation: [
+    { id: 'objectif', label: 'Dans 6 mois, ce serait réussi si…', type: 'choix', options: ['J’ai un revenu en plus', 'Je touche des élèves trop loin de mon centre', 'J’anime moins de sessions', 'Je vends aussi à l’étranger'] },
+    { id: 'origine', label: 'D’où viennent vos élèves aujourd’hui ?', type: 'multi', options: ['Bouche-à-oreille', 'Instagram / TikTok', 'Google', 'Plateformes (CPF…)', 'Apporteurs d’affaires', 'Publicité'] },
+    { id: 'deplait', label: 'Qu’est-ce qui vous déplaît là-dedans ?', type: 'texte', placeholder: 'Ex. : trop irrégulier, commissions trop élevées…', facultatif: true },
+    { id: 'deja', label: 'Avez-vous déjà essayé de vendre une formation en ligne ?', type: 'choix', options: ['Non, jamais', 'Oui, mais ça n’a pas marché', 'Oui, ça marche un peu'] },
+    { id: 'blocage', label: 'Qu’est-ce qui a bloqué ?', type: 'texte', facultatif: true, si: (d) => d.deja && d.deja !== 'Non, jamais' },
+  ],
+  pub: [
+    { id: 'places', label: 'Combien de places vous reste-t-il sur cette session ?', type: 'choix', options: ['Moins de 5', '5 à 10', '10 à 20', 'Plus de 20', 'Entrées toute l’année'] },
+    { id: 'zone', label: 'Dans quelle zone recrutez-vous ?', type: 'texte', placeholder: 'Ex. : Lyon + 30 km, ou toute la France à distance', facultatif: true },
+    { id: 'rentables', label: 'Quels élèves vous rapportent le plus ?', type: 'multi', options: ['Financés CPF', 'France Travail', 'Autofinancés', 'Entreprises / OPCO'] },
+    { id: 'pubAvant', label: 'Avez-vous déjà fait de la publicité ?', type: 'choix', options: ['Jamais', 'Oui, sans bons résultats', 'Oui, avec de bons résultats'] },
+    { id: 'cplAvant', label: 'Combien vous coûtait un contact ?', type: 'texte', placeholder: 'Ex. : 12 €, ou je ne sais pas', facultatif: true, si: (d) => d.pubAvant && d.pubAvant !== 'Jamais' },
+  ],
+}
+
+function FormulaireVideo({ mode, contact, onEnvoyer }) {
+  const [d, setD] = useState({ lien: contact?.instagram ? `@${contact.instagram}` : '' })
+  const [erreurs, setErreurs] = useState({})
+  const [envoi, setEnvoi] = useState(false)
+  const maj = (cle, valeur) => {
+    setD((x) => ({ ...x, [cle]: valeur }))
+    if (erreurs[cle]) setErreurs((x) => ({ ...x, [cle]: undefined }))
+  }
+  const basculer = (cle, valeur) =>
+    setD((x) => {
+      const liste = x[cle] || []
+      return { ...x, [cle]: liste.includes(valeur) ? liste.filter((v) => v !== valeur) : [...liste, valeur] }
+    })
+  const pub = mode === 'pub'
+
+  const valider = async (e) => {
+    e.preventDefault()
+    const err = {}
+    if (!d.lien?.trim()) err.lien = 'Indiquez votre site, votre fiche Google ou votre Instagram'
+    if (!d.formation?.trim()) err.formation = 'Indiquez la formation'
+    if (pub && !d.prix?.trim()) err.prix = 'Indiquez le prix'
+    setErreurs(err)
+    if (Object.keys(err).length) return
+    setEnvoi(true)
+    await onEnvoyer(d)
+    setEnvoi(false)
+  }
+
+  const questions = QUESTIONS_VIDEO[pub ? 'pub' : 'formation'].filter((q) => !q.si || q.si(d))
+
+  return (
+    <form className="simu-video-form" onSubmit={valider} noValidate>
+      <p className="simu-video-form__intro">
+        Pour une vidéo faite pour votre centre, et pas une vidéo générique, il nous manque quelques infos.
+        Moins d’une minute.
+      </p>
+      <label className={`simu-champ${erreurs.lien ? ' has-erreur' : ''}`}>
+        <span>Votre site, votre fiche Google ou votre Instagram</span>
+        <input type="text" value={d.lien || ''} onChange={(e) => maj('lien', e.target.value)} placeholder="www.votre-centre.fr ou @votrecompte" />
+        {erreurs.lien && <em>{erreurs.lien}</em>}
+      </label>
+      <label className={`simu-champ${erreurs.formation ? ' has-erreur' : ''}`}>
+        <span>{pub ? 'Quelle formation voulez-vous remplir en priorité ?' : 'Quelle formation voulez-vous mettre en ligne en premier ?'}</span>
+        <input type="text" value={d.formation || ''} onChange={(e) => maj('formation', e.target.value)} placeholder={pub ? 'Ex. : formation VTC, CAP esthétique…' : 'Ex. : extension de cils volume russe'} />
+        {erreurs.formation && <em>{erreurs.formation}</em>}
+      </label>
+      {pub && (
+        <div className="simu-video-form__ligne">
+          <label className={`simu-champ${erreurs.prix ? ' has-erreur' : ''}`}>
+            <span>Son prix</span>
+            <input type="text" inputMode="numeric" value={d.prix || ''} onChange={(e) => maj('prix', e.target.value)} placeholder="Ex. : 1 500 €" />
+            {erreurs.prix && <em>{erreurs.prix}</em>}
+          </label>
+          <label className="simu-champ">
+            <span>
+              Prochaine session <small>(facultatif)</small>
+            </span>
+            <input type="text" value={d.session || ''} onChange={(e) => maj('session', e.target.value)} placeholder="Ex. : 12 janvier" />
+          </label>
+        </div>
+      )}
+      {questions.map((q) => (
+        <div key={q.id} className="simu-video-form__question">
+          {q.type === 'texte' ? (
+            <label className="simu-champ">
+              <span>
+                {q.label} {q.facultatif && <small>(facultatif)</small>}
+              </span>
+              <input type="text" value={d[q.id] || ''} onChange={(e) => maj(q.id, e.target.value)} placeholder={q.placeholder} />
+            </label>
+          ) : (
+            <>
+              <span className="simu-video-form__label">
+                {q.label} {q.type === 'multi' && <small>(plusieurs choix possibles)</small>}
+              </span>
+              <div className="simu-puces">
+                {q.options.map((o) => {
+                  const actif = q.type === 'multi' ? (d[q.id] || []).includes(o) : d[q.id] === o
+                  return (
+                    <button
+                      key={o}
+                      type="button"
+                      className={`simu-puce${actif ? ' is-actif' : ''}`}
+                      aria-pressed={actif}
+                      onClick={() => (q.type === 'multi' ? basculer(q.id, o) : maj(q.id, actif ? undefined : o))}
+                    >
+                      {o}
+                    </button>
+                  )
+                })}
+              </div>
+            </>
+          )}
+        </div>
+      ))}
+      <label className="simu-champ">
+        <span>
+          Une question que vous voulez qu’on traite dans la vidéo ? <small>(facultatif)</small>
+        </span>
+        <textarea rows={2} value={d.question || ''} onChange={(e) => maj('question', e.target.value)} />
+      </label>
+      <div className="simu-actions">
+        <button type="submit" className="btn btn--primary" disabled={envoi}>
+          Recevoir ma vidéo
+          <Fleche />
+        </button>
+      </div>
+    </form>
+  )
+}
+
 function FinParcours({ contact, chaleur, onDemanderVideo, videoDemandee, mode }) {
   const [choix, setChoix] = useState(null)
   return (
@@ -496,22 +625,20 @@ function FinParcours({ contact, chaleur, onDemanderVideo, videoDemandee, mode })
         </button>
         <button
           type="button"
-          className={`simu-fin__choix${choix === 'video' || videoDemandee ? ' is-actif' : ''}`}
-          onClick={() => {
-            setChoix('video')
-            if (!videoDemandee) onDemanderVideo()
-          }}
+          className={`simu-fin__choix${choix === 'video' ? ' is-actif' : ''}`}
+          onClick={() => setChoix('video')}
         >
-          <strong>Recevoir une vidéo explicative sur mon secteur</strong>
+          <strong>Recevoir une vidéo personnalisée sur mon centre</strong>
           <span>
             {mode === 'pub'
-              ? 'Votre marché, les coûts de publicité et le fonctionnement, expliqués en vidéo.'
-              : 'Votre marché, le fonctionnement et le prix, expliqués en vidéo.'}
+              ? 'Votre marché, la pub qu’on lancerait pour vous et ce qu’elle coûterait, expliqués en vidéo.'
+              : 'Comment votre formation se vendrait en ligne, étape par étape, expliqué en vidéo.'}
           </span>
         </button>
       </div>
       {choix === 'rdv' && <Calendly prenom={contact?.prenom} email={contact?.email} />}
-      {(choix === 'video' || videoDemandee) && choix !== 'rdv' && (
+      {choix === 'video' && !videoDemandee && <FormulaireVideo mode={mode} contact={contact} onEnvoyer={onDemanderVideo} />}
+      {choix === 'video' && videoDemandee && (
         <div className="simu-video-ok" role="status">
           <strong>C’est noté{contact?.prenom ? `, ${contact.prenom}` : ''} !</strong>
           <p>
@@ -1343,12 +1470,13 @@ export function SimulateurApp({ embarque = false }) {
     setEtat(suivant)
   }
 
-  const demanderVideo = async () => {
+  const demanderVideo = async (details = {}) => {
     maj({ video: true })
     evenementGA('simulateur_video_demandee', { mode })
     trackCustom('SimulateurVideo', { mode })
     if (!contact?.email) return
     const res = resultat(mode, reponses)
+    const liste = (v) => (Array.isArray(v) ? v.join(', ') : v || '')
     await posterWebhook({
       evenement: 'video',
       date: new Date().toISOString(),
@@ -1356,13 +1484,23 @@ export function SimulateurApp({ embarque = false }) {
       prenom: contact.prenom,
       centre: contact.centre,
       ville: contact.ville,
-      instagram: contact.instagram,
+      instagram: details.lien || contact.instagram,
       email: contact.email,
       telephone: contact.telephone,
       domaine: libelleReponse(mode === 'pub' ? QUESTIONS_PUB : QUESTIONS, mode === 'pub' && !reponses.domaine ? 'offre' : 'domaine', reponses),
       annee1_min: Math.round(res.annee1[0]),
       annee1_max: Math.round(res.annee1[1]),
       lien_resultat: `${window.location.origin}/simulateur?r=${encoderReponses({ ...reponses, mode })}`,
+      formation_prioritaire: details.formation || '',
+      prix_session: mode === 'pub' ? [details.prix, details.session && `session : ${details.session}`].filter(Boolean).join(' · ') : '',
+      objectif: details.objectif || '',
+      origine_eleves: [liste(details.origine), details.deplait && `ce qui déplaît : ${details.deplait}`].filter(Boolean).join(' · '),
+      deja_essaye: [details.deja, details.blocage].filter(Boolean).join(' : '),
+      places_restantes: details.places || '',
+      zone: details.zone || '',
+      eleves_rentables: liste(details.rentables),
+      pub_avant: [details.pubAvant, details.cplAvant && `CPL : ${details.cplAvant}`].filter(Boolean).join(' · '),
+      question_video: details.question || '',
     })
   }
 
