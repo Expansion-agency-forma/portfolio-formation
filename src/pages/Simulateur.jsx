@@ -1266,6 +1266,7 @@ function construireDonnees(mode, reponses, infos) {
     utm_content: utm.utm_content || '',
     utm_term: utm.utm_term || '',
     fbclid: utm.fbclid || '',
+    gclid: utm.gclid || '',
     source_trafic: lireSource()?.libelle || '',
     canal_trafic: lireSource()?.canal || '',
     consentement: 'oui',
@@ -1374,7 +1375,7 @@ export function SimulateurApp({ embarque = false }) {
     }
     try {
       const utm = {}
-      ;['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'].forEach((k) => {
+      ;['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'gclid'].forEach((k) => {
         const v = params.get(k)
         if (v) utm[k] = v
       })
