@@ -1,6 +1,6 @@
 // Une entrée par page : titre, description, indexation et place dans le sitemap.
 // Source unique utilisée par le pré-rendu HTML, le sitemap et la mise à jour du <head> côté navigateur.
-import { SECTEURS } from '../data/secteurs.js'
+import { SECTEURS, METIERS } from '../data/secteurs.js'
 import { ARTICLES, BASE_RESSOURCES } from '../data/ressources.js'
 
 export const PAGES = [
@@ -68,6 +68,16 @@ export const PAGES = [
     changefreq: 'monthly',
     fil: s.nom,
     secteur: s.slug,
+  })),
+  ...METIERS.map((m) => ({
+    path: m.path,
+    title: m.seoTitle,
+    description: m.seoDescription,
+    priority: 0.7,
+    changefreq: 'monthly',
+    fil: m.nom,
+    filParent: SECTEURS.find((s) => s.slug === m.parent),
+    secteur: m.slug,
   })),
   {
     path: '/cfa',

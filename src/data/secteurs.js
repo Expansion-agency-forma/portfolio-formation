@@ -1,6 +1,7 @@
 // Contenu des pages métiers « Créer une formation en ligne ».
 // Une entrée = une page indexable. `domaine` correspond à la 1re question du simulateur,
 // `realisations` aux clés de FORMATIONS (src/components/Formations.jsx).
+import { METIERS as METIERS_BRUTS } from './metiers.js'
 
 export const BASE_SECTEURS = '/creer-formation-en-ligne'
 
@@ -286,6 +287,12 @@ export const SECTEURS = [
   },
 ].map((s) => ({ ...s, path: `${BASE_SECTEURS}/${s.slug}`, methode: METHODE }))
 
+// Pages par spécialité (prothésie ongulaire, extension de cils…), rattachées à un secteur.
+export const METIERS = METIERS_BRUTS.map((m) => ({ ...m, path: `${BASE_SECTEURS}/${m.slug}`, methode: METHODE }))
+
+// Toutes les pages « Créer une formation en ligne » (secteurs + spécialités).
+export const PAGES_FORMATION = [...SECTEURS, ...METIERS]
+
 export function secteurParSlug(slug) {
-  return SECTEURS.find((s) => s.slug === slug) || null
+  return PAGES_FORMATION.find((s) => s.slug === slug) || null
 }

@@ -4,7 +4,7 @@ import { pagePour } from './routes.js'
 import { SITE_URL, SITE_NAME, OG_IMAGE, LOGO_URL, CONTACT_EMAIL, RESEAUX } from './site.js'
 import { FAQS as FAQ_ACCUEIL } from '../components/Faq.jsx'
 import { FAQS as FAQ_PUB } from '../components/pub/FaqPub.jsx'
-import { SECTEURS } from '../data/secteurs.js'
+import { PAGES_FORMATION } from '../data/secteurs.js'
 import { FAQ_SIMULATION } from '../data/simulation.js'
 import { ARTICLES, AUTEUR, BASE_RESSOURCES } from '../data/ressources.js'
 import { texteBrut } from '../lib/article.js'
@@ -193,7 +193,7 @@ export function donneesStructurees(page) {
   if (page.path === '/simulation') graph.push(faqPage(url, FAQ_SIMULATION))
 
   if (page.secteur) {
-    const s = SECTEURS.find((x) => x.slug === page.secteur)
+    const s = PAGES_FORMATION.find((x) => x.slug === page.secteur)
     graph.push(
       {
         '@type': 'Service',

@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar'
 import Cta from '../components/Cta'
 import Footer from '../components/Footer'
 import { FORMATIONS } from '../components/Formations'
-import { SECTEURS } from '../data/secteurs'
+import { SECTEURS, METIERS } from '../data/secteurs'
 import { CALENDLY_URL } from '../seo/site'
 import '../styles/simulateur.css'
 import '../styles/secteur.css'
@@ -70,7 +70,9 @@ function Secteur({ secteur }) {
   const realisations = secteur.realisations
     .map((cle) => FORMATIONS.find((f) => f.key === cle))
     .filter(Boolean)
-  const autres = SECTEURS.filter((s) => s.slug !== secteur.slug)
+  const parent = secteur.parent ? SECTEURS.find((s) => s.slug === secteur.parent) : null
+  const specialites = METIERS.filter((m) => m.parent === (parent ? parent.slug : secteur.slug) && m.slug !== secteur.slug)
+  const autres = SECTEURS.filter((s) => s.slug !== secteur.slug && s.slug !== secteur.parent)
   const lienSimulateur = `/simulateur?d=${secteur.domaine}`
 
   const nav = [
@@ -89,6 +91,12 @@ function Secteur({ secteur }) {
           <nav className="secteur-fil" aria-label="Fil d’Ariane">
             <Link to="/">Accueil</Link>
             <span aria-hidden="true">/</span>
+            {parent && (
+              <>
+                <Link to={parent.path}>{parent.nom}</Link>
+                <span aria-hidden="true">/</span>
+              </>
+            )}
             <span aria-current="page">{secteur.nom}</span>
           </nav>
           <span className="eyebrow" data-reveal>
@@ -198,8 +206,8 @@ function Secteur({ secteur }) {
                 <em>vous rapporter&nbsp;?</em>
               </h2>
               <p>
-                Répondez à 13 questions sur vos élèves, vos abonnés et vos prix : le simulateur estime ce que vous
-                pourriez vendre dès le lancement, puis chaque mois.
+                Répondez à quelques questions sur vos élèves, vos abonnés et vos prix : le simulateur estime ce que
+                vous pourriez vendre dès le lancement, puis chaque mois.
               </p>
             </div>
             <div className="secteur-simu__actions">
@@ -207,7 +215,7 @@ function Secteur({ secteur }) {
                 Calculer mon potentiel
                 <Fleche />
               </Link>
-              <span>Gratuit · 1 minute · Résultat immédiat</span>
+              <span>Gratuit · 2 minutes · Résultat immédiat</span>
             </div>
           </div>
           <div className="secteur-preuves" data-reveal>
@@ -252,6 +260,26 @@ function Secteur({ secteur }) {
             </div>
           </div>
         </section>
+
+        {(specialites.length > 0 || parent) && (
+          <section className="secteur-section secteur-autres">
+            <h2 className="secteur-autres__titre">
+              {parent ? 'Les autres formations que nous filmons' : 'Votre spécialité'}
+            </h2>
+            <div className="secteurs-liens">
+              {parent && (
+                <Link to={parent.path} className="secteurs-liens__lien">
+                  {parent.nom} : toutes les spécialités
+                </Link>
+              )}
+              {specialites.map((m) => (
+                <Link key={m.slug} to={m.path} className="secteurs-liens__lien">
+                  {m.nom}
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="secteur-section secteur-autres">
           <h2 className="secteur-autres__titre">Les autres secteurs que nous accompagnons</h2>

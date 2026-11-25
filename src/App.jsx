@@ -15,7 +15,7 @@ import Secteur from './pages/Secteur'
 import Ressources from './pages/Ressources'
 import Article from './pages/Article'
 import NotFound from './pages/NotFound'
-import { SECTEURS } from './data/secteurs'
+import { PAGES_FORMATION } from './data/secteurs'
 import { ARTICLES, BASE_RESSOURCES } from './data/ressources'
 import { appliquerHead } from './seo/head'
 import BandeauCookies from './components/BandeauCookies'
@@ -88,7 +88,7 @@ export function AppShell() {
         <Route path="/simulateur-metiers-animaliers" element={<SimulateurNiche key="animalier" niche="animalier" />} />
         <Route path="/realisations" element={<Realisations />} />
         <Route path="/cfa" element={<Cfa />} />
-        {SECTEURS.map((s) => (
+        {PAGES_FORMATION.map((s) => (
           <Route key={s.slug} path={s.path} element={<Secteur secteur={s} />} />
         ))}
         <Route path={BASE_RESSOURCES} element={<Ressources />} />
