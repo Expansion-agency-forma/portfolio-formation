@@ -610,4 +610,594 @@ export const METIERS = [
       FAQ_PROPRIETE,
     ],
   }),
+  metier({
+    slug: 'blanchiment-dentaire',
+    parent: 'esthetique-beaute',
+    domaine: 'beaute',
+    nom: 'Blanchiment dentaire',
+    seoTitle: 'Créer sa formation en ligne en blanchiment dentaire esthétique | Expansion',
+    seoDescription:
+      'Formatrice en blanchiment dentaire esthétique ? On filme votre protocole (accueil, teinte, pose du gel, lampe LED, conseils après séance) et on le vend en ligne.',
+    titreItalique: 'en blanchiment dentaire',
+    intro:
+      'Questionnaire client, prise de teinte avant et après, pose de l’écarteur, application du gel, réglage de la lampe LED, conseils après séance : le blanchiment dentaire esthétique repose sur un protocole précis et sur un cadre réglementaire que vos élèves doivent maîtriser. Nous filmons votre protocole complet dans votre centre et nous le transformons en formation en ligne structurée.',
+    pourquoiTitre: 'Pourquoi mettre votre formation blanchiment en ligne',
+    pourquoi: [
+      {
+        titre: 'Un protocole qui se suit étape par étape',
+        texte:
+          'Le blanchiment se déroule toujours dans le même ordre. En vidéo, chaque étape devient une leçon courte que l’élève peut revoir juste avant sa première vraie séance.',
+      },
+      {
+        titre: 'La partie réglementaire expliquée une fois pour toutes',
+        texte:
+          'Produits autorisés, contre-indications, fiche client, responsabilité : vous l’expliquez une fois face caméra, clairement, au lieu de le répéter à chaque session.',
+      },
+      {
+        titre: 'Une formation courte, facile à vendre',
+        texte:
+          'Le blanchiment s’apprend vite et se rentabilise vite. C’est un format idéal pour une formation en ligne d’entrée de gamme, qui attire ensuite des élèves vers vos autres formations.',
+      },
+      {
+        titre: 'Un complément pour les esthéticiennes déjà installées',
+        texte:
+          'Beaucoup d’esthéticiennes veulent ajouter le blanchiment à leur carte sans fermer leur institut pour se former. La version en ligne répond exactement à ce besoin.',
+      },
+    ],
+    filmesTitre: 'Ce que l’on filme dans une formation blanchiment',
+    filmes: [
+      'Cadre réglementaire, produits et contre-indications',
+      'Accueil, questionnaire et fiche client',
+      'Prise de teinte avant la séance',
+      'Pose de l’écarteur et application du gel',
+      'Réglage de la lampe et déroulé de la séance',
+      'Résultat, conseils après séance et photos avant/après',
+    ],
+    filmesTexte:
+      'Une caméra en face de la cliente pour le sourire, une autre en gros plan sur l’application du gel. Les temps de pose et les points de vigilance s’affichent à l’écran pendant que vous les expliquez.',
+    realisations: ['blanchiment'],
+    faq: [
+      {
+        q: 'Peut-on parler de la réglementation dans la formation ?',
+        a: 'Oui, et c’est même recommandé. Nous filmons un module dédié face caméra, sur la base de ce que vous enseignez déjà. Le contenu réglementaire reste sous votre responsabilité : nous le mettons en forme, nous ne le rédigeons pas à votre place.',
+      },
+      {
+        q: 'Faut-il une cliente pour le tournage ?',
+        a: 'Oui, au moins une séance complète sur une vraie cliente, pour montrer le protocole de bout en bout et un vrai résultat avant/après.',
+      },
+      FAQ_DUREE,
+      FAQ_PROPRIETE,
+    ],
+  }),
+  metier({
+    slug: 'tatouage-ephemere',
+    parent: 'esthetique-beaute',
+    domaine: 'beaute',
+    nom: 'Tatouage éphémère',
+    seoTitle: 'Créer sa formation en ligne en tatouage éphémère | Expansion',
+    seoDescription:
+      'Henné, jagua, tatouage temporaire : on filme votre formation tatouage éphémère (peau, sécurité, tracé, tarifs) et on la transforme en formation en ligne à vendre.',
+    titreItalique: 'en tatouage éphémère',
+    intro:
+      'Préparation de la peau, règles d’hygiène et de sécurité, entraînement au tracé, réalisation des motifs, fixation des tarifs, lancement de l’activité : nous avons déjà filmé une formation complète en tatouage éphémère. Nous savons comment montrer le tracé de près et comment rendre la partie business aussi concrète que la pratique.',
+    pourquoiTitre: 'Pourquoi digitaliser votre formation tatouage éphémère',
+    pourquoi: [
+      {
+        titre: 'Le tracé filmé à la verticale',
+        texte:
+          'Une caméra au-dessus du support suit chaque trait. L’élève voit la pression, la vitesse et le sens du geste, puis s’entraîne chez elle en mettant la vidéo en pause.',
+      },
+      {
+        titre: 'Un métier qui se lance vite',
+        texte:
+          'Les élèves veulent démarrer rapidement : événements, mariages, marchés d’été. Une formation en ligne leur permet de commencer à se former le jour même de l’achat.',
+      },
+      {
+        titre: 'La partie business, le vrai plus',
+        texte:
+          'Fixer ses prix, trouver ses premiers clients, travailler en événementiel : ces modules théoriques face caméra font souvent la différence avec les formations concurrentes.',
+      },
+      {
+        titre: 'Une audience nationale',
+        texte:
+          'Le tatouage éphémère se pratique partout. En ligne, votre formation touche des élèves de toute la France et des pays francophones.',
+      },
+    ],
+    filmesTitre: 'Ce que l’on filme dans une formation tatouage éphémère',
+    filmes: [
+      'Présentation de la formatrice et du métier',
+      'La peau, l’hygiène et la sécurité',
+      'Le matériel et la préparation des produits',
+      'Entraînement au tracé sur support',
+      'Réalisation de motifs sur modèle',
+      'Fixer ses tarifs et se lancer après la formation',
+    ],
+    filmesTexte:
+      'Les modules pratiques sont filmés en plongée au-dessus du support ou de la peau, les modules théoriques face caméra avec un prompteur. Les étapes et les chiffres clés apparaissent à l’écran.',
+    realisations: [],
+    faq: [
+      {
+        q: 'Avez-vous déjà filmé une formation de ce type ?',
+        a: 'Oui. Plusieurs modules de la formation tatouage éphémère que nous avons tournée sont visibles sur notre page Réalisations : introduction, peau et sécurité, tarifs, lancement de l’activité, entraînement au tracé.',
+      },
+      {
+        q: 'Peut-on filmer sur support plutôt que sur modèle ?',
+        a: 'Les deux. L’entraînement se filme très bien sur support, et quelques motifs complets sur modèle montrent le rendu final.',
+      },
+      FAQ_DUREE,
+      FAQ_PROPRIETE,
+    ],
+  }),
+  metier({
+    slug: 'spray-tan',
+    parent: 'esthetique-beaute',
+    domaine: 'beaute',
+    nom: 'Spray tan',
+    seoTitle: 'Créer sa formation en ligne en spray tan (bronzage sans UV) | Expansion',
+    seoDescription:
+      'Formatrice spray tan ? On filme votre formation bronzage sans UV (préparation, choix de la teinte, gestuelle au pistolet, finitions) et on la vend en ligne.',
+    titreItalique: 'en spray tan',
+    intro:
+      'Préparation de la cliente, choix de la teinte selon la carnation, réglage du pistolet, gestuelle de pulvérisation, zones délicates, conseils après séance : le spray tan est un geste rapide qui demande de la régularité. Nous filmons une séance complète, en plan large et en gros plan, pour que vos élèves comprennent le mouvement autant que la technique.',
+    pourquoiTitre: 'Pourquoi mettre votre formation spray tan en ligne',
+    pourquoi: [
+      {
+        titre: 'La gestuelle vue en entier',
+        texte:
+          'Distance, vitesse, ordre des zones : en plan large, l’élève voit le mouvement complet autour de la cliente. En gros plan, elle voit le rendu sur les mains, les pieds et le visage.',
+      },
+      {
+        titre: 'Une formation courte et accessible',
+        texte:
+          'Le spray tan s’apprend en peu de temps. C’est un format parfait pour une formation en ligne à prix accessible, vendue toute l’année et surtout avant l’été.',
+      },
+      {
+        titre: 'Le choix de la teinte bien expliqué',
+        texte:
+          'Carnation, sous-ton, résultat souhaité : avec des exemples à l’écran, l’élève apprend à choisir la bonne solution sans se tromper.',
+      },
+      {
+        titre: 'Une prestation à ajouter à sa carte',
+        texte:
+          'Les esthéticiennes et les instituts cherchent des prestations rapides et rentables. Votre formation en ligne leur permet de se former sans fermer leur institut.',
+      },
+    ],
+    filmesTitre: 'Ce que l’on filme dans une formation spray tan',
+    filmes: [
+      'Matériel, cabine et choix des solutions',
+      'Préparation de la peau et consignes avant la séance',
+      'Choix de la teinte selon la carnation',
+      'Réglage du pistolet et gestuelle de pulvérisation',
+      'Mains, pieds, visage et zones délicates',
+      'Séchage, conseils après séance et erreurs à éviter',
+    ],
+    filmesTexte:
+      'Une caméra en plan large pour la gestuelle complète, une autre en gros plan sur les zones délicates. Les distances et les temps de séchage s’affichent à l’écran.',
+    realisations: [],
+    faq: [
+      {
+        q: 'Comment filmer une séance avec une cliente peu vêtue ?',
+        a: 'Avec une tenue adaptée (maillot de bain ou sous-vêtements jetables) et un cadrage pensé à l’avance. Nous validons avec vous et la modèle ce qui apparaîtra à l’écran.',
+      },
+      {
+        q: 'Le brouillard du pistolet gêne-t-il le tournage ?',
+        a: 'Non, nous plaçons les caméras hors de la zone de pulvérisation et nous protégeons le matériel. La cabine reste celle où vous travaillez habituellement.',
+      },
+      FAQ_DUREE,
+      FAQ_PROPRIETE,
+    ],
+  }),
+  metier({
+    slug: 'lifting-coreen',
+    parent: 'esthetique-beaute',
+    domaine: 'beaute',
+    nom: 'Lifting coréen',
+    seoTitle: 'Créer sa formation en ligne en lifting coréen | Expansion',
+    seoDescription:
+      'Formatrice en lifting coréen ou massage facial ? On filme votre protocole en gros plan sur le visage, manœuvre par manœuvre, et on le vend en ligne.',
+    titreItalique: 'en lifting coréen',
+    intro:
+      'Démaquillage, préparation de la peau, enchaînement des manœuvres, pressions, rythme, outils : le lifting coréen repose sur une séquence précise que l’élève doit mémoriser. Nous filmons votre protocole complet en gros plan sur le visage de la modèle et nous découpons chaque manœuvre pour qu’elle soit facile à revoir.',
+    pourquoiTitre: 'Pourquoi digitaliser votre formation lifting coréen',
+    pourquoi: [
+      {
+        titre: 'Chaque manœuvre nommée et répétable',
+        texte:
+          'Le nom de la manœuvre s’affiche à l’écran au moment où vous la faites. L’élève peut revoir une séquence précise autant de fois qu’il le faut pour la mémoriser.',
+      },
+      {
+        titre: 'Le rythme et la pression se voient enfin',
+        texte:
+          'En gros plan, on voit la position des doigts, l’appui et la vitesse. C’est ce que les élèves ont le plus de mal à retenir après une session en présentiel.',
+      },
+      {
+        titre: 'Une tendance qui attire de nouvelles élèves',
+        texte:
+          'Le lifting coréen et les soins japonais sont très recherchés. Une formation en ligne vous permet de répondre à cette demande partout en France.',
+      },
+      {
+        titre: 'Facile à combiner avec vos autres soins',
+        texte:
+          'Le protocole peut être vendu seul ou intégré dans un pack avec vos soins du visage, votre head spa ou votre cryothérapie.',
+      },
+    ],
+    filmesTitre: 'Ce que l’on filme dans une formation lifting coréen',
+    filmes: [
+      'Origines du soin, bienfaits et contre-indications',
+      'Installation de la cliente et préparation de la peau',
+      'Enchaînement des manœuvres, séquence par séquence',
+      'Position des mains, pressions et rythme',
+      'Utilisation des outils (gua sha, ventouses, rouleaux)',
+      'Protocole complet en temps réel et conseils de vente',
+    ],
+    filmesTexte:
+      'Une caméra au-dessus de la tête de la modèle, une autre de profil. Le protocole est filmé deux fois : manœuvre par manœuvre avec vos explications, puis en entier à vitesse réelle.',
+    realisations: [],
+    faq: [
+      {
+        q: 'Avez-vous déjà filmé ce type de soin ?',
+        a: 'Oui, nous avons tourné un protocole de lifting coréen en pratique multi-caméras pour un centre de formation esthétique, avec d’autres soins du même programme.',
+      },
+      {
+        q: 'Faut-il filmer le protocole en entier, sans coupure ?',
+        a: 'Nous recommandons les deux versions : une version découpée et commentée pour apprendre, et une version complète pour voir le rythme réel du soin.',
+      },
+      FAQ_DUREE,
+      FAQ_PROPRIETE,
+    ],
+  }),
+  metier({
+    slug: 'epilation',
+    parent: 'esthetique-beaute',
+    domaine: 'beaute',
+    nom: 'Épilation',
+    seoTitle: 'Créer sa formation en ligne en épilation (cire, fil, sucre) | Expansion',
+    seoDescription:
+      'Formatrice en épilation ? Cire chaude, cire tiède, fil, pâte de sucre, épilation intégrale : on filme votre formation et on la transforme en formation en ligne.',
+    titreItalique: 'en épilation',
+    intro:
+      'Choix de la cire, température, sens du poil, tension de la peau, geste d’arrachage, zones sensibles : en épilation, la technique se joue sur des détails que l’on rate facilement en salle. Nous filmons vos démonstrations zone par zone et nous en faisons une formation en ligne complète, de la cire tiède à l’épilation intégrale.',
+    pourquoiTitre: 'Pourquoi mettre votre formation épilation en ligne',
+    pourquoi: [
+      {
+        titre: 'Le geste d’arrachage au ralenti',
+        texte:
+          'Tension de la peau, angle et vitesse : au ralenti, l’élève comprend pourquoi un geste fait moins mal qu’un autre et pourquoi le poil casse ou non.',
+      },
+      {
+        titre: 'Une leçon par zone',
+        texte:
+          'Sourcils, lèvre, aisselles, jambes, maillot : chaque zone devient une leçon courte. L’élève revoit celle dont elle a besoin juste avant de la pratiquer.',
+      },
+      {
+        titre: 'Une formation de base très demandée',
+        texte:
+          'L’épilation est la prestation la plus pratiquée en institut. Votre formation en ligne attire les débutantes, les reconversions et les candidates au CAP.',
+      },
+      {
+        titre: 'Plusieurs techniques à vendre séparément',
+        texte:
+          'Cire, fil, pâte de sucre : chaque technique peut devenir une formation à part, vendue seule ou en pack.',
+      },
+    ],
+    filmesTitre: 'Ce que l’on filme dans une formation épilation',
+    filmes: [
+      'Hygiène, matériel et choix des cires',
+      'Température, application et sens du poil',
+      'Visage : sourcils, lèvre, menton',
+      'Corps : aisselles, bras, jambes',
+      'Maillot classique, échancré et intégral',
+      'Fil ou pâte de sucre, soins après épilation',
+    ],
+    filmesTexte:
+      'Gros plan sur la zone épilée, avec un plan plus large pour la posture de la praticienne. Les températures et les points de vigilance s’affichent à l’écran.',
+    realisations: [],
+    faq: [
+      {
+        q: 'Comment filmer les zones intimes avec respect ?',
+        a: 'Avec une modèle volontaire, des sous-vêtements jetables et un cadrage décidé à l’avance. Rien n’est diffusé sans votre accord et celui de la modèle.',
+      },
+      {
+        q: 'Peut-on filmer plusieurs techniques le même jour ?',
+        a: 'Oui. Avec plusieurs modèles, on enchaîne cire, fil et pâte de sucre dans la même journée de tournage.',
+      },
+      FAQ_DUREE,
+      FAQ_PROPRIETE,
+    ],
+  }),
+  metier({
+    slug: 'microblading',
+    parent: 'esthetique-beaute',
+    domaine: 'beaute',
+    nom: 'Microblading',
+    seoTitle: 'Créer sa formation en ligne en microblading | Expansion',
+    seoDescription:
+      'Formatrice en microblading ou microshading ? On filme le dessin, le tracé poil à poil et la cicatrisation en macro, et on transforme votre formation en programme en ligne.',
+    titreItalique: 'en microblading',
+    intro:
+      'Morphologie du sourcil, dessin et symétrie, choix du pigment, tracé poil à poil, profondeur d’incision, cicatrisation, retouche : le microblading demande une précision que seule la macro permet vraiment de montrer. Nous filmons votre formation de l’entraînement sur peau synthétique jusqu’à la séance sur modèle.',
+    pourquoiTitre: 'Pourquoi digitaliser votre formation microblading',
+    pourquoi: [
+      {
+        titre: 'Le tracé poil à poil en macro',
+        texte:
+          'Angle de la lame, pression, espacement des traits : la caméra macro montre ce que l’élève ne voit jamais en salle, même assise à côté de vous.',
+      },
+      {
+        titre: 'Des heures d’entraînement guidées',
+        texte:
+          'Le microblading s’apprend d’abord sur peau synthétique. Avec la vidéo, l’élève s’entraîne chez elle en suivant vos exercices pas à pas.',
+      },
+      {
+        titre: 'La théorie enfin bien rangée',
+        texte:
+          'Colorimétrie, hygiène, contre-indications, cicatrisation : la partie théorique est filmée face caméra, découpée et illustrée, au lieu d’être dictée en début de session.',
+      },
+      {
+        titre: 'Plus de place pour la pratique en présentiel',
+        texte:
+          'Si l’élève arrive en ayant déjà vu la théorie en ligne, vos journées en centre peuvent être consacrées entièrement à la pratique sur modèle.',
+      },
+    ],
+    filmesTitre: 'Ce que l’on filme dans une formation microblading',
+    filmes: [
+      'Hygiène, matériel et contre-indications',
+      'Morphologie et dessin du sourcil',
+      'Colorimétrie et choix du pigment',
+      'Exercices de tracé sur peau synthétique',
+      'Séance complète sur modèle',
+      'Cicatrisation, retouche et conseils à la cliente',
+    ],
+    filmesTexte:
+      'Une caméra macro sur le sourcil, une autre au-dessus pour le dessin et la symétrie. Les angles, les profondeurs et les temps de pose s’affichent à l’écran.',
+    realisations: [],
+    faq: [
+      {
+        q: 'Quelle différence avec votre page maquillage permanent ?',
+        a: 'Le maquillage permanent couvre l’ensemble des techniques (sourcils, lèvres, yeux, dermographe). Cette page est dédiée au microblading et au microshading des sourcils, faits à la main.',
+      },
+      {
+        q: 'Peut-on montrer un sourcil cicatrisé ?',
+        a: 'Oui, si vous avez des photos de clientes après cicatrisation ou si la modèle revient pour la retouche, nous l’intégrons dans la formation.',
+      },
+      FAQ_DUREE,
+      FAQ_PROPRIETE,
+    ],
+  }),
+  metier({
+    slug: 'maquillage-professionnel',
+    parent: 'esthetique-beaute',
+    domaine: 'beaute',
+    nom: 'Maquillage professionnel',
+    seoTitle: 'Créer sa formation en ligne en maquillage professionnel | Expansion',
+    seoDescription:
+      'Maquilleuse formatrice ? Teint, contouring, yeux, maquillage mariée ou artistique : on filme votre formation maquillage et on la transforme en formation en ligne.',
+    titreItalique: 'en maquillage professionnel',
+    intro:
+      'Préparation de la peau, teint, correction, contouring, yeux, lèvres, maquillage mariée ou de soirée : le maquillage se juge à la lumière et à la couleur. Nous filmons votre formation avec un éclairage studio qui respecte les teintes réelles, pour que vos élèves voient exactement ce que vous voyez.',
+    pourquoiTitre: 'Pourquoi mettre votre formation maquillage en ligne',
+    pourquoi: [
+      {
+        titre: 'Des couleurs fidèles à l’écran',
+        texte:
+          'Un éclairage mal réglé change la couleur d’un fond de teint. Nous calibrons la lumière pour que le rendu à l’écran soit celui que vous obtenez en vrai.',
+      },
+      {
+        titre: 'Le visage et la palette en même temps',
+        texte:
+          'Une caméra sur le visage, une autre sur vos mains et vos produits : l’élève voit quel pinceau, quelle quantité et quel geste, au même moment.',
+      },
+      {
+        titre: 'Un module par type de maquillage',
+        texte:
+          'Maquillage nude, soirée, mariée, peaux matures, peaux foncées : chaque thème devient une formation que vous pouvez vendre séparément.',
+      },
+      {
+        titre: 'Des élèves partout',
+        texte:
+          'Futures maquilleuses, reconversions, esthéticiennes qui veulent se perfectionner : votre formation les touche partout en France et à l’étranger.',
+      },
+    ],
+    filmesTitre: 'Ce que l’on filme dans une formation maquillage',
+    filmes: [
+      'Hygiène, kit et choix des produits',
+      'Préparation de la peau et teint',
+      'Correction, contouring et enlumineur',
+      'Yeux : fards, eye-liner, faux cils',
+      'Lèvres et mise en valeur du regard',
+      'Looks complets : jour, soirée, mariée',
+    ],
+    filmesTexte:
+      'Éclairage studio calibré, une caméra face au visage et une autre sur les mains. Les références de produits et les étapes s’affichent à l’écran.',
+    realisations: [],
+    faq: [
+      {
+        q: 'Pouvez-vous filmer plusieurs carnations ?',
+        a: 'Oui, et c’est un vrai plus pour vos élèves. Nous prévoyons avec vous des modèles de carnations différentes et nous adaptons l’éclairage à chacune.',
+      },
+      {
+        q: 'Faut-il citer les marques de produits ?',
+        a: 'C’est vous qui décidez. Vous pouvez citer vos références ou rester neutre, nous adaptons les textes à l’écran.',
+      },
+      FAQ_DUREE,
+      FAQ_PROPRIETE,
+    ],
+  }),
+  metier({
+    slug: 'beaute-des-pieds',
+    parent: 'esthetique-beaute',
+    domaine: 'beaute',
+    nom: 'Beauté des pieds',
+    seoTitle: 'Créer sa formation en ligne en beauté des pieds et pédicure esthétique | Expansion',
+    seoDescription:
+      'Formatrice en beauté des pieds ou pédicure esthétique ? On filme votre protocole en gros plan (bain, soin des ongles, callosités, pose de vernis) et on le vend en ligne.',
+    titreItalique: 'en beauté des pieds',
+    intro:
+      'Bain, soin des ongles et des cuticules, traitement des callosités, gommage, massage, pose de vernis ou de gel : la beauté des pieds est une prestation très demandée et souvent mal maîtrisée. Nous filmons votre protocole en gros plan, avec des angles qui montrent bien les zones difficiles.',
+    pourquoiTitre: 'Pourquoi digitaliser votre formation beauté des pieds',
+    pourquoi: [
+      {
+        titre: 'Les gestes délicats vus de près',
+        texte:
+          'Coupe des ongles, repoussage des cuticules, travail de la râpe : la caméra se place là où l’élève ne pourrait jamais se mettre en salle.',
+      },
+      {
+        titre: 'Les limites du métier bien expliquées',
+        texte:
+          'Ce que l’esthéticienne peut faire et ce qui relève du pédicure-podologue : vous l’expliquez clairement une fois, face caméra.',
+      },
+      {
+        titre: 'Une prestation simple à ajouter',
+        texte:
+          'Beaucoup d’onglistes et d’esthéticiennes veulent proposer la beauté des pieds. Une formation en ligne leur permet de s’y mettre rapidement.',
+      },
+      {
+        titre: 'Facile à combiner avec l’onglerie',
+        texte:
+          'Votre formation peut se vendre seule ou en complément d’une formation prothésie ongulaire ou semi-permanent.',
+      },
+    ],
+    filmesTitre: 'Ce que l’on filme dans une formation beauté des pieds',
+    filmes: [
+      'Hygiène, matériel et limites du métier',
+      'Bain et préparation du pied',
+      'Coupe, limage et soin des cuticules',
+      'Traitement esthétique des callosités et gommage',
+      'Massage des pieds',
+      'Pose de vernis ou de semi-permanent',
+    ],
+    filmesTexte:
+      'Le pied de la modèle est surélevé, avec une caméra en plongée et une autre de côté. Les gestes à éviter et les points d’hygiène s’affichent à l’écran.',
+    realisations: [],
+    faq: [
+      {
+        q: 'Faut-il un fauteuil de pédicure pour le tournage ?',
+        a: 'Nous tournons dans votre centre avec votre installation habituelle. Nous adaptons simplement la position des caméras à votre fauteuil.',
+      },
+      {
+        q: 'Peut-on associer cette formation à une formation onglerie ?',
+        a: 'Oui, c’est même très courant. Les deux peuvent être tournées pendant le même déplacement.',
+      },
+      FAQ_DUREE,
+      FAQ_PROPRIETE,
+    ],
+  }),
+  metier({
+    slug: 'tresses-coiffure-afro',
+    parent: 'coiffure',
+    domaine: 'coiffure',
+    nom: 'Tresses et coiffure afro',
+    seoTitle: 'Créer sa formation en ligne en tresses et coiffure afro | Expansion',
+    seoDescription:
+      'Formatrice en tresses, braids, nattes collées, locks ou soins des cheveux texturés ? On filme votre formation coiffure afro et on la vend en ligne.',
+    titreItalique: 'en tresses et coiffure afro',
+    intro:
+      'Démêlage, séparations nettes, nattes collées, box braids, knotless, vanilles, locks, soins des cheveux crépus et bouclés : la coiffure afro demande des gestes rapides et répétitifs, difficiles à suivre en direct. Nous les filmons de près, sous plusieurs angles, et nous les ralentissons quand il le faut.',
+    pourquoiTitre: 'Pourquoi mettre votre formation tresses en ligne',
+    pourquoi: [
+      {
+        titre: 'Le tressage ralenti au bon moment',
+        texte:
+          'Croisement des mèches, ajout des rajouts, tension : ce qui se fait en une seconde en vrai peut être ralenti et commenté à l’écran.',
+      },
+      {
+        titre: 'Des séparations bien visibles',
+        texte:
+          'La propreté des séparations fait la qualité d’une coiffure. En vue de dessus, l’élève voit exactement comment vous tracez chaque ligne.',
+      },
+      {
+        titre: 'Une demande énorme, peu de formations sérieuses',
+        texte:
+          'Beaucoup de personnes veulent apprendre les tresses, mais peu de formations en ligne sont bien filmées. C’est une vraie place à prendre.',
+      },
+      {
+        titre: 'Une formation par style',
+        texte:
+          'Nattes collées, box braids, knotless, twists, locks : chaque style devient une formation que vous pouvez vendre séparément.',
+      },
+    ],
+    filmesTitre: 'Ce que l’on filme dans une formation tresses',
+    filmes: [
+      'Les types de cheveux texturés et leur préparation',
+      'Démêlage, soins et protection du cuir chevelu',
+      'Tracer des séparations nettes',
+      'Nattes collées et tresses africaines',
+      'Box braids, knotless et ajout des rajouts',
+      'Vanilles, twists, locks et entretien',
+    ],
+    filmesTexte:
+      'Une caméra au-dessus de la tête pour les séparations, une autre de côté pour le geste de tressage. Les passages clés sont ralentis au montage.',
+    realisations: [],
+    faq: [
+      {
+        q: 'Une coiffure longue peut-elle être filmée en entier ?',
+        a: 'Oui. Nous filmons la coiffure complète, puis le montage garde les passages utiles et accélère les répétitions, pour que la vidéo reste agréable à suivre.',
+      },
+      {
+        q: 'Combien de modèles prévoir ?',
+        a: 'En général une modèle par style. Pour les coiffures très longues, on peut filmer une partie de la tête seulement et montrer le résultat final.',
+      },
+      FAQ_DUREE,
+      FAQ_PROPRIETE,
+    ],
+  }),
+  metier({
+    slug: 'coloration-balayage',
+    parent: 'coiffure',
+    domaine: 'coiffure',
+    nom: 'Coloration et balayage',
+    seoTitle: 'Créer sa formation en ligne en coloration et balayage | Expansion',
+    seoDescription:
+      'Formatrice en coloration ? Diagnostic, colorimétrie, balayage, ombré, patine, décoloration : on filme votre formation et on la transforme en formation en ligne.',
+    titreItalique: 'en coloration et balayage',
+    intro:
+      'Diagnostic, lecture de la hauteur de ton, colorimétrie, préparation des mélanges, sections, balayage à main levée, ombré, patine : la coloration est à la fois très technique et très visuelle. Nous filmons vos démonstrations avec une lumière fidèle aux couleurs, pour que le résultat à l’écran soit celui que vous obtenez au bac.',
+    pourquoiTitre: 'Pourquoi digitaliser votre formation coloration',
+    pourquoi: [
+      {
+        titre: 'Des couleurs justes à l’écran',
+        texte:
+          'Un reflet cuivré ou cendré se voit mal sous une mauvaise lumière. Nous réglons l’éclairage pour que les nuances restent fidèles du début à la fin.',
+      },
+      {
+        titre: 'La colorimétrie enfin claire',
+        texte:
+          'Étoile chromatique, neutralisation, oxydants : la théorie est illustrée par des schémas animés à l’écran, bien plus faciles à retenir qu’un tableau.',
+      },
+      {
+        titre: 'Le geste du balayage vu de près',
+        texte:
+          'Inclinaison du pinceau, quantité de produit, fondu : en gros plan, l’élève voit le geste qui fait la différence entre un balayage réussi et des démarcations.',
+      },
+      {
+        titre: 'Une formation pour les coiffeuses en poste',
+        texte:
+          'Les coiffeuses déjà installées veulent se perfectionner sans fermer leur salon. Votre formation en ligne s’adapte à leur emploi du temps.',
+      },
+    ],
+    filmesTitre: 'Ce que l’on filme dans une formation coloration',
+    filmes: [
+      'Diagnostic et hauteur de ton',
+      'Colorimétrie et neutralisation',
+      'Préparation des mélanges et oxydants',
+      'Sections et application racines',
+      'Balayage, ombré et techniques de fondu',
+      'Décoloration, patine et résultat final',
+    ],
+    filmesTexte:
+      'Éclairage calibré, une caméra sur la tête de la modèle et une autre sur votre plan de travail. Les références de mélange et les temps de pose s’affichent à l’écran.',
+    realisations: [],
+    faq: [
+      {
+        q: 'Le temps de pose ne rend-il pas la vidéo trop longue ?',
+        a: 'Non. Les temps de pose sont coupés au montage et remplacés par un rappel à l’écran (« 35 minutes de pose »). On montre seulement ce qui est utile.',
+      },
+      {
+        q: 'Peut-on montrer plusieurs techniques sur la même modèle ?',
+        a: 'Parfois, oui (racines et patine par exemple). Pour un balayage complet, nous prévoyons une modèle dédiée.',
+      },
+      FAQ_DUREE,
+      FAQ_PROPRIETE,
+    ],
+  }),
 ]
